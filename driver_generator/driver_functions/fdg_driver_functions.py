@@ -16,8 +16,6 @@ def vector_head_cam(head_loc_x, head_loc_y, head_loc_z, cam_loc_x, cam_loc_y, ca
     vec_head_cam = mathutils.Vector(
         (cam_loc_x - head_loc_x, cam_loc_y - head_loc_y, cam_loc_z - head_loc_z))
 
-    print(vec_head_cam)
-
     return vec_head_cam
 
 
