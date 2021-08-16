@@ -21,7 +21,7 @@ bl_info = {
     "author": "Michael Schieber, Sophie Fink, Elias Schwarze",
     "description": "A suite of tools for character rigging in production",
     "blender": (2, 93, 0),
-    "version": (0, 0, 1),
+    "version": (0, 0, 2),
     "location": "3D Viewport > Properties panel (N) > FCHAR Tabs",
     "warning": "Deactivate old version, then restart Blender before installing a newer version",
     "category": "Rigging"
