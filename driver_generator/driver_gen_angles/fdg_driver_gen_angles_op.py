@@ -1,13 +1,11 @@
 import bpy
-from bpy.props import PointerProperty
 import mathutils
 
 from bpy.types import Operator
-from rna_prop_ui import rna_idprop_ui_prop_get
 
-from .utility_functions.fdg_driver_utils import add_var
-from .utility_functions.fdg_driver_utils import parent_objects
-from .utility_functions.fdg_driver_utils import add_custom_property
+from ..utility_functions.fdg_driver_utils import add_var
+from ..utility_functions.fdg_driver_utils import parent_objects
+from ..utility_functions.fdg_driver_utils import add_custom_property
 
 class FDG_OT_GenerateDrivers_Op(Operator):
     bl_idname = "object.generate_drivers"
