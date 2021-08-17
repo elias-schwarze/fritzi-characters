@@ -1,6 +1,5 @@
 import bpy
 
-from bpy.props import CollectionProperty
 from bpy.props import PointerProperty
 from bpy.props import StringProperty
 
@@ -21,13 +20,10 @@ class FDG_PT_GenerateDrivers_pnl(bpy.types.Panel):
         name="Camera", type=bpy.types.Object)
     bpy.types.Scene.bone2 = StringProperty(name="Bone")
 
-    #bpy.types.Scene.face_collection = PointerProperty(name="Face Collection", type=bpy.types.Collection)
-
+    
     def draw(self, context):
         scene = context.scene
         layout = self.layout
-
-        #layout.prop_search(scene, "face_collection", bpy.data, "collections")
         
         # Create a Text Field to enter the current Characters prefix, so the empties can be named with them.
         layout.prop(scene, "character_prefix")

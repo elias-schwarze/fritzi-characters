@@ -14,6 +14,7 @@
 from .driver_generator.driver_gen_angles import fdg_driver_gen_angles_pnl
 from .driver_generator.driver_gen_angles import fdg_driver_gen_angles_op
 from .driver_generator.driver_functions import fdg_driver_functions
+from .driver_generator import fdg_init
 
 
 bl_info = {
@@ -29,12 +30,8 @@ bl_info = {
 
 
 def register():
-    fdg_driver_functions.register()
-    fdg_driver_gen_angles_op.register()
-    fdg_driver_gen_angles_pnl.register()
+    fdg_init.register()
 
 
 def unregister():
-    fdg_driver_gen_angles_pnl.unregister()
-    fdg_driver_gen_angles_op.unregister()
-    fdg_driver_functions.unregister()
+    fdg_init.unregister()
