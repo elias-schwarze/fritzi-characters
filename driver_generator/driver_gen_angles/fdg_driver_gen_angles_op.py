@@ -198,6 +198,7 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         driver_shapes_left.expression = "1-((-blend-(angle_z-bias))/(90-blend))-((upDownNormalize/blendUpDown)/15) if angle_z-bias <-blend else -(angle_z-bias)/blend-((upDownNormalize/blendUpDown)/15) if angle_z-bias <=0 and angle_z-bias>=-blend else 0"
         driver_shapes_right.expression = "1+((blend-(angle_z-bias))/(90-blend))-((-upDownNormalize/blendUpDown)/15) if angle_z-bias >blend else ((angle_z-bias)/blend)-((-upDownNormalize/blendUpDown)/15) if angle_z-bias >=0 and angle_z-bias<=blend else 0"
 
+        self.report({'INFO'}, "Generated Drivers!")
         return {'FINISHED'}
 
 

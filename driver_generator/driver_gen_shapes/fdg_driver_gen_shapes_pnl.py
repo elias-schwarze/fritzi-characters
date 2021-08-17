@@ -14,6 +14,8 @@ class FDG_PT_GenerateShapeDrivers_pnl(bpy.types.Panel):
     def draw(self, context):
         scene = context.scene
         layout = self.layout
+        
+        layout.prop_search(scene, "object1", context.scene, "objects", text='Armature')
 
         layout.prop_search(scene, "face_collection", bpy.data, "collections")
 
