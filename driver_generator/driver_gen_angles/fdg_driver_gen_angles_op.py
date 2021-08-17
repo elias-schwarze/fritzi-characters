@@ -95,31 +95,31 @@ class FDG_OT_GenerateDrivers_Op(Operator):
 
         # Hidden Controller
 
-        add_custom_property(hidden_controller_pose_bone, "angle_x", prop_min=-180,
-                            prop_max=180, description="Angle between head and Camera around x axis")
+        add_custom_property(hidden_controller_pose_bone, "angle_x", prop_min=-180.0,
+                            prop_max=180.0, description="Angle between head and Camera around x axis")
 
-        add_custom_property(hidden_controller_pose_bone, "angle_z", prop_min=-180,
-                            prop_max=180, description="Angle between head and Camera around x axis")
-
-        add_custom_property(hidden_controller_pose_bone,
-                            "upDownNormalize", prop_min=-180, prop_max=180)
+        add_custom_property(hidden_controller_pose_bone, "angle_z", prop_min=-180.0,
+                            prop_max=180.0, description="Angle between head and Camera around x axis")
 
         add_custom_property(hidden_controller_pose_bone,
-                            "shapesLeft", prop_min=0, prop_max=1)
+                            "upDownNormalize", prop_min=-180.0, prop_max=180.0)
 
         add_custom_property(hidden_controller_pose_bone,
-                            "shapesRight", prop_min=0, prop_max=1)
+                            "shapesLeft", prop_min=0.0, prop_max=1.0)
+
+        add_custom_property(hidden_controller_pose_bone,
+                            "shapesRight", prop_min=0.0, prop_max=1.0)
 
         # Visible Controller
 
         add_custom_property(visible_controller_pose_bone,
-                            "bias", prop_min=-150, prop_max=150)
+                            "bias", prop_min=-150.0, prop_max=150.0)
 
         add_custom_property(visible_controller_pose_bone,
-                            "blend", default=10, prop_min=1, prop_max=89)
+                            "blend", default=10.0, prop_min=1.0, prop_max=89.0)
 
         add_custom_property(visible_controller_pose_bone,
-                            "blendUpDown", default=10, prop_min=1, prop_max=10)
+                            "blendUpDown", default=10.0, prop_min=1.0, prop_max=10.0)
 
         # Add drivers to the hidden control bone
 

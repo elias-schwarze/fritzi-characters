@@ -21,7 +21,7 @@ def add_var(driver, source, name, transform_type='', type='TRANSFORMS', source_b
             target.transform_space = 'WORLD_SPACE'
 
 
-def add_custom_property(prop_holder, name, default=0, prop_min=0, prop_max=1, description=''):
+def add_custom_property(prop_holder, name, default=0.0, prop_min=0.0, prop_max=1.0, description=''):
     """Adds a custom property to an object"""
     prop_holder[name] = default
 
