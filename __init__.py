@@ -11,9 +11,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from .driver_generator.driver_gen_angles import fdg_driver_gen_angles_pnl
-from .driver_generator.driver_gen_angles import fdg_driver_gen_angles_op
-from .driver_generator.driver_functions import fdg_driver_functions
 from .driver_generator import fdg_init
 
 

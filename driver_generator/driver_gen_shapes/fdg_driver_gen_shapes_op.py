@@ -22,14 +22,14 @@ class FDG_OT_GenerateShapeDrivers_Op(Operator):
         if collection is None:
             self.report({'WARNING'}, "Please select the Collection!")
 
-        self.search_collection(collection, arma)
+        self.add_shape_drivers(collection, arma)
         
         self.report({'INFO'}, "Created Shape Drivers!")
         return {'FINISHED'}
 
-    def search_collection(self, collection, armature):
+    def add_shape_drivers(self, collection, armature):
         for child in collection.children:
-            self.search_collection(child, armature)
+            self.add_shape_drivers(child, armature)
         
         for obj in collection.objects:
             if obj.type == 'MESH':

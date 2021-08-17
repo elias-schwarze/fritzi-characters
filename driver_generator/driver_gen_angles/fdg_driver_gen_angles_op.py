@@ -15,13 +15,16 @@ class FDG_OT_GenerateDrivers_Op(Operator):
 
     def execute(self, context):
 
+        prefix = bpy.context.scene.character_prefix
         arma = bpy.context.scene.object1
         head_bone_name = bpy.context.scene.bone1
         cam = bpy.context.scene.object2
         cam_bone_name = bpy.context.scene.bone2
 
-        
-        
+        if prefix == '':
+            self.report({'WARNING'}, "Please enter a Character Prefix!")
+            return {'CANCELLED'}
+
         if arma is None:
             self.report({'WARNING'}, "Please select the Armature!")
             return {'CANCELLED'}     
@@ -35,7 +38,7 @@ class FDG_OT_GenerateDrivers_Op(Operator):
             return {'CANCELLED'}
 
         # Create an Empty at the Base of the Head Bone and parent it to the Head Bone
-        head_empty = bpy.data.objects.new("Empty.head", None)
+        head_empty = bpy.data.objects.new(prefix + ".Empty.head", None)
 
         if arma.type == 'ARMATURE' and head_bone_name != '':
             head_empty.location = arma.location + \
@@ -48,7 +51,7 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         parent_objects(arma, head_empty, head_bone_name)
 
         # Create an Empty at the Camera and parent it to the Camera
-        cam_empty = bpy.data.objects.new("Empty.cam", None)
+        cam_empty = bpy.data.objects.new(prefix + ".Empty.cam", None)
 
         if cam.type == 'ARMATURE' and cam_bone_name != '':
             cam_empty.location = cam.location + \
