@@ -32,7 +32,7 @@ class FDG_OT_GenerateShapeDrivers_Op(Operator):
             self.add_shape_drivers(child, armature)
         
         for obj in collection.objects:
-            if obj.type == 'MESH':
+            if obj.type == 'MESH' or obj.type == 'LATTICE':
                 for key in obj.data.shape_keys.key_blocks:
                     print(key.name)
                     
