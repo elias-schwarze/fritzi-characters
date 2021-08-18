@@ -12,6 +12,8 @@ class FDG_OT_GenerateShapeDrivers_Op(Operator):
 
     def execute(self, context):
 
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+
         collection = context.scene.face_collection
 
         arma = context.scene.object1
@@ -33,6 +35,8 @@ class FDG_OT_GenerateShapeDrivers_Op(Operator):
         
         for obj in collection.objects:
             if obj.type == 'MESH' or obj.type == 'LATTICE':
+                if obj.data.shape_keys is None:
+                    continue
                 for key in obj.data.shape_keys.key_blocks:
                     print(key.name)
                     

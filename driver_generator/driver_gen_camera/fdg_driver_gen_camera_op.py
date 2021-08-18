@@ -12,6 +12,8 @@ class FDG_OT_LinkCamera_Op(Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
+
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
         
         cam = bpy.context.scene.object2
 
@@ -22,7 +24,7 @@ class FDG_OT_LinkCamera_Op(Operator):
         cam_empty = bpy.context.scene.objects.get("Empty.cam")
 
         if cam_empty is None:
-            print("Test")
+            
             cam_empty = bpy.data.objects.new("Empty.cam", None)
 
             cam_empty.location = cam.location

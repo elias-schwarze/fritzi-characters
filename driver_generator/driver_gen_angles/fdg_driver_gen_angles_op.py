@@ -15,6 +15,8 @@ class FDG_OT_GenerateDrivers_Op(Operator):
 
     def execute(self, context):
 
+        bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
+
         prefix = bpy.context.scene.character_prefix
         arma = bpy.context.scene.object1
         head_bone_name = bpy.context.scene.bone1
@@ -95,10 +97,6 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         b.head = head_empty.location + mathutils.Vector((2.0, 0.0, 0.0))
         b.tail = head_empty.location + mathutils.Vector((2.0, -1.0, 0.0))
 
-
-
-
-
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
 
         # Add custom properties to the control bones
@@ -106,15 +104,15 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         hidden_controller_pose_bone = arma.pose.bones[hidden_controller_bone_name]
         visible_controller_pose_bone = arma.pose.bones[visible_controller_bone_name]
 
-        arma.data.bones[hidden_controller_bone_name].layers[8] = True
+        arma.data.bones[hidden_controller_bone_name].layers[29] = True
         arma.data.bones[hidden_controller_bone_name].layers[0] = False
         
-        arma.data.bones[visible_controller_bone_name].layers[7] = True
+        arma.data.bones[visible_controller_bone_name].layers[30] = True
         arma.data.bones[visible_controller_bone_name].layers[0] = False
 
 
-        arma.data.layers[7] = True
-        arma.data.layers[8] = False
+        arma.data.layers[30] = True
+        arma.data.layers[29] = False
         
 
         # Hidden Controller
