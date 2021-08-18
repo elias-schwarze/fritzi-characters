@@ -32,7 +32,7 @@ class FDG_PT_GenerateDrivers_pnl(bpy.types.Panel):
         # bones
         box = layout.box()
         box.prop_search(scene, "object1", context.scene,
-                        "objects", text='Armature')
+                        "objects", text="Armature")
         ob = bpy.context.scene.object1
         if ob is not None:
             if ob.type == 'ARMATURE':
@@ -42,7 +42,7 @@ class FDG_PT_GenerateDrivers_pnl(bpy.types.Panel):
         # its bones
         box = layout.box()
         box.prop_search(scene, "object2", context.scene,
-                        "objects", text='Camera')
+                        "objects", text="Camera")
         ob = bpy.context.scene.object2
         if ob is not None:
             if ob.type == 'ARMATURE':

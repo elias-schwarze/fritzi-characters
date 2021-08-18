@@ -53,17 +53,20 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         head_empty.hide_viewport = True
 
         # Create an Empty at the Camera and parent it to the Camera
-        cam_empty = bpy.data.objects.new(prefix + ".Empty.cam", None)
+        cam_empty = bpy.context.scene.objects.get("Empty.cam")
+        if cam_empty is None:
+            cam_empty = bpy.data.objects.new("Empty.cam", None)
 
-        if cam.type == 'ARMATURE' and cam_bone_name != '':
-            cam_empty.location = cam.location + \
-                cam.data.bones[cam_bone_name].head
-        else:
-            cam_empty.location = cam.location
+            if cam.type == 'ARMATURE' and cam_bone_name != '':
+                cam_empty.location = cam.location + \
+                    cam.data.bones[cam_bone_name].head
+            else:
+                cam_empty.location = cam.location
+                cam_empty.rotation_euler = cam.rotation_euler
 
-        bpy.context.collection.objects.link(cam_empty)
+            bpy.context.collection.objects.link(cam_empty)
 
-        parent_objects(cam, cam_empty, cam_bone_name)
+            parent_objects(cam, cam_empty, cam_bone_name)
 
         cam_empty.hide_viewport = True
 
@@ -105,9 +108,7 @@ class FDG_OT_GenerateDrivers_Op(Operator):
 
         arma.data.bones[hidden_controller_bone_name].layers[8] = True
         arma.data.bones[hidden_controller_bone_name].layers[0] = False
-        arma.data.bones[hidden_controller_bone_name].layers[8] = False
         
-
         arma.data.bones[visible_controller_bone_name].layers[7] = True
         arma.data.bones[visible_controller_bone_name].layers[0] = False
 
