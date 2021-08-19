@@ -7,6 +7,8 @@ from ..utility_functions.fdg_driver_utils import add_var
 from ..utility_functions.fdg_driver_utils import parent_objects
 from ..utility_functions.fdg_driver_utils import add_custom_property
 
+from ..utility_functions import fdg_names
+
 class FDG_OT_GenerateDrivers_Op(Operator):
     bl_idname = "object.generate_drivers"
     bl_label = "Generate Drivers"
@@ -40,7 +42,7 @@ class FDG_OT_GenerateDrivers_Op(Operator):
             return {'CANCELLED'}
 
         # Create an Empty at the Base of the Head Bone and parent it to the Head Bone
-        head_empty = bpy.data.objects.new(prefix + ".Empty.head", None)
+        head_empty = bpy.data.objects.new(prefix + "." + fdg_names.empty_head, None)
 
         if arma.type == 'ARMATURE' and head_bone_name != '':
             head_empty.location = arma.location + \
@@ -55,9 +57,9 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         head_empty.hide_viewport = True
 
         # Create an Empty at the Camera and parent it to the Camera
-        cam_empty = bpy.context.scene.objects.get("Empty.cam")
+        cam_empty = bpy.context.scene.objects.get(fdg_names.emtpy_cam)
         if cam_empty is None:
-            cam_empty = bpy.data.objects.new("Empty.cam", None)
+            cam_empty = bpy.data.objects.new(fdg_names.emtpy_cam, None)
 
             if cam.type == 'ARMATURE' and cam_bone_name != '':
                 cam_empty.location = cam.location + \
@@ -74,10 +76,8 @@ class FDG_OT_GenerateDrivers_Op(Operator):
 
         # Create two Bones as controllers for the Drivers, one hidden for driven Properties and one not hidden with animatable properties for the animator
 
-        # Maybe put on a hidden layer instead?
-
-        hidden_controller_bone_name = "Driven_Props"
-        visible_controller_bone_name = "Driver_Controller"
+        hidden_controller_bone_name = fdg_names.hidden_controller_bone
+        visible_controller_bone_name = fdg_names.visible_controller_bone
 
         # bpy.ops.object.select_all(action='DESELECT')
         bpy.context.view_layer.objects.active = arma
@@ -117,44 +117,44 @@ class FDG_OT_GenerateDrivers_Op(Operator):
 
         # Hidden Controller
 
-        add_custom_property(hidden_controller_pose_bone, "angle_x", prop_min=-180.0,
+        add_custom_property(hidden_controller_pose_bone, fdg_names.prop_angle_x, prop_min=-180.0,
                             prop_max=180.0, description="Angle between head and Camera around x axis")
 
-        add_custom_property(hidden_controller_pose_bone, "angle_z", prop_min=-180.0,
+        add_custom_property(hidden_controller_pose_bone, fdg_names.prop_angle_z, prop_min=-180.0,
                             prop_max=180.0, description="Angle between head and Camera around x axis")
 
         add_custom_property(hidden_controller_pose_bone,
-                            "upDownNormalize", prop_min=-180.0, prop_max=180.0)
+                            fdg_names.prop_up_down_normalize, prop_min=-180.0, prop_max=180.0)
 
         add_custom_property(hidden_controller_pose_bone,
-                            "shapesLeft", prop_min=0.0, prop_max=1.0)
+                            fdg_names.prop_shapes_left, prop_min=0.0, prop_max=1.0)
 
         add_custom_property(hidden_controller_pose_bone,
-                            "shapesRight", prop_min=0.0, prop_max=1.0)
+                            fdg_names.prop_shapes_right, prop_min=0.0, prop_max=1.0)
 
         # Visible Controller
 
         add_custom_property(visible_controller_pose_bone,
-                            "bias", prop_min=-150.0, prop_max=150.0)
+                            fdg_names.prop_bias, prop_min=-150.0, prop_max=150.0)
 
         add_custom_property(visible_controller_pose_bone,
-                            "blend", default=10.0, prop_min=1.0, prop_max=89.0)
+                            fdg_names.prop_blend, default=10.0, prop_min=1.0, prop_max=89.0)
 
         add_custom_property(visible_controller_pose_bone,
-                            "blendUpDown", default=10.0, prop_min=1.0, prop_max=10.0)
+                            fdg_names.prop_blendUpDown, default=10.0, prop_min=1.0, prop_max=10.0)
 
         # Add drivers to the hidden control bone
 
         driver_x = hidden_controller_pose_bone.driver_add(
-            '["angle_x"]').driver
+            '["' + fdg_names.prop_angle_x + '"]').driver
         driver_z = hidden_controller_pose_bone.driver_add(
-            '["angle_z"]').driver
+            '["' + fdg_names.prop_angle_z + '"]').driver
         driver_normalize = hidden_controller_pose_bone.driver_add(
-            '["upDownNormalize"]').driver
+            '["' + fdg_names.prop_up_down_normalize + '"]').driver
         driver_shapes_left = hidden_controller_pose_bone.driver_add(
-            '["shapesLeft"]').driver
+            '["' + fdg_names.prop_shapes_left + '"]').driver
         driver_shapes_right = hidden_controller_pose_bone.driver_add(
-            '["shapesRight"]').driver
+            '["' + fdg_names.prop_shapes_right + '"]').driver
 
         # Add variables to driver around the x axis
         add_var(driver_x, head_empty, "head_loc_x", transform_type='LOC_X')
@@ -184,36 +184,36 @@ class FDG_OT_GenerateDrivers_Op(Operator):
 
         # add variables to normalize driver
         add_var(driver_normalize, arma, "angle_x", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driven_Props"]["angle_x"]')
+                rna_data_path='pose.bones["' + fdg_names.hidden_controller_bone + '"]["' + fdg_names.prop_angle_x + '"]')
         add_var(driver_normalize, arma, "angle_z", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driven_Props"]["angle_z"]')
+                rna_data_path='pose.bones["' + fdg_names.hidden_controller_bone + '"]["' + fdg_names.prop_angle_z + '"]')
         add_var(driver_normalize, arma, "bias", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driver_Controller"]["bias"]')
+                rna_data_path='pose.bones["' + fdg_names.visible_controller_bone + '"]["' + fdg_names.prop_bias + '"]')
 
         # add variables to the shapes drivers
         # LEFT
         add_var(driver_shapes_left, arma, "angle_z", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driven_Props"]["angle_z"]')
+                rna_data_path='pose.bones["' + fdg_names.hidden_controller_bone + '"]["' + fdg_names.prop_angle_z + '"]')
         add_var(driver_shapes_left, arma, "bias", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driver_Controller"]["bias"]')
+                rna_data_path='pose.bones["' + fdg_names.visible_controller_bone + '"]["' + fdg_names.prop_bias + '"]')
         add_var(driver_shapes_left, arma, "blend", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driver_Controller"]["blend"]')
+                rna_data_path='pose.bones["' + fdg_names.visible_controller_bone + '"]["' + fdg_names.prop_blend + '"]')
         add_var(driver_shapes_left, arma, "blendUpDown", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driver_Controller"]["blendUpDown"]')
+                rna_data_path='pose.bones["' + fdg_names.visible_controller_bone + '"]["' + fdg_names.prop_blendUpDown + '"]')
         add_var(driver_shapes_left, arma, "upDownNormalize", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driven_Props"]["upDownNormalize"]')
+                rna_data_path='pose.bones["' + fdg_names.hidden_controller_bone + '"]["' + fdg_names.prop_up_down_normalize + '"]')
 
         # RIGHT
         add_var(driver_shapes_right, arma, "angle_z", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driven_Props"]["angle_z"]')
+                rna_data_path='pose.bones["' + fdg_names.hidden_controller_bone + '"]["' + fdg_names.prop_angle_z + '"]')
         add_var(driver_shapes_right, arma, "bias", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driver_Controller"]["bias"]')
+                rna_data_path='pose.bones["' + fdg_names.visible_controller_bone + '"]["' + fdg_names.prop_bias + '"]')
         add_var(driver_shapes_right, arma, "blend", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driver_Controller"]["blend"]')
+                rna_data_path='pose.bones["' + fdg_names.visible_controller_bone + '"]["' + fdg_names.prop_blend + '"]')
         add_var(driver_shapes_right, arma, "blendUpDown", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driver_Controller"]["blendUpDown"]')
+                rna_data_path='pose.bones["' + fdg_names.visible_controller_bone + '"]["' + fdg_names.prop_blendUpDown + '"]')
         add_var(driver_shapes_right, arma, "upDownNormalize", type='SINGLE_PROP',
-                rna_data_path='pose.bones["Driven_Props"]["upDownNormalize"]')
+                rna_data_path='pose.bones["' + fdg_names.hidden_controller_bone + '"]["' + fdg_names.prop_up_down_normalize + '"]')
 
         # Add the expressions to the drivers
         driver_x.expression = "degrees(angle_x_func(head_loc_x, head_loc_y, head_loc_z, cam_loc_x, cam_loc_y, cam_loc_z, head_rot_x, head_rot_y, head_rot_z)) "

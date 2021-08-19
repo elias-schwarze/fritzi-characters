@@ -1,9 +1,9 @@
 import bpy
-import mathutils
 
 from bpy.types import Operator
 
 from ..utility_functions.fdg_driver_utils import parent_objects
+from ..utility_functions import fdg_names
 
 class FDG_OT_LinkCamera_Op(Operator):
     bl_idname = "object.link_camera"
@@ -21,11 +21,11 @@ class FDG_OT_LinkCamera_Op(Operator):
             self.report({'WARNING'}, "Please select the Camera!")
             return {'CANCELLED'}
 
-        cam_empty = bpy.context.scene.objects.get("Empty.cam")
+        cam_empty = bpy.context.scene.objects.get(fdg_names.emtpy_cam)
 
         if cam_empty is None:
             
-            cam_empty = bpy.data.objects.new("Empty.cam", None)
+            cam_empty = bpy.data.objects.new(fdg_names.emtpy_cam, None)
 
             cam_empty.location = cam.location
 
