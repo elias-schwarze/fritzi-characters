@@ -12,6 +12,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from .driver_generator import fdg_init
+from .retarget_tools import frt_retarget_tools_op
+from .retarget_tools import frt_retarget_tools_pnl
 
 
 bl_info = {
@@ -28,7 +30,11 @@ bl_info = {
 
 def register():
     fdg_init.register()
+    frt_retarget_tools_op.register()
+    frt_retarget_tools_pnl.register()
 
 
 def unregister():
+    frt_retarget_tools_pnl.unregister()
+    frt_retarget_tools_op.unregister()
     fdg_init.unregister()
