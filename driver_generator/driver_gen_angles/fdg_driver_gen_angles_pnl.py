@@ -49,8 +49,9 @@ class FDG_PT_GenerateDrivers_pnl(bpy.types.Panel):
                 box.prop_search(scene, "bone2", ob.data, "bones")
 
         
-
-        layout.operator("object.generate_drivers")
+        row = layout.row()
+        row.operator("object.generate_drivers")
+        row.operator("object.remove_drivers")
 
 
 def register():
