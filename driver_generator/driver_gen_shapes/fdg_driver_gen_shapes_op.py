@@ -8,7 +8,7 @@ from..utility_functions import fdg_names
 
 class FDG_OT_GenerateShapeDrivers_Op(Operator):
     bl_idname = "object.generate_shape_drivers"
-    bl_label = "Add Drivers to Shapes"
+    bl_label = "Add Drivers to Shapekeys"
     bl_description = "Adds drivers to all shapekeys with either suffix .L or .R on objects in the given collection"
     bl_options = {"REGISTER", "UNDO"}
 
@@ -28,7 +28,7 @@ class FDG_OT_GenerateShapeDrivers_Op(Operator):
 
         self.add_shape_drivers(collection, arma)
 
-        self.report({'INFO'}, "Created Shape Drivers!")
+        self.report({'INFO'}, "Created Shapekey Drivers!")
         return {'FINISHED'}
 
     def add_shape_drivers(self, collection, armature):
@@ -43,8 +43,7 @@ class FDG_OT_GenerateShapeDrivers_Op(Operator):
                     continue
 
                 for key in obj.data.shape_keys.key_blocks:
-                    print(key.name)
-
+                    
                     if key.name.endswith(".L"):
 
                         driver = key.driver_add("value").driver
