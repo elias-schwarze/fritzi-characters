@@ -42,6 +42,11 @@ class FDG_OT_GenerateDrivers_Op(Operator):
             return {'CANCELLED'}
 
         # Create an Empty at the Base of the Head Bone and parent it to the Head Bone
+        head_empty = bpy.data.objects.get(prefix + "." + fdg_names.empty_head)
+
+        if head_empty is not None:
+            bpy.data.objects.remove(head_empty, do_unlink=True)
+
         head_empty = bpy.data.objects.new(prefix + "." + fdg_names.empty_head, None)
 
         if arma.type == 'ARMATURE' and head_bone_name != '':
@@ -84,13 +89,18 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         bpy.ops.object.mode_set(mode='EDIT', toggle=False)
 
         edit_bones = arma.data.edit_bones
+        b = edit_bones.get(hidden_controller_bone_name)
+        if b is not None:
+            edit_bones.remove(b)
 
         b = edit_bones.new(hidden_controller_bone_name)
 
         b.head = head_empty.location + mathutils.Vector((1.0, 0.0, 0.0))
         b.tail = head_empty.location + mathutils.Vector((1.0, -1.0, 0.0))
 
-
+        b = edit_bones.get(visible_controller_bone_name)
+        if b is not None:
+            edit_bones.remove(b)
 
         b = edit_bones.new(visible_controller_bone_name)
 

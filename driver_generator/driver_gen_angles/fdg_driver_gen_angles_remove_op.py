@@ -49,15 +49,15 @@ class FDG_OT_RemoveDrivers_Op(Operator):
         bpy.ops.object.mode_set(mode='EDIT', toggle=False)
 
         hidden_controller_edit_bone = arma.data.edit_bones.get(fdg_names.hidden_controller_bone)
-
+         
         if hidden_controller_edit_bone is not None:
             arma.data.edit_bones.remove(hidden_controller_edit_bone)
-
+    
         visible_controller_edit_bone = arma.data.edit_bones.get(fdg_names.visible_controller_bone)
-
+    
         if visible_controller_edit_bone is not None:
             arma.data.edit_bones.remove(visible_controller_edit_bone)
-
+        
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
 
         empty_cam = bpy.data.objects.get(fdg_names.emtpy_cam)
