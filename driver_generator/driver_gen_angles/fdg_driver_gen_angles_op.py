@@ -40,6 +40,9 @@ class FDG_OT_GenerateDrivers_Op(Operator):
             self.report({'WARNING'}, "Please select the Camera!")
             return {'CANCELLED'}
 
+        if cam.type != 'CAMERA':
+            self.report({'WARNING'}, "Please select a Camera!")
+
         # Create an Empty at the Base of the Head Bone and parent it to the Head Bone
         head_empty = bpy.data.objects.get(prefix + "." + fdg_names.empty_head)
 

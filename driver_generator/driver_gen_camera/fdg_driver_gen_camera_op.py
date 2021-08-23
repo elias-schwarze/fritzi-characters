@@ -25,6 +25,9 @@ class FDG_OT_LinkCamera_Op(Operator):
             self.report({'WARNING'}, "Please select the Camera!")
             return {'CANCELLED'}
 
+        if cam.type != 'CAMERA':
+            self.report({'WARNING'}, "Please select a Camera!")
+
         link_camera(cam)
 
         self.report({'INFO'}, "Camera Linked!")
@@ -66,6 +69,9 @@ def frame_change_handler(dummy):
 def link_camera(camera):
     """Sets the camera empty position to the position of the given camera and parents the empty to the camera. If there is no camera empty in the scene, it will be created"""
 
+    if camera is None:
+        return
+
     cam_empty = bpy.context.scene.objects.get(fdg_names.emtpy_cam)
 
     if cam_empty is None:
@@ -79,6 +85,9 @@ def link_camera(camera):
         parent_objects(camera, cam_empty)
         cam_empty.hide_viewport = True
     else:
+        if cam_empty.parent is camera:
+            return
+
         cam_empty.hide_viewport = False
         cam_empty.parent = None
         cam_empty.location = camera.location
