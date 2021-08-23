@@ -1,6 +1,6 @@
 import bpy
 
-from bpy.props import PointerProperty
+from bpy.props import BoolProperty, PointerProperty
 from bpy.props import StringProperty
 
 
@@ -18,7 +18,7 @@ class FDG_PT_GenerateDrivers_pnl(bpy.types.Panel):
     bpy.types.Scene.bone1 = StringProperty(name="Head Bone")
     bpy.types.Scene.object2 = PointerProperty(
         name="Camera", type=bpy.types.Object)
-    bpy.types.Scene.bone2 = StringProperty(name="Bone")
+    bpy.types.Scene.auto_link_toggle = BoolProperty(default=False)
 
     
     def draw(self, context):
@@ -38,16 +38,11 @@ class FDG_PT_GenerateDrivers_pnl(bpy.types.Panel):
             if ob.type == 'ARMATURE':
                 box.prop_search(scene, "bone1", ob.data, "bones")
 
-        # Create Search field for second Object (Camera) and if this object is an armature create search field for
-        # its bones
+        # Create Search field for second Object (Camera)
         box = layout.box()
         box.prop_search(scene, "object2", context.scene,
                         "objects", text="Camera")
         ob = bpy.context.scene.object2
-        if ob is not None:
-            if ob.type == 'ARMATURE':
-                box.prop_search(scene, "bone2", ob.data, "bones")
-
         
         row = layout.row()
         row.operator("object.generate_drivers")

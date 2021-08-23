@@ -23,7 +23,6 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         arma = bpy.context.scene.object1
         head_bone_name = bpy.context.scene.bone1
         cam = bpy.context.scene.object2
-        cam_bone_name = bpy.context.scene.bone2
 
         if prefix == "":
             self.report({'WARNING'}, "Please enter a Character Prefix!")
@@ -66,16 +65,13 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         if cam_empty is None:
             cam_empty = bpy.data.objects.new(fdg_names.emtpy_cam, None)
 
-            if cam.type == 'ARMATURE' and cam_bone_name != '':
-                cam_empty.location = cam.location + \
-                    cam.data.bones[cam_bone_name].head
-            else:
-                cam_empty.location = cam.location
-                cam_empty.rotation_euler = cam.rotation_euler
+            
+            cam_empty.location = cam.location
+            cam_empty.rotation_euler = cam.rotation_euler
 
             bpy.context.collection.objects.link(cam_empty)
 
-            parent_objects(cam, cam_empty, cam_bone_name)
+            parent_objects(cam, cam_empty)
 
         cam_empty.hide_viewport = True
 
