@@ -18,7 +18,6 @@ class FDG_OT_RemoveDrivers_Op(Operator):
         arma = bpy.context.scene.object1
         head_bone_name = bpy.context.scene.bone1
         cam = bpy.context.scene.object2
-        cam_bone_name = bpy.context.scene.bone2
 
         if prefix == "":
             self.report({'WARNING'}, "Please enter a Character Prefix!")
