@@ -37,6 +37,9 @@ def angle_z(head_loc_x, head_loc_y, head_loc_z, cam_loc_x, cam_loc_y, cam_loc_z,
     vec_head_cam = to_local_head(
         vec_head_cam, head_rot_x, head_rot_y, head_rot_z)
 
+    if vec_head_cam.x == 0.0 and vec_head_cam.y == 0.0 and vec_head_cam.z == 0.0:
+        return 0.0
+
     vec_head_cam_xy = mathutils.Vector((vec_head_cam.x, vec_head_cam.y))
 
     vec_head_cam_xy = vec_head_cam_xy.normalized()
@@ -61,6 +64,14 @@ def angle_x(head_loc_x, head_loc_y, head_loc_z, cam_loc_x, cam_loc_y, cam_loc_z,
         vec_head_cam, head_rot_x, head_rot_y, head_rot_z)
 
     length_xy = math.sqrt(pow(vec_head_cam.x, 2) + pow(vec_head_cam.y, 2))
+
+    if length_xy == 0.0:
+        if vec_head_cam.z > 0.0:
+            return math.pi/2 #90 degrees
+        elif vec_head_cam.z == 0.0:
+            return 0.0
+        else:
+            return -math.pi/2 #-90 degrees
 
     angle = math.atan(vec_head_cam.z / length_xy)
 

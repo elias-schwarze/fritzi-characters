@@ -21,6 +21,8 @@ class FDG_PT_GenerateShapeDrivers_pnl(bpy.types.Panel):
 
         layout.operator("object.generate_shape_drivers")
 
+        layout.operator("object.remove_shape_drivers")
+
 def register():
     bpy.utils.register_class(FDG_PT_GenerateShapeDrivers_pnl)
 
