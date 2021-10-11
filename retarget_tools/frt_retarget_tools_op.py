@@ -12,14 +12,15 @@ class FRT_OT_Retarget_Op(Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
+        print('start')
         #rig muss im fk modus sein sonst funktioniert dasuebertragen nicht!!!!!!!!!!!!!
         #automatisch limit constraint für mocap rig damit keine UEberstreckung des Ellbogen passiert
         #copy bone roll von allen Bones bis auf die Fuesse
         frame_start = bpy.context.scene.num1  #schauen ob die gleichen Variablen Namen Probleme machen(entweder feste frameanzahl oder aus der Szene abfragen?) 
         frame_end = bpy.context.scene.num2
 
-        rig_input = bpy.context.scene.object1.name
-        rig_mocap = bpy.context.scene.object2.name
+        rig_input = bpy.context.scene.object7.name
+        rig_mocap = bpy.context.scene.object8.name
 
         #bones fk
         hand_l_fk = 'hand.l'
@@ -104,7 +105,7 @@ class FRT_OT_Retarget_Op(Operator):
             bpy.context.active_object.constraints[0].inverse_matrix  #selbe wie set inverse
             #bpy.context.active_object.constraints[0].inverse_matrix # zweimal clear inverse???
             
-        def bakeActionObj(frame_start, frame_end):
+        def bakeActionObj():
             bpy.ops.nla.bake(frame_start=frame_start, frame_end=frame_end, visual_keying=True, clear_constraints=True, clear_parents=True, use_current_action=True, bake_types={'OBJECT'})
 
             
@@ -135,43 +136,34 @@ class FRT_OT_Retarget_Op(Operator):
         def BakeFKAction(rig, hand_loc_l, hand_loc_r, pole_loc_l, pole_loc_r):
             #left arm Empties
             #hand
-            
-            bpy.ops.object.empty_add(type='PLAIN_AXES',radius=0.2,location = hand_loc_l)
-            bpy.context.active_object.name = hand_l_empty
-            
+            createEmpty(hand_l_empty, 'PLAIN_AXES', 0.2, hand_loc_l, (0,0,0))
             addCopyRotLoc(rig_input, hand_l_fk)
 
             #bake
-            bakeActionObj(frame_start, frame_end)
+            bakeActionObj()
 
             #pole
-            bpy.ops.object.empty_add(type='ARROWS',radius=0.2,location = pole_loc_l, rotation=(0,0,0))
-            bpy.context.active_object.name = pole_l_empty
-
+            createEmpty(pole_l_empty, 'ARROWS', 0.2, pole_loc_l, (0,0,0))
             addChildOf(rig_input, pole_target_l_fk)
 
             #bake
-            bakeActionObj(frame_start, frame_end)
+            bakeActionObj()
 
 
             #right arm Empties
             #hand
-            bpy.ops.object.empty_add(type='PLAIN_AXES',radius=0.2,location = hand_loc_r)
-            bpy.context.active_object.name = hand_r_empty
-            
+            createEmpty(hand_r_empty, 'PLAIN_AXES', 0.2, hand_loc_r, (0,0,0)) 
             addCopyRotLoc(rig_input, hand_r_fk)
             
             #bake
-            bakeActionObj(frame_start, frame_end)
+            bakeActionObj()
 
             #pole
-            bpy.ops.object.empty_add(type='ARROWS',radius=0.2,location=pole_loc_r, rotation=(0,0,0))
-            bpy.context.active_object.name = pole_r_empty
-
+            createEmpty(pole_r_empty, 'ARROWS', 0.2, pole_loc_r, (0,0,0))
             addChildOf(rig_input, pole_target_r_fk)
 
             #bake animation to empties
-            bakeActionObj(frame_start, frame_end)
+            bakeActionObj()
 
 
 
@@ -206,7 +198,7 @@ class FRT_OT_Retarget_Op(Operator):
             #Select in viewport
             boneToSelect.select = True
 
-        def ikConstraints(frame_start, frame_end):
+        def ikConstraints():
 
             #left arm
             #hand
@@ -302,7 +294,7 @@ class FRT_OT_Retarget_Op(Operator):
 
         BakeFKAction(rig_input, hand_loc_l, hand_loc_r, pole_loc_l, pole_loc_r)    
 
-        ikConstraints(frame_start, frame_end)
+        ikConstraints()
 
         bpy.ops.object.mode_set(mode='OBJECT')
 

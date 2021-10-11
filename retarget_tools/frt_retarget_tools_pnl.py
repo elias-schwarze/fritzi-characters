@@ -10,10 +10,10 @@ class FDG_PT_Retarget_Panel_pnl(Panel):
     bl_region_type = "UI"
     bl_options = {"DEFAULT_CLOSED"}
 
-    bpy.types.Scene.object1 = PointerProperty(
+    bpy.types.Scene.object7 = PointerProperty(
     name="Armature", type=bpy.types.Object)
 
-    bpy.types.Scene.object2 = PointerProperty(
+    bpy.types.Scene.object8 = PointerProperty(
     name="Mocap Armature", type=bpy.types.Object)
 
     bpy.types.Scene.num1 = IntProperty(name='Frame Start', default=0, min= 0, step=1)
@@ -27,11 +27,11 @@ class FDG_PT_Retarget_Panel_pnl(Panel):
        col.operator("object.retarget")
 
        box = layout.box()
-       box.prop_search(scene, "object1", context.scene, 
+       box.prop_search(scene, "object7", context.scene, 
        "objects", text="Armature")
 
        box = layout.box()
-       box.prop_search(scene, "object2", context.scene, 
+       box.prop_search(scene, "object8", context.scene, 
        "objects", text="Mocap Armature")
 
        row = layout.row()
