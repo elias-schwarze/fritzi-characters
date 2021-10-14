@@ -12,12 +12,10 @@ class FRT_OT_Retarget_Op(Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
-        print('start')
+        
         #rig muss im fk modus sein sonst funktioniert dasuebertragen nicht!!!!!!!!!!!!!
-        #automatisch limit constraint für mocap rig damit keine UEberstreckung des Ellbogen passiert
-        #copy bone roll von allen Bones bis auf die Fuesse
-        frame_start = bpy.context.scene.num1  #schauen ob die gleichen Variablen Namen Probleme machen(entweder feste frameanzahl oder aus der Szene abfragen?) 
-        frame_end = bpy.context.scene.num2
+        frame_sta = bpy.context.scene.num7 
+        frame_ende = bpy.context.scene.num8
 
         rig_input = bpy.context.scene.object7.name
         rig_mocap = bpy.context.scene.object8.name
@@ -106,7 +104,7 @@ class FRT_OT_Retarget_Op(Operator):
             #bpy.context.active_object.constraints[0].inverse_matrix # zweimal clear inverse???
             
         def bakeActionObj():
-            bpy.ops.nla.bake(frame_start=frame_start, frame_end=frame_end, visual_keying=True, clear_constraints=True, clear_parents=True, use_current_action=True, bake_types={'OBJECT'})
+            bpy.ops.nla.bake(frame_start=frame_sta, frame_end=frame_ende, visual_keying=True, clear_constraints=True, clear_parents=True, use_current_action=True, bake_types={'OBJECT'})
 
             
         def EnterPoseMode(rig):
@@ -165,11 +163,9 @@ class FRT_OT_Retarget_Op(Operator):
             #bake animation to empties
             bakeActionObj()
 
-
-
-        #switch fk arms to ik arms(mal schauen ob das gut automatisch geht)
-
-        #add copy rotation copy location to ik hand and pole
+        
+        
+    #add copy rotation copy location to ik hand and pole
 
         def addCopyRotLocBone(rig, bone, empty):
             obj = bpy.data.objects[rig].pose.bones[bone]
@@ -220,23 +216,23 @@ class FRT_OT_Retarget_Op(Operator):
             
             ##hands
             boneMakeActive(hand_l_ik)
-            bpy.ops.nla.bake(frame_start=frame_start, frame_end=frame_end, visual_keying=True, use_current_action=True, bake_types={'POSE'})
+            bpy.ops.nla.bake(frame_start=frame_sta, frame_end=frame_ende, visual_keying=True, use_current_action=True, bake_types={'POSE'})
             bpy.ops.constraint.delete(constraint="Copy Location", owner='BONE')
             bpy.ops.constraint.delete(constraint="Copy Rotation", owner='BONE')
             
             boneMakeActive(hand_r_ik)
-            bpy.ops.nla.bake(frame_start=frame_start, frame_end=frame_end, visual_keying=True, use_current_action=True, bake_types={'POSE'})
+            bpy.ops.nla.bake(frame_start=frame_sta, frame_end=frame_ende, visual_keying=True, use_current_action=True, bake_types={'POSE'})
             bpy.ops.constraint.delete(constraint="Copy Location", owner='BONE')
             bpy.ops.constraint.delete(constraint="Copy Rotation", owner='BONE')    
             
             ##poles
             boneMakeActive(pole_l_ik)
-            bpy.ops.nla.bake(frame_start=frame_start, frame_end=frame_end, visual_keying=True, use_current_action=True, bake_types={'POSE'})
+            bpy.ops.nla.bake(frame_start=frame_sta, frame_end=frame_ende, visual_keying=True, use_current_action=True, bake_types={'POSE'})
             bpy.ops.constraint.delete(constraint="Copy Location", owner='BONE')
             
                 
             boneMakeActive(pole_r_ik)
-            bpy.ops.nla.bake(frame_start=frame_start, frame_end=frame_end, visual_keying=True, use_current_action=True, bake_types={'POSE'})
+            bpy.ops.nla.bake(frame_start=frame_sta, frame_end=frame_ende, visual_keying=True, use_current_action=True, bake_types={'POSE'})
             bpy.ops.constraint.delete(constraint="Copy Location", owner='BONE')
 
 
@@ -273,7 +269,7 @@ class FRT_OT_Retarget_Op(Operator):
             
         def bakeThumbs(thumb):
             boneMakeActive(thumb)
-            bpy.ops.nla.bake(frame_start=frame_start, frame_end=frame_end, visual_keying=True, use_current_action=True, bake_types={'POSE'})
+            bpy.ops.nla.bake(frame_start=frame_sta, frame_end=frame_ende, visual_keying=True, use_current_action=True, bake_types={'POSE'})
             bpy.ops.constraint.delete(constraint="Copy Rotation", owner='BONE')
             
 
@@ -292,7 +288,7 @@ class FRT_OT_Retarget_Op(Operator):
 
         bpy.ops.object.mode_set(mode='OBJECT')
 
-        BakeFKAction(rig_input, hand_loc_l, hand_loc_r, pole_loc_l, pole_loc_r)    
+        BakeFKAction(rig_input, hand_loc_l, hand_loc_r, pole_loc_l, pole_loc_r)
 
         ikConstraints()
 
@@ -306,6 +302,8 @@ class FRT_OT_Retarget_Op(Operator):
         deleteEmpties(pole_r_empty)
 
         ####transferThumb animation####
+
+
         createThumbEmpties()
         thumbBoneConstraints()
 
@@ -318,6 +316,7 @@ class FRT_OT_Retarget_Op(Operator):
         bakeThumbs(thumb2_r)
         bakeThumbs(thumb3_r)
 
+
         bpy.ops.object.mode_set(mode='OBJECT')
 
         ###delete Thumb empties
@@ -328,6 +327,9 @@ class FRT_OT_Retarget_Op(Operator):
         deleteEmpties(thumb1_r_empty)
         deleteEmpties(thumb2_r_empty)
         deleteEmpties(thumb3_r_empty)
+
+        return{'FINISHED'}
+
 
 
 

@@ -16,8 +16,8 @@ class FDG_PT_Retarget_Panel_pnl(Panel):
     bpy.types.Scene.object8 = PointerProperty(
     name="Mocap Armature", type=bpy.types.Object)
 
-    bpy.types.Scene.num1 = IntProperty(name='Frame Start', default=0, min= 0, step=1)
-    bpy.types.Scene.num2 = IntProperty(name='Frame End', default=500, min= 0, step=1)
+    bpy.types.Scene.num7 = IntProperty(name='Frame Start', default= 0, min= 0, step=1)
+    bpy.types.Scene.num8 = IntProperty(name='Frame End', default= 500, min= 0, step=1)
 
     def draw(self, context):
        scene = context.scene
@@ -35,8 +35,8 @@ class FDG_PT_Retarget_Panel_pnl(Panel):
        "objects", text="Mocap Armature")
 
        row = layout.row()
-       row.prop(scene, "num1")
-       row.prop(scene, "num2")
+       row.prop(scene, "num7")
+       row.prop(scene, "num8")
 
 
 def register():
