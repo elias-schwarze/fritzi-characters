@@ -1,6 +1,6 @@
 import bpy
 
-from bpy.types import EnumPropertyItem, Panel
+from bpy.types import Armature, Panel
 from bpy.props import PointerProperty, IntProperty
 
 class FDG_PT_Retarget_Panel_pnl(Panel):
@@ -11,32 +11,33 @@ class FDG_PT_Retarget_Panel_pnl(Panel):
     bl_options = {"DEFAULT_CLOSED"}
 
     bpy.types.Scene.object7 = PointerProperty(
-    name="Armature", type=bpy.types.Object)
+    name="Armature", type=Armature)
 
     bpy.types.Scene.object8 = PointerProperty(
-    name="Mocap Armature", type=bpy.types.Object)
+    name="Mocap Armature", type=Armature)
 
-    bpy.types.Scene.num7 = IntProperty(name='Frame Start', default= 0, min= 0, step=1)
-    bpy.types.Scene.num8 = IntProperty(name='Frame End', default= 500, min= 0, step=1)
+    #bpy.types.Scene.num7 = IntProperty(name='Frame Start', default= 0, min= 0, step=1)
+    #bpy.types.Scene.num8 = IntProperty(name='Frame End', default= 500, min= 0, step=1)
 
     def draw(self, context):
        scene = context.scene
        layout = self.layout
 
-       col = layout.column()
-       col.operator("object.retarget")
-
        box = layout.box()
        box.prop_search(scene, "object7", context.scene, 
-       "objects", text="Armature")
+       "objects", text="Character Armature")
 
        box = layout.box()
        box.prop_search(scene, "object8", context.scene, 
        "objects", text="Mocap Armature")
 
-       row = layout.row()
-       row.prop(scene, "num7")
-       row.prop(scene, "num8")
+       #row = layout.row()
+       #row.prop(scene, "num7")
+       #row.prop(scene, "num8")
+
+       col = layout.column()
+       col.operator("object.retarget")
+
 
 
 def register():
