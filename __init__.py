@@ -12,6 +12,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from .driver_generator import fdg_init
+from .chr_shader_tools import cst_init
 
 
 bl_info = {
@@ -28,7 +29,11 @@ bl_info = {
 
 def register():
     fdg_init.register()
+    cst_init.register()
+
 
 
 def unregister():
+    cst_init.unregister()
     fdg_init.unregister()
+    
