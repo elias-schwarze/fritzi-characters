@@ -8,7 +8,20 @@ class CST_OT_VectorLightSelector_OP(Operator):
     bl_description = "Adds driver from the Light empty to all Meshes in the selected Collection, so that the Shader knows the light direction"
     bl_options = {"REGISTER", "UNDO"}
 
+    # should only work in object mode
+    @classmethod
+    def poll(cls, context):
+        obj = bpy.context.object
+
+        if obj:
+            if obj.mode == "OBJECT":
+                return True
+
+        return False
+
+
     def execute(self, context):
+        
         lightEmpty = context.scene.light_empty
         characterCollection = context.scene.character_collection
 
@@ -19,6 +32,8 @@ class CST_OT_VectorLightSelector_OP(Operator):
             self.report({'WARNING'}, "Please select a collection with the Character!")
 
         self.add_light_drivers(characterCollection, lightEmpty)
+        
+        # Have to redraw all areas, so that the new properties are visible to the user
         for area in bpy.context.screen.areas:
             area.tag_redraw()
 
@@ -26,6 +41,7 @@ class CST_OT_VectorLightSelector_OP(Operator):
         return {'FINISHED'}
 
     def add_light_drivers(self, collection, light):
+        """Recursively searches the collection and all child collections for Meshes and adds a light rotation vector property to them, which is driven by the rotation of the light empty"""
         for child in collection.children:
             self.add_light_drivers(child, light)
 

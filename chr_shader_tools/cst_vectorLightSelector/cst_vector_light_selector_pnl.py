@@ -1,5 +1,6 @@
 import bpy
 from bpy.props import PointerProperty
+
 class CST_PT_VecorLightSelector_pnl(bpy.types.Panel):
     bl_label = "Select Light Empty"
     bl_category = "FCHAR Shader Tools"
