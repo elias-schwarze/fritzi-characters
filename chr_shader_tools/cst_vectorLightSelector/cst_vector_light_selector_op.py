@@ -4,7 +4,7 @@ from bpy.types import Operator
 
 class CST_OT_VectorLightSelector_OP(Operator):
     bl_idname = "object.select_light_empty"
-    bl_label = "Select Light Empty"
+    bl_label = "Link Light to Character"
     bl_description = "Adds driver from the Light empty to all Meshes in the selected Collection, so that the Shader knows the light direction"
     bl_options = {"REGISTER", "UNDO"}
 

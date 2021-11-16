@@ -28,12 +28,12 @@ class CST_OT_CreateShaderController_OP(Operator):
             self.report({'WARNING'}, "Please give a Character Name!")
             return {'CANCELLED'}
 
-        emptyController = bpy.data.objects.new("ShaderController", None)
+        emptyController = bpy.data.objects.new(characterName + "ShaderController", None)
 
         bpy.context.scene.collection.objects.link(emptyController)
 
         emptyController.empty_display_size = 2
-        emptyController.empty_display_type = 'SINGLE_ARROW'
+        emptyController.empty_display_type = 'PLAIN_AXES'
 
         rna_ui = emptyController.get('_RNA_UI')
         if rna_ui is None:
@@ -85,6 +85,7 @@ class CST_OT_CreateShaderController_OP(Operator):
         }
 
 
+        context.scene.controller_empty = emptyController
 
         self.report({'INFO'}, "Added Shader Controller!")
         return {'FINISHED'}
