@@ -27,9 +27,11 @@ class CST_OT_VectorLightSelector_OP(Operator):
 
         if lightEmpty is None:
             self.report({'WARNING'}, "Please select the Empty!")
+            return {'CANCELLED'}
 
         if characterCollection is None:
             self.report({'WARNING'}, "Please select a collection with the Character!")
+            return {'CANCELLED'}
 
         self.add_light_drivers(characterCollection, lightEmpty)
         
