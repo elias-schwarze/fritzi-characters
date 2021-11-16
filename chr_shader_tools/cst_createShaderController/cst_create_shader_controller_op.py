@@ -1,7 +1,6 @@
 import bpy
 
 from bpy.types import Operator
-from bpy.props import FloatVectorProperty
 
 class CST_OT_CreateShaderController_OP(Operator):
     bl_idname = "object.create_shader_controller"
