@@ -1,6 +1,7 @@
 import bpy
 
 from bpy.types import Operator
+from ...driver_generator.utility_functions.fdg_driver_utils import remove_driver_variables
 
 class CST_OT_selectShaderController_OP(Operator):
     bl_idname = "object.select_shader_controller"
@@ -101,6 +102,9 @@ class CST_OT_selectShaderController_OP(Operator):
 
         driverMix = object.driver_add('["vector_diffuse_mix"]').driver
         driverMix.type = 'AVERAGE'
+
+        #Removes all variables from the driver from earlier links, so no duplicates are created
+        remove_driver_variables(driverMix)
         var = driverMix.variables.new()
         var.name = "Mix"
         var.type = 'SINGLE_PROP'
@@ -110,6 +114,7 @@ class CST_OT_selectShaderController_OP(Operator):
 
         driverHighlightAmount = object.driver_add('["highlight_amount"]').driver
         driverHighlightAmount.type ='AVERAGE'
+        remove_driver_variables(driverHighlightAmount)
         var = driverHighlightAmount.variables.new()
         var.name = "Amount"
         var.type = 'SINGLE_PROP'
@@ -119,6 +124,7 @@ class CST_OT_selectShaderController_OP(Operator):
 
         driverHighlightRed = object.driver_add('["highlight_col"]', 0).driver
         driverHighlightRed.type = 'AVERAGE'
+        remove_driver_variables(driverHighlightRed)
         var = driverHighlightRed.variables.new()
         var.name = "Red"
         var.type = 'SINGLE_PROP'
@@ -128,6 +134,7 @@ class CST_OT_selectShaderController_OP(Operator):
 
         driverHighlightGreen = object.driver_add('["highlight_col"]', 1).driver
         driverHighlightGreen.type = 'AVERAGE'
+        remove_driver_variables(driverHighlightGreen)
         var = driverHighlightGreen.variables.new()
         var.name = "Green"
         var.type = 'SINGLE_PROP'
@@ -137,6 +144,7 @@ class CST_OT_selectShaderController_OP(Operator):
 
         driverHighlightBlue = object.driver_add('["highlight_col"]', 2).driver
         driverHighlightBlue.type = 'AVERAGE'
+        remove_driver_variables(driverHighlightBlue)
         var = driverHighlightBlue.variables.new()
         var.name = "Blue"
         var.type = 'SINGLE_PROP'
@@ -146,6 +154,7 @@ class CST_OT_selectShaderController_OP(Operator):
 
         driverRimlightAmount = object.driver_add('["rimlight_amount"]').driver
         driverRimlightAmount.type ='AVERAGE'
+        remove_driver_variables(driverRimlightAmount)
         var = driverRimlightAmount.variables.new()
         var.name = "Amount"
         var.type = 'SINGLE_PROP'
@@ -155,6 +164,7 @@ class CST_OT_selectShaderController_OP(Operator):
 
         driverRimlightRed = object.driver_add('["rimlight_col"]', 0).driver
         driverRimlightRed.type = 'AVERAGE'
+        remove_driver_variables(driverRimlightRed)
         var = driverRimlightRed.variables.new()
         var.name = "Red"
         var.type = 'SINGLE_PROP'
@@ -164,6 +174,7 @@ class CST_OT_selectShaderController_OP(Operator):
 
         driverRimlightGreen = object.driver_add('["rimlight_col"]', 1).driver
         driverRimlightGreen.type = 'AVERAGE'
+        remove_driver_variables(driverRimlightGreen)
         var = driverRimlightGreen.variables.new()
         var.name = "Green"
         var.type = 'SINGLE_PROP'
@@ -173,6 +184,7 @@ class CST_OT_selectShaderController_OP(Operator):
 
         driverRimlightBlue = object.driver_add('["rimlight_col"]', 2).driver
         driverRimlightBlue.type = 'AVERAGE'
+        remove_driver_variables(driverRimlightBlue)
         var = driverRimlightBlue.variables.new()
         var.name = "Blue"
         var.type = 'SINGLE_PROP'

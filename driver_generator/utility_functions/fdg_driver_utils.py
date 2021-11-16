@@ -74,3 +74,8 @@ def remove_function(function_list, function):
     for i in range(len(function_list) - 1, -1, -1):
         if function_list[i].__name__ == fn_name and function_list[i].__module__ == fn_module:
             del function_list[i]
+
+def remove_driver_variables(driver):
+    """Removes all Variables from a driver"""
+    for var in driver.variables:
+        driver.variables.remove(var)

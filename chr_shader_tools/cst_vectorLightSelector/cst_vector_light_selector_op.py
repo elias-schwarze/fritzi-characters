@@ -2,6 +2,8 @@ import bpy
 
 from bpy.types import Operator
 
+from driver_generator.utility_functions.fdg_driver_utils import remove_driver_variables
+
 class CST_OT_VectorLightSelector_OP(Operator):
     bl_idname = "object.select_light_empty"
     bl_label = "Link Light to Character"
@@ -61,6 +63,8 @@ class CST_OT_VectorLightSelector_OP(Operator):
 
                 driver_rot_x = obj.driver_add('["light_rotation"]', 0).driver
                 driver_rot_x.type = 'AVERAGE'
+
+                remove_driver_variables(driver_rot_x)
                 var = driver_rot_x.variables.new()
                 var.name = "rot_x"
                 var.type = "TRANSFORMS"
@@ -71,6 +75,7 @@ class CST_OT_VectorLightSelector_OP(Operator):
 
                 driver_rot_y = obj.driver_add('["light_rotation"]', 1).driver
                 driver_rot_y.type = 'AVERAGE'
+                remove_driver_variables(driver_rot_y)
                 var = driver_rot_y.variables.new()
                 var.name = "rot_y"
                 var.type = "TRANSFORMS"
@@ -81,6 +86,7 @@ class CST_OT_VectorLightSelector_OP(Operator):
 
                 driver_rot_z = obj.driver_add('["light_rotation"]', 2).driver
                 driver_rot_z.type = 'AVERAGE'
+                remove_driver_variables(driver_rot_z)
                 var = driver_rot_z.variables.new()
                 var.name = "rot_z"
                 var.type = "TRANSFORMS"
