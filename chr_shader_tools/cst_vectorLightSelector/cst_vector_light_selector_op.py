@@ -2,7 +2,7 @@ import bpy
 
 from bpy.types import Operator
 
-from driver_generator.utility_functions.fdg_driver_utils import remove_driver_variables
+from ...driver_generator.utility_functions.fdg_driver_utils import remove_driver_variables
 
 class CST_OT_VectorLightSelector_OP(Operator):
     bl_idname = "object.select_light_empty"

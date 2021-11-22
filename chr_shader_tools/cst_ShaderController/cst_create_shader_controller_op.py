@@ -84,6 +84,11 @@ class CST_OT_CreateShaderController_OP(Operator):
             "subtype":'COLOR'
         }
 
+        emptyController.property_overridable_library_set('["vector_diffuse_mix"]', True)
+        emptyController.property_overridable_library_set('["highlight_amount"]', True)
+        emptyController.property_overridable_library_set('["highlight_color"]', True)
+        emptyController.property_overridable_library_set('["rimlight_amount"]', True)
+        emptyController.property_overridable_library_set('["rimlight_color"]', True)
 
         context.scene.controller_empty = emptyController
 
