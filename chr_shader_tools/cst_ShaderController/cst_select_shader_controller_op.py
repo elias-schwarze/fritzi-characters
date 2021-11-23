@@ -1,7 +1,9 @@
 import bpy
 
 from bpy.types import Operator
-from ...driver_generator.utility_functions.fdg_driver_utils import remove_driver_variables
+
+from ...driver_generator.utility_functions.fdg_driver_utils import add_driver_color_simple
+from ...driver_generator.utility_functions.fdg_driver_utils import add_driver_float_simple
 
 class CST_OT_selectShaderController_OP(Operator):
     bl_idname = "object.select_shader_controller"
@@ -98,99 +100,88 @@ class CST_OT_selectShaderController_OP(Operator):
             "subtype":'COLOR'
         }
 
+        object["AdvMixFactor"] = 0.0
+
+        rna_ui["AdvMixFactor"] = {
+            "description":"Turns Advanced mixing on and off",
+            "default":0.0,
+            "min":0.0,
+            "max":1.0
+        }
+
+        object["AdvMixLightAmount"] = 0.2
+
+        rna_ui["AdvMixLightAmount"] = {
+            "description":"How much light gets added to the light regions",
+            "default":0.2
+        }
+
+        object["AdvMixLightCol"] = (1.0, 1.0, 1.0)
+
+        rna_ui["AdvMixLightCol"] = {
+            "description":"The color of the added Light",
+            "default":(1.0, 1.0, 1.0),
+            "min":0.0,
+            "max":1.0,
+            "subtype":'COLOR'
+        }
+
+        object["AdvMixShadowAmount"] = 0.2
+
+        rna_ui["AdvMixShadowAmount"] = {
+            "description":"How much shadow tint gets multiplied to the dark regions",
+            "default":0.2
+        }
+
+        object["AdvMixShadowTint"] = (0.0, 0.0, 0.0)
+
+        rna_ui["AdvMixShadowTint"] = {
+            "description":"The color of the multiplied shadow tint",
+            "default":(0.0, 0.0, 0.0),
+            "min":0.0,
+            "max":1.0,
+            "subtype":'COLOR'
+        }
+
+        object["mix_values"] = (0.0, 0.2, 0.2)
+
+        rna_ui["mix_values"] = {
+            "description":"Colleciton of mix values for advanced mixing, adv mix light, adv mix shadow",
+            "default":(0.0, 0.2, 0.2),
+            "min":0.0,
+            "max":1.0,
+        }
+
+        object["highlight_rimlight_mix_values"] = (0.0, 0.0, 0.0)
+
+        rna_ui["highlight_rimlight_mix_values"] = {
+            "description":"Collection of values for highlight amount, rimlight amount and Simple mix factor",
+            "default":(0.0, 0.0, 0.0),
+        }
+
     def add_drivers(self, object, controller):
+        """Adds the drivers from the custom props of the controller to the given objects custom props"""
 
-        driverMix = object.driver_add('["vector_diffuse_mix"]').driver
-        driverMix.type = 'AVERAGE'
+        add_driver_color_simple(controller, '["highlight_color"]', object, '["highlight_col"]')
+     
+        add_driver_color_simple(controller, '["rimlight_color"]', object, '["rimlight_col"]')
+        
+        add_driver_color_simple(controller, '["advanced_mix_light_color"]', object, '["AdvMixLightCol"]')
+               
+        add_driver_color_simple(controller, '["advanced_mix_shadow_tint"]', object, '["AdvMixShadowTint"]')
 
-        #Removes all variables from the driver from earlier links, so no duplicates are created
-        remove_driver_variables(driverMix)
-        var = driverMix.variables.new()
-        var.name = "Mix"
-        var.type = 'SINGLE_PROP'
-        target = var.targets[0]
-        target.id = controller
-        target.data_path = '["vector_diffuse_mix"]'
+        add_driver_float_simple(controller, '["advanced_mix_switch"]', object, '["mix_values"]', 0)
 
-        driverHighlightAmount = object.driver_add('["highlight_amount"]').driver
-        driverHighlightAmount.type ='AVERAGE'
-        remove_driver_variables(driverHighlightAmount)
-        var = driverHighlightAmount.variables.new()
-        var.name = "Amount"
-        var.type = 'SINGLE_PROP'
-        target = var.targets[0]
-        target.id = controller
-        target.data_path = '["highlight_amount"]'
+        add_driver_float_simple(controller, '["advanced_mix_light_amount"]', object, '["mix_values"]', 1)
 
-        driverHighlightRed = object.driver_add('["highlight_col"]', 0).driver
-        driverHighlightRed.type = 'AVERAGE'
-        remove_driver_variables(driverHighlightRed)
-        var = driverHighlightRed.variables.new()
-        var.name = "Red"
-        var.type = 'SINGLE_PROP'
-        target = var.targets[0]
-        target.id = controller
-        target.data_path = '["highlight_color"][0]'
+        add_driver_float_simple(controller, '["advanced_mix_shadow_amount"]', object, '["mix_values"]', 2)
 
-        driverHighlightGreen = object.driver_add('["highlight_col"]', 1).driver
-        driverHighlightGreen.type = 'AVERAGE'
-        remove_driver_variables(driverHighlightGreen)
-        var = driverHighlightGreen.variables.new()
-        var.name = "Green"
-        var.type = 'SINGLE_PROP'
-        target = var.targets[0]
-        target.id = controller
-        target.data_path = '["highlight_color"][1]'
+        add_driver_float_simple(controller, '["highlight_amount"]', object, '["highlight_rimlight_mix_values"]', 0)
 
-        driverHighlightBlue = object.driver_add('["highlight_col"]', 2).driver
-        driverHighlightBlue.type = 'AVERAGE'
-        remove_driver_variables(driverHighlightBlue)
-        var = driverHighlightBlue.variables.new()
-        var.name = "Blue"
-        var.type = 'SINGLE_PROP'
-        target = var.targets[0]
-        target.id = controller
-        target.data_path = '["highlight_color"][2]'
+        add_driver_float_simple(controller, '["rimlight_amount"]', object, '["highlight_rimlight_mix_values"]', 1)
 
-        driverRimlightAmount = object.driver_add('["rimlight_amount"]').driver
-        driverRimlightAmount.type ='AVERAGE'
-        remove_driver_variables(driverRimlightAmount)
-        var = driverRimlightAmount.variables.new()
-        var.name = "Amount"
-        var.type = 'SINGLE_PROP'
-        target = var.targets[0]
-        target.id = controller
-        target.data_path = '["rimlight_amount"]'
+        add_driver_float_simple(controller, '["vector_diffuse_mix"]', object, '["highlight_rimlight_mix_values"]', 2)
 
-        driverRimlightRed = object.driver_add('["rimlight_col"]', 0).driver
-        driverRimlightRed.type = 'AVERAGE'
-        remove_driver_variables(driverRimlightRed)
-        var = driverRimlightRed.variables.new()
-        var.name = "Red"
-        var.type = 'SINGLE_PROP'
-        target = var.targets[0]
-        target.id = controller
-        target.data_path = '["rimlight_color"][0]'
-
-        driverRimlightGreen = object.driver_add('["rimlight_col"]', 1).driver
-        driverRimlightGreen.type = 'AVERAGE'
-        remove_driver_variables(driverRimlightGreen)
-        var = driverRimlightGreen.variables.new()
-        var.name = "Green"
-        var.type = 'SINGLE_PROP'
-        target = var.targets[0]
-        target.id = controller
-        target.data_path = '["rimlight_color"][1]'
-
-        driverRimlightBlue = object.driver_add('["rimlight_col"]', 2).driver
-        driverRimlightBlue.type = 'AVERAGE'
-        remove_driver_variables(driverRimlightBlue)
-        var = driverRimlightBlue.variables.new()
-        var.name = "Blue"
-        var.type = 'SINGLE_PROP'
-        target = var.targets[0]
-        target.id = controller
-        target.data_path = '["rimlight_color"][2]'
 
 
 def register():

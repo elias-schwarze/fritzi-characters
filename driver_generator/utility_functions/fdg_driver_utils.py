@@ -79,3 +79,30 @@ def remove_driver_variables(driver):
     """Removes all Variables from a driver"""
     for var in driver.variables:
         driver.variables.remove(var)
+
+def add_driver_float_simple(driving_object, driving_prop_name, driven_object, driven_prop_name, driven_prop_index=-1):
+    """Adds a simple driver of type Average from the driving prop to the driven prop"""
+    if driven_prop_index != -1:
+        driver = driven_object.driver_add(driven_prop_name, driven_prop_index).driver
+    else:
+        driver = driven_object.driver_add(driven_prop_name).driver
+    
+    driver.type = 'AVERAGE'
+
+    #Removes all variables from the driver, so there are no duplicate variables
+    remove_driver_variables(driver)
+    var = driver.variables.new()
+    var.name = "Amount"
+    var.type = 'SINGLE_PROP'
+    target = var.targets[0]
+    target.id = driving_object
+    target.data_path = driving_prop_name
+
+def add_driver_color_simple(driving_object, driving_prop_name, driven_object, driven_prop_name):
+    """Adds simple drivers of type Average form the RGB Values of the driving prop to the RGB values of the driven prop"""
+
+    add_driver_float_simple(driving_object, driving_prop_name + "[0]", driven_object, driven_prop_name, 0)
+
+    add_driver_float_simple(driving_object, driving_prop_name + "[1]", driven_object, driven_prop_name, 1)
+
+    add_driver_float_simple(driving_object, driving_prop_name + "[2]", driven_object, driven_prop_name, 2)

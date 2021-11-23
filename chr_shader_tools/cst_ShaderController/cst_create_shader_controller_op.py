@@ -54,6 +54,7 @@ class CST_OT_CreateShaderController_OP(Operator):
         rna_ui["highlight_amount"] = {
             "description":"Brightness of the highlights",
             "default":0.0,
+            "min":0.0
             
         }
 
@@ -71,7 +72,8 @@ class CST_OT_CreateShaderController_OP(Operator):
 
         rna_ui["rimlight_amount"] = {
             "description":"Brightness of the rimlights",
-            "default":0.0
+            "default":0.0,
+            "min":0.0
         }
 
         emptyController["rimlight_color"] = (1.0, 1.0, 1.0)
@@ -84,11 +86,63 @@ class CST_OT_CreateShaderController_OP(Operator):
             "subtype":'COLOR'
         }
 
+        emptyController["advanced_mix_switch"] = 0.0
+
+        rna_ui["advanced_mix_switch"] = {
+            "description":"Turns Advanced mixing on and off",
+            "default":0.0,
+            "min":0.0,
+            "max":1.0
+        }
+
+        emptyController["advanced_mix_light_amount"] = 0.2
+
+        rna_ui["advanced_mix_light_amount"] = {
+            "description":"How much light gets added to the light regions",
+            "default":0.2,
+            "min":0.0,
+            "max":1.0
+        }
+
+        emptyController["advanced_mix_light_color"] = (1.0, 1.0, 1.0)
+
+        rna_ui["advanced_mix_light_color"] = {
+            "description":"The color of the added Light",
+            "default":(1.0, 1.0, 1.0),
+            "min":0.0,
+            "max":1.0,
+            "subtype":'COLOR'
+        }
+
+        emptyController["advanced_mix_shadow_amount"] = 0.2
+
+        rna_ui["advanced_mix_shadow_amount"] = {
+            "description":"How much shadow tint gets multiplied to the dark regions",
+            "default":0.2,
+            "min":0.0,
+            "max":1.0
+        }
+
+        emptyController["advanced_mix_shadow_tint"] = (0.0, 0.0, 0.0)
+
+        rna_ui["advanced_mix_shadow_tint"] = {
+            "description":"The color of the multiplied shadow tint",
+            "default":(0.0, 0.0, 0.0),
+            "min":0.0,
+            "max":1.0,
+            "subtype":'COLOR'
+        }
+
         emptyController.property_overridable_library_set('["vector_diffuse_mix"]', True)
         emptyController.property_overridable_library_set('["highlight_amount"]', True)
         emptyController.property_overridable_library_set('["highlight_color"]', True)
         emptyController.property_overridable_library_set('["rimlight_amount"]', True)
         emptyController.property_overridable_library_set('["rimlight_color"]', True)
+        emptyController.property_overridable_library_set('["advanced_mix_switch"]', True)
+        emptyController.property_overridable_library_set('["advanced_mix_light_amount"]', True)
+        emptyController.property_overridable_library_set('["advanced_mix_light_color"]', True)
+        emptyController.property_overridable_library_set('["advanced_mix_shadow_amount"]', True)
+        emptyController.property_overridable_library_set('["advanced_mix_shadow_tint"]', True)
 
         context.scene.controller_empty = emptyController
 
