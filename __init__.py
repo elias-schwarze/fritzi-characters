@@ -14,6 +14,7 @@
 from .driver_generator import fdg_init
 from .retarget_tools import frt_retarget_tools_op
 from .retarget_tools import frt_retarget_tools_pnl
+from .chr_shader_tools import cst_init
 
 
 bl_info = {
@@ -37,4 +38,9 @@ def register():
 def unregister():
     frt_retarget_tools_pnl.unregister()
     frt_retarget_tools_op.unregister()
+    cst_init.unregister()
+
+
+def unregister():
+    cst_init.unregister()
     fdg_init.unregister()

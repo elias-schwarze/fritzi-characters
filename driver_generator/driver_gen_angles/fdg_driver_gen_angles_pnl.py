@@ -6,13 +6,13 @@ from bpy.props import StringProperty
 
 class FDG_PT_GenerateDrivers_pnl(bpy.types.Panel):
     bl_label = "Driver Generator"
-    bl_category = "FCHAR Driver Gen"
+    bl_category = "FCHAR"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_options = {"DEFAULT_CLOSED"}
 
     bpy.types.Scene.character_prefix = StringProperty(name="Character Prefix")
-    
+
     bpy.types.Scene.object1 = PointerProperty(
         name="Armature", type=bpy.types.Object)
     bpy.types.Scene.bone1 = StringProperty(name="Head Bone")
@@ -20,11 +20,10 @@ class FDG_PT_GenerateDrivers_pnl(bpy.types.Panel):
         name="Camera", type=bpy.types.Object)
     bpy.types.Scene.auto_link_toggle = BoolProperty(default=False)
 
-    
     def draw(self, context):
         scene = context.scene
         layout = self.layout
-        
+
         # Create a Text Field to enter the current Characters prefix, so the empties can be named with them.
         layout.prop(scene, "character_prefix")
 
@@ -43,7 +42,7 @@ class FDG_PT_GenerateDrivers_pnl(bpy.types.Panel):
         box.prop_search(scene, "object2", context.scene,
                         "objects", text="Camera")
         ob = bpy.context.scene.object2
-        
+
         row = layout.row()
         row.operator("object.generate_drivers")
         row.operator("object.remove_drivers")
