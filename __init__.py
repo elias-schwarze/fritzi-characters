@@ -31,6 +31,7 @@ bl_info = {
 
 def register():
     fdg_init.register()
+    cst_init.register()
     frt_retarget_tools_op.register()
     frt_retarget_tools_pnl.register()
 
@@ -38,9 +39,5 @@ def register():
 def unregister():
     frt_retarget_tools_pnl.unregister()
     frt_retarget_tools_op.unregister()
-    cst_init.unregister()
-
-
-def unregister():
     cst_init.unregister()
     fdg_init.unregister()

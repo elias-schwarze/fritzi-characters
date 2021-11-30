@@ -11,30 +11,35 @@ class FDG_PT_Retarget_Panel_pnl(Panel):
     bl_region_type = "UI"
     bl_options = {"DEFAULT_CLOSED"}
 
-    bpy.types.Scene.object7 = PointerProperty(
-        name="Armature", type=Armature)
+    bpy.types.WindowManager.retargetArmature = PointerProperty(
+        name="Target Armature", type=Armature)
 
-    bpy.types.Scene.object8 = PointerProperty(
-        name="Mocap Armature", type=Armature)
+    bpy.types.WindowManager.mocapSourceArmature = PointerProperty(
+        name="Mocap Source Armature", type=Armature)
+
+    bpy.types.WindowManager.frame_start = IntProperty(
+        name='Start:', default=0, min=0, step=1)
+
+    bpy.types.WindowManager.frame_end = IntProperty(
+        name='End:', default=500, min=0, step=1)
 
     #bpy.types.Scene.num7 = IntProperty(name='Frame Start', default= 0, min= 0, step=1)
     #bpy.types.Scene.num8 = IntProperty(name='Frame End', default= 500, min= 0, step=1)
 
     def draw(self, context):
-        scene = context.scene
         layout = self.layout
 
         box = layout.box()
-        box.prop_search(scene, "object7", context.scene,
-                        "objects", text="Character Armature")
+        box.prop_search(data=bpy.context.window_manager, property="retargetArmature", search_data=bpy.data,
+                        search_property="armatures", text="Character Target Armature")
 
         box = layout.box()
-        box.prop_search(scene, "object8", context.scene,
-                        "objects", text="Mocap Armature")
+        box.prop_search(data=bpy.context.window_manager, property="mocapSourceArmature", search_data=bpy.data,
+                        search_property="armatures", text="Mocap Source Armature")
 
-        #row = layout.row()
-        #row.prop(scene, "num7")
-        #row.prop(scene, "num8")
+        row = layout.row()
+        row.prop(bpy.context.window_manager, "frame_start")
+        row.prop(bpy.context.window_manager, "frame_end")
 
         col = layout.column()
         col.operator("object.retarget")
