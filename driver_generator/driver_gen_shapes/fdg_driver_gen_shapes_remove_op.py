@@ -1,6 +1,5 @@
 import bpy
 from bpy.types import Operator
-from ..utility_functions import fdg_names
 
 class FDG_OT_RemoveShapeDrivers_Op(Operator):
     bl_idname = "object.remove_shape_drivers"
@@ -12,9 +11,11 @@ class FDG_OT_RemoveShapeDrivers_Op(Operator):
 
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
 
-        collection = context.scene.face_collection
+        wm = bpy.context.window_manager
 
-        arma = context.scene.object1
+        collection = wm.face_collection
+
+        arma = wm.object1
 
         if arma is None:
             self.report({'WARNING'}, "Please select the Armature!")

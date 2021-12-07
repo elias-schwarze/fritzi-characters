@@ -9,18 +9,18 @@ class CST_PT_VecorLightSelector_pnl(bpy.types.Panel):
     bl_region_type = "UI"
     bl_options = {"DEFAULT_CLOSED"}
 
-    bpy.types.Scene.light_empty = PointerProperty(
+    bpy.types.WindowManager.light_empty = PointerProperty(
         name="Light Empty", type=bpy.types.Object)
-    bpy.types.Scene.character_collection = PointerProperty(
+    bpy.types.WindowManager.character_collection = PointerProperty(
         name="Character Collection", type=bpy.types.Collection)
 
     def draw(self, context):
-        scene = context.scene
+        wm = context.window_manager
         layout = self.layout
 
-        layout.prop_search(scene, "light_empty", context.scene,
+        layout.prop_search(wm, "light_empty", context.scene,
                            "objects", text='Light Empty')
-        layout.prop_search(scene, "character_collection",
+        layout.prop_search(wm, "character_collection",
                            bpy.data, "collections", text='Character Collection')
 
         layout.operator("object.select_light_empty")

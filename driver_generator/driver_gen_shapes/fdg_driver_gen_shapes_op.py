@@ -16,9 +16,11 @@ class FDG_OT_GenerateShapeDrivers_Op(Operator):
 
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
 
-        collection = context.scene.face_collection
+        wm = bpy.context.window_manager
 
-        arma = context.scene.object1
+        collection = wm.face_collection
+
+        arma = wm.object1
 
         if arma is None:
             self.report({'WARNING'}, "Please select the Armature!")

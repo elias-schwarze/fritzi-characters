@@ -14,10 +14,12 @@ class FDG_OT_RemoveDrivers_Op(Operator):
     def execute(self, context):
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
 
-        prefix = bpy.context.scene.character_prefix
-        arma = bpy.context.scene.object1
-        head_bone_name = bpy.context.scene.bone1
-        cam = bpy.context.scene.object2
+        wm = bpy.context.window_manager
+
+        prefix = wm.character_prefix
+        arma = wm.object1
+        head_bone_name = wm.bone1
+        cam = wm.object2
 
         if prefix == "":
             self.report({'WARNING'}, "Please enter a Character Prefix!")

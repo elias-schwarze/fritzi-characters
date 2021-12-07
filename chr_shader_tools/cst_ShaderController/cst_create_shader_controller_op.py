@@ -21,8 +21,10 @@ class CST_OT_CreateShaderController_OP(Operator):
 
 
     def execute(self, context):
+        
+        wm = bpy.context.window_manager
 
-        characterName = context.scene.character_name
+        characterName = wm.character_name
 
         if characterName is None:
             self.report({'WARNING'}, "Please give a Character Name!")
@@ -144,7 +146,7 @@ class CST_OT_CreateShaderController_OP(Operator):
         emptyController.property_overridable_library_set('["advanced_mix_shadow_amount"]', True)
         emptyController.property_overridable_library_set('["advanced_mix_shadow_tint"]', True)
 
-        context.scene.controller_empty = emptyController
+        wm.controller_empty = emptyController
 
         self.report({'INFO'}, "Added Shader Controller!")
         return {'FINISHED'}

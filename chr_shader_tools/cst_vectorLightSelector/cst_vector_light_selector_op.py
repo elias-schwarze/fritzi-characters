@@ -23,9 +23,11 @@ class CST_OT_VectorLightSelector_OP(Operator):
 
 
     def execute(self, context):
+
+        wm = bpy.context.window_manager
         
-        lightEmpty = context.scene.light_empty
-        characterCollection = context.scene.character_collection
+        lightEmpty = wm.light_empty
+        characterCollection = wm.character_collection
 
         if lightEmpty is None:
             self.report({'WARNING'}, "Please select the Empty!")

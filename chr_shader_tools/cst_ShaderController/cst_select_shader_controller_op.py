@@ -24,8 +24,10 @@ class CST_OT_selectShaderController_OP(Operator):
 
     def execute(self, context):
 
-        controllerEmpty = context.scene.controller_empty
-        characterCollection = context.scene.character_collection
+        wm = bpy.context.window_manager
+
+        controllerEmpty = wm.controller_empty
+        characterCollection = wm.character_collection
 
         if controllerEmpty is None:
             self.report({'WARNING'}, "Please select the Controller!")

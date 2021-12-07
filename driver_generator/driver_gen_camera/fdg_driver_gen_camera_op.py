@@ -16,10 +16,13 @@ class FDG_OT_LinkCamera_Op(Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
+        
 
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
         
-        cam = bpy.context.scene.object2
+        wm = bpy.context.window_manager
+
+        cam = wm.object2
 
         if cam is None:
             self.report({'WARNING'}, "Please select the Camera!")

@@ -10,17 +10,17 @@ class FDG_PT_GenerateShapeDrivers_pnl(bpy.types.Panel):
     bl_region_type = "UI"
     bl_options = {"DEFAULT_CLOSED"}
 
-    bpy.types.Scene.face_collection = PointerProperty(
+    bpy.types.WindowManager.face_collection = PointerProperty(
         name="Face Collection", type=bpy.types.Collection)
 
     def draw(self, context):
-        scene = context.scene
+        wm = context.window_manager
         layout = self.layout
 
-        layout.prop_search(scene, "object1", context.scene,
+        layout.prop_search(wm, "object1", context.scene,
                            "objects", text='Armature')
 
-        layout.prop_search(scene, "face_collection", bpy.data, "collections")
+        layout.prop_search(wm, "face_collection", bpy.data, "collections")
 
         layout.operator("object.generate_shape_drivers")
 

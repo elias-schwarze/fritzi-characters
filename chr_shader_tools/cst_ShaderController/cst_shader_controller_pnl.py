@@ -9,22 +9,23 @@ class CST_PT_ShaderController_pnl(bpy.types.Panel):
     bl_region_type = "UI"
     bl_options = {"DEFAULT_CLOSED"}
 
-    bpy.types.Scene.character_name = StringProperty(name="Character Name")
-    bpy.types.Scene.controller_empty = PointerProperty(
+    bpy.types.WindowManager.character_name = StringProperty(name="Character Name")
+    bpy.types.WindowManager.controller_empty = PointerProperty(
         name="Shader Controller", type=bpy.types.Object)
-    bpy.types.Scene.character_collection = PointerProperty(
+    bpy.types.WindowManager.character_collection = PointerProperty(
         name="Character Collection", type=bpy.types.Collection)
 
     def draw(self, context):
-        scene = context.scene
+        
+        wm = context.window_manager
         layout = self.layout
 
-        layout.prop(scene, "character_name")
+        layout.prop(wm, "character_name")
         layout.operator("object.create_shader_controller")
 
-        layout.prop_search(scene, "controller_empty",
+        layout.prop_search(wm, "controller_empty",
                            context.scene, "objects", text="Shader Controller")
-        layout.prop_search(scene, "character_collection",
+        layout.prop_search(wm, "character_collection",
                            bpy.data, "collections", text="Character Collection")
         layout.operator("object.select_shader_controller")
 
