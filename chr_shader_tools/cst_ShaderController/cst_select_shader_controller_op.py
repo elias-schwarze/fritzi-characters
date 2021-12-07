@@ -56,22 +56,6 @@ class CST_OT_selectShaderController_OP(Operator):
             object['_RNA_UI'] = {}
             rna_ui = object['_RNA_UI']
 
-        object["vector_diffuse_mix"] = 0.0
-
-        rna_ui["vector_diffuse_mix"] = {
-            "description":"Mix Amount of Vector shading vs Diffuse shading",
-            "default":0.0,
-            "min":0.0,
-            "max":1.0
-        }
-
-        object["highlight_amount"] = 0.0
-
-        rna_ui["highlight_amount"] = {
-            "description":"Brightness of the highlights",
-            "default":0.0,
-            
-        }
 
         object["highlight_col"] = (1.0, 1.0, 1.0)
 
@@ -81,13 +65,6 @@ class CST_OT_selectShaderController_OP(Operator):
             "min":0.0,
             "max":1.0,
             "subtype":'COLOR'
-        }
-
-        object["rimlight_amount"] = 0.0
-
-        rna_ui["rimlight_amount"] = {
-            "description":"Brightness of the rimlights",
-            "default":0.0
         }
 
         object["rimlight_col"] = (1.0, 1.0, 1.0)
@@ -100,22 +77,6 @@ class CST_OT_selectShaderController_OP(Operator):
             "subtype":'COLOR'
         }
 
-        object["AdvMixFactor"] = 0.0
-
-        rna_ui["AdvMixFactor"] = {
-            "description":"Turns Advanced mixing on and off",
-            "default":0.0,
-            "min":0.0,
-            "max":1.0
-        }
-
-        object["AdvMixLightAmount"] = 0.2
-
-        rna_ui["AdvMixLightAmount"] = {
-            "description":"How much light gets added to the light regions",
-            "default":0.2
-        }
-
         object["AdvMixLightCol"] = (1.0, 1.0, 1.0)
 
         rna_ui["AdvMixLightCol"] = {
@@ -124,13 +85,6 @@ class CST_OT_selectShaderController_OP(Operator):
             "min":0.0,
             "max":1.0,
             "subtype":'COLOR'
-        }
-
-        object["AdvMixShadowAmount"] = 0.2
-
-        rna_ui["AdvMixShadowAmount"] = {
-            "description":"How much shadow tint gets multiplied to the dark regions",
-            "default":0.2
         }
 
         object["AdvMixShadowTint"] = (0.0, 0.0, 0.0)
