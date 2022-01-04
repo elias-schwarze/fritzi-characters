@@ -48,7 +48,9 @@ class CST_OT_CreateShaderController_OP(Operator):
             "description":"Mix Amount of Vector shading vs Diffuse shading",
             "default":0.0,
             "min":0.0,
-            "max":1.0
+            "max":1.0,
+            "soft_min":0.0,
+            "soft_max":1.0
         }
 
         emptyController["highlight_amount"] = 0.0
@@ -56,7 +58,8 @@ class CST_OT_CreateShaderController_OP(Operator):
         rna_ui["highlight_amount"] = {
             "description":"Brightness of the highlights",
             "default":0.0,
-            "min":0.0
+            "min":0.0,
+            "soft_min":0.0
             
         }
 
@@ -67,7 +70,9 @@ class CST_OT_CreateShaderController_OP(Operator):
             "default": (1.0, 1.0, 1.0),
             "min":0.0,
             "max":1.0,
-            "subtype":'COLOR'
+            "subtype":'COLOR',
+            "soft_min":0.0,
+            "soft_max":1.0
         }
 
         emptyController["rimlight_amount"] = 0.0
@@ -75,7 +80,8 @@ class CST_OT_CreateShaderController_OP(Operator):
         rna_ui["rimlight_amount"] = {
             "description":"Brightness of the rimlights",
             "default":0.0,
-            "min":0.0
+            "min":0.0,
+            "soft_min":0.0
         }
 
         emptyController["rimlight_color"] = (1.0, 1.0, 1.0)
@@ -85,7 +91,9 @@ class CST_OT_CreateShaderController_OP(Operator):
             "default":(1.0, 1.0, 1.0),
             "min":0.0,
             "max":1.0,
-            "subtype":'COLOR'
+            "subtype":'COLOR',
+            "soft_min":0.0,
+            "soft_max":1.0
         }
 
         emptyController["advanced_mix_switch"] = 0.0
@@ -94,7 +102,9 @@ class CST_OT_CreateShaderController_OP(Operator):
             "description":"Turns Advanced mixing on and off",
             "default":0.0,
             "min":0.0,
-            "max":1.0
+            "max":1.0,
+            "soft_min":0.0,
+            "soft_max":1.0
         }
 
         emptyController["advanced_mix_light_amount"] = 0.2
@@ -103,7 +113,9 @@ class CST_OT_CreateShaderController_OP(Operator):
             "description":"How much light gets added to the light regions",
             "default":0.2,
             "min":0.0,
-            "max":1.0
+            "max":1.0,
+            "soft_min":0.0,
+            "soft_max":1.0
         }
 
         emptyController["advanced_mix_light_color"] = (1.0, 1.0, 1.0)
@@ -113,7 +125,9 @@ class CST_OT_CreateShaderController_OP(Operator):
             "default":(1.0, 1.0, 1.0),
             "min":0.0,
             "max":1.0,
-            "subtype":'COLOR'
+            "subtype":'COLOR',
+            "soft_min":0.0,
+            "soft_max":1.0
         }
 
         emptyController["advanced_mix_shadow_amount"] = 0.2
@@ -122,7 +136,9 @@ class CST_OT_CreateShaderController_OP(Operator):
             "description":"How much shadow tint gets multiplied to the dark regions",
             "default":0.2,
             "min":0.0,
-            "max":1.0
+            "max":1.0,
+            "soft_min":0.0,
+            "soft_max":1.0
         }
 
         emptyController["advanced_mix_shadow_tint"] = (0.0, 0.0, 0.0)
@@ -132,7 +148,9 @@ class CST_OT_CreateShaderController_OP(Operator):
             "default":(0.0, 0.0, 0.0),
             "min":0.0,
             "max":1.0,
-            "subtype":'COLOR'
+            "subtype":'COLOR',
+            "soft_min":0.0,
+            "soft_max":1.0
         }
 
         emptyController.property_overridable_library_set('["vector_diffuse_mix"]', True)
