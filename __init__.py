@@ -29,7 +29,6 @@ bl_info = {
     "blender": (2, 93, 0),
     "version": (1, 3, 0),
     "location": "3D Viewport > Properties panel (N) > FCHAR Tabs",
-    "warning": "Deactivate old version, then restart Blender before installing a newer version",
     "category": "Rigging"
 }
 
