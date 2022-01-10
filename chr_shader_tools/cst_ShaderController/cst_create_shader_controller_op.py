@@ -153,6 +153,29 @@ class CST_OT_CreateShaderController_OP(Operator):
             "soft_max":1.0
         }
 
+        emptyController["main_color_tint"] = (0.0, 0.0, 0.0)
+
+        rna_ui["main_color_tint"] = {
+            "description":"Color to tint the main Color of a Character",
+            "default":(1.0, 1.0, 1.0),
+            "min":0.0,
+            "max":2.0,
+            "subtype":'COLOR',
+            "soft_min":0.0,
+            "soft_max":2.0
+        }
+
+        emptyController["main_color_tint_amount"] = (0.0)
+
+        rna_ui["main_color_tint_amount"] = {
+            "description":"Amount of tint being applied to the main Color",
+            "default":0.0,
+            "min":0.0,
+            "max":1.0,
+            "soft_min":0.0,
+            "soft_max":1.0
+        }
+
         emptyController.property_overridable_library_set('["vector_diffuse_mix"]', True)
         emptyController.property_overridable_library_set('["highlight_amount"]', True)
         emptyController.property_overridable_library_set('["highlight_color"]', True)
@@ -163,6 +186,8 @@ class CST_OT_CreateShaderController_OP(Operator):
         emptyController.property_overridable_library_set('["advanced_mix_light_color"]', True)
         emptyController.property_overridable_library_set('["advanced_mix_shadow_amount"]', True)
         emptyController.property_overridable_library_set('["advanced_mix_shadow_tint"]', True)
+        emptyController.property_overridable_library_set('["main_color_tint"]', True)
+        emptyController.property_overridable_library_set('["main_color_tint_amount"]', True)
 
         wm.controller_empty = emptyController
 

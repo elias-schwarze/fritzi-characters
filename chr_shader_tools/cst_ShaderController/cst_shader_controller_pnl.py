@@ -28,6 +28,7 @@ class CST_PT_ShaderController_pnl(bpy.types.Panel):
         layout.prop_search(wm, "character_collection",
                            bpy.data, "collections", text="Character Collection")
         layout.operator("object.select_shader_controller")
+        layout.operator("object.remove_props")
 
 
 def register():

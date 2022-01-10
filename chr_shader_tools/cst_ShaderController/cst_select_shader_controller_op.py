@@ -59,84 +59,70 @@ class CST_OT_selectShaderController_OP(Operator):
             rna_ui = object['_RNA_UI']
 
 
-        object["highlight_col"] = (1.0, 1.0, 1.0)
+        object["highlight"] = (1.0, 1.0, 1.0, 1.0)
 
-        rna_ui["highlight_col"] = {
-            "description":"Highlight Color",
-            "default": (1.0, 1.0, 1.0),
-            "min":0.0,
-            "max":1.0,
-            "subtype":'COLOR'
+        rna_ui["highlight"] = {
+            "description":"Highlight Color and Amount",
+            "default": (1.0, 1.0, 1.0, 0.0)
         }
 
-        object["rimlight_col"] = (1.0, 1.0, 1.0)
+        object["rimlight"] = (1.0, 1.0, 1.0, 1.0)
 
-        rna_ui["rimlight_col"] = {
-            "description":"Rimlight Color",
-            "default":(1.0, 1.0, 1.0),
-            "min":0.0,
-            "max":1.0,
-            "subtype":'COLOR'
+        rna_ui["rimlight"] = {
+            "description":"Rimlight Color and Amount",
+            "default":(1.0, 1.0, 1.0, 0.0)
         }
 
-        object["AdvMixLightCol"] = (1.0, 1.0, 1.0)
+        object["adv_mix_light"] = (1.0, 1.0, 1.0, 1.0)
 
-        rna_ui["AdvMixLightCol"] = {
-            "description":"The color of the added Light",
-            "default":(1.0, 1.0, 1.0),
-            "min":0.0,
-            "max":1.0,
-            "subtype":'COLOR'
+        rna_ui["adv_mix_light"] = {
+            "description":"The color of the added Light and mix factor",
+            "default":(1.0, 1.0, 1.0, 0.2)
         }
 
-        object["AdvMixShadowTint"] = (0.0, 0.0, 0.0)
+        object["adv_mix_shadow"] = (0.0, 0.0, 0.0, 0.0)
 
-        rna_ui["AdvMixShadowTint"] = {
-            "description":"The color of the multiplied shadow tint",
-            "default":(0.0, 0.0, 0.0),
-            "min":0.0,
-            "max":1.0,
-            "subtype":'COLOR'
+        rna_ui["adv_mix_shadow"] = {
+            "description":"The color of the multiplied shadow tint and multiplication amount",
+            "default":(0.0, 0.0, 0.0, 0.2)
         }
 
-        object["mix_values"] = (0.0, 0.2, 0.2)
+        object["mix_values"] = (0.0, 0.0)
 
         rna_ui["mix_values"] = {
-            "description":"Colleciton of mix values for advanced mixing, adv mix light, adv mix shadow",
-            "default":(0.0, 0.2, 0.2),
-            "min":0.0,
-            "max":1.0,
+            "description":"Collection of mix values for advanced mixing and simple mixing",
+            "default":(0.0, 0.0)
         }
 
-        object["highlight_rimlight_mix_values"] = (0.0, 0.0, 0.0)
+        object["main_tint"] = (0.0, 0.0, 0.0, 0.0)
 
-        rna_ui["highlight_rimlight_mix_values"] = {
-            "description":"Collection of values for highlight amount, rimlight amount and Simple mix factor",
-            "default":(0.0, 0.0, 0.0),
+        rna_ui["main_tint"] = {
+            "description":"Tint Main Color and Tint amount",
+            "default":(1.0, 1.0, 1.0, 0.0)
         }
 
     def add_drivers(self, object, controller):
         """Adds the drivers from the custom props of the controller to the given objects custom props"""
 
-        add_driver_color_simple(controller, '["highlight_color"]', object, '["highlight_col"]')
+        add_driver_color_simple(controller, '["highlight_color"]', object, '["highlight"]')
+        add_driver_float_simple(controller, '["highlight_amount"]', object, '["highlight"]', 3)
      
-        add_driver_color_simple(controller, '["rimlight_color"]', object, '["rimlight_col"]')
+        add_driver_color_simple(controller, '["rimlight_color"]', object, '["rimlight"]')
+        add_driver_float_simple(controller, '["rimlight_amount"]', object, '["rimlight"]', 3)
         
-        add_driver_color_simple(controller, '["advanced_mix_light_color"]', object, '["AdvMixLightCol"]')
+        add_driver_color_simple(controller, '["advanced_mix_light_color"]', object, '["adv_mix_light"]')
+        add_driver_float_simple(controller, '["advanced_mix_light_amount"]', object, '["adv_mix_light"]', 3)
                
-        add_driver_color_simple(controller, '["advanced_mix_shadow_tint"]', object, '["AdvMixShadowTint"]')
+        add_driver_color_simple(controller, '["advanced_mix_shadow_tint"]', object, '["adv_mix_shadow"]')
+        add_driver_float_simple(controller, '["advanced_mix_shadow_amount"]', object, '["adv_mix_shadow"]', 3)
 
         add_driver_float_simple(controller, '["advanced_mix_switch"]', object, '["mix_values"]', 0)
 
-        add_driver_float_simple(controller, '["advanced_mix_light_amount"]', object, '["mix_values"]', 1)
+        add_driver_float_simple(controller, '["vector_diffuse_mix"]', object, '["mix_values"]', 1)
 
-        add_driver_float_simple(controller, '["advanced_mix_shadow_amount"]', object, '["mix_values"]', 2)
+        add_driver_color_simple(controller, '["main_color_tint"]', object, '["main_tint"]')
+        add_driver_float_simple(controller, '["main_color_tint_amount"]', object, '["main_tint"]', 3)
 
-        add_driver_float_simple(controller, '["highlight_amount"]', object, '["highlight_rimlight_mix_values"]', 0)
-
-        add_driver_float_simple(controller, '["rimlight_amount"]', object, '["highlight_rimlight_mix_values"]', 1)
-
-        add_driver_float_simple(controller, '["vector_diffuse_mix"]', object, '["highlight_rimlight_mix_values"]', 2)
 
 
 

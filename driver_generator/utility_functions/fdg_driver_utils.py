@@ -106,3 +106,10 @@ def add_driver_color_simple(driving_object, driving_prop_name, driven_object, dr
     add_driver_float_simple(driving_object, driving_prop_name + "[1]", driven_object, driven_prop_name, 1)
 
     add_driver_float_simple(driving_object, driving_prop_name + "[2]", driven_object, driven_prop_name, 2)
+
+def remove_property(object, prop_name):
+    """Tries to remove property with the given name from the given object if it exists"""
+
+    prop_value = object.get(prop_name)
+    if prop_value is not None:
+        del object[prop_name]
