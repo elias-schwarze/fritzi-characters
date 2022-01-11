@@ -154,6 +154,9 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         add_custom_property(visible_controller_pose_bone,
                             fdg_names.prop_blendUpDown, default=10.0, prop_min=1.0, prop_max=10.0)
 
+        add_custom_property(visible_controller_pose_bone,
+                            fdg_names.prop_driverSwitch, default=1.0, prop_min=0.0, prop_max=1.0)
+
         # Add drivers to the hidden control bone
 
         driver_x = hidden_controller_pose_bone.driver_add(
@@ -213,6 +216,8 @@ class FDG_OT_GenerateDrivers_Op(Operator):
                 rna_data_path='pose.bones["' + fdg_names.visible_controller_bone + '"]["' + fdg_names.prop_blendUpDown + '"]')
         add_var(driver_shapes_left, arma, "upDownNormalize", type='SINGLE_PROP',
                 rna_data_path='pose.bones["' + fdg_names.hidden_controller_bone + '"]["' + fdg_names.prop_up_down_normalize + '"]')
+        add_var(driver_shapes_left, arma, "driverSwitch", type='SINGLE_PROP',
+                rna_data_path='pose.bones["' + fdg_names.visible_controller_bone + '"]["' + fdg_names.prop_driverSwitch + '"]')
 
         # RIGHT
         add_var(driver_shapes_right, arma, "angle_z", type='SINGLE_PROP',
@@ -225,14 +230,16 @@ class FDG_OT_GenerateDrivers_Op(Operator):
                 rna_data_path='pose.bones["' + fdg_names.visible_controller_bone + '"]["' + fdg_names.prop_blendUpDown + '"]')
         add_var(driver_shapes_right, arma, "upDownNormalize", type='SINGLE_PROP',
                 rna_data_path='pose.bones["' + fdg_names.hidden_controller_bone + '"]["' + fdg_names.prop_up_down_normalize + '"]')
+        add_var(driver_shapes_right, arma, "driverSwitch", type='SINGLE_PROP',
+                rna_data_path='pose.bones["' + fdg_names.visible_controller_bone + '"]["' + fdg_names.prop_driverSwitch + '"]')
 
         # Add the expressions to the drivers
         driver_x.expression = "degrees(angle_x_func(head_loc_x, head_loc_y, head_loc_z, cam_loc_x, cam_loc_y, cam_loc_z, head_rot_x, head_rot_y, head_rot_z)) "
         driver_z.expression = "degrees(angle_z_func(head_loc_x, head_loc_y, head_loc_z, cam_loc_x, cam_loc_y, cam_loc_z, head_rot_x, head_rot_y, head_rot_z)) "
         driver_normalize.expression = "2*-angle_x if angle_z>0+bias and angle_x>0 else 2*angle_x if angle_z<0+bias and angle_x >0 else 2*angle_x if angle_z>0+bias and angle_x <0 else 2*-angle_x if angle_x<0 and angle_z<0+bias else 0"
 
-        driver_shapes_left.expression = "1-((-blend-(angle_z-bias))/(90-blend))-((upDownNormalize/blendUpDown)/15) if angle_z-bias <-blend else -(angle_z-bias)/blend-((upDownNormalize/blendUpDown)/15) if angle_z-bias <=0 and angle_z-bias>=-blend else 0"
-        driver_shapes_right.expression = "1+((blend-(angle_z-bias))/(90-blend))-((-upDownNormalize/blendUpDown)/15) if angle_z-bias >blend else ((angle_z-bias)/blend)-((-upDownNormalize/blendUpDown)/15) if angle_z-bias >=0 and angle_z-bias<=blend else 0"
+        driver_shapes_left.expression = "(1-((-blend-(angle_z-bias))/(90-blend))-((upDownNormalize/blendUpDown)/15) if angle_z-bias <-blend else -(angle_z-bias)/blend-((upDownNormalize/blendUpDown)/15) if angle_z-bias <=0 and angle_z-bias>=-blend else 0) * driverSwitch"
+        driver_shapes_right.expression = "(1+((blend-(angle_z-bias))/(90-blend))-((-upDownNormalize/blendUpDown)/15) if angle_z-bias >blend else ((angle_z-bias)/blend)-((-upDownNormalize/blendUpDown)/15) if angle_z-bias >=0 and angle_z-bias<=blend else 0) * driverSwitch"
 
         self.report({'INFO'}, "Generated Drivers!")
         return {'FINISHED'}

@@ -28,6 +28,8 @@ def add_custom_property(prop_holder, name, default=0.0, prop_min=0.0, prop_max=1
     prop_ui = rna_idprop_ui_prop_get(prop_holder, name)
     prop_ui["min"] = prop_min
     prop_ui["max"] = prop_max
+    prop_ui["soft_min"] = prop_min
+    prop_ui["soft_max"] = prop_max
     prop_ui["description"] = description
 
     for area in bpy.context.screen.areas:

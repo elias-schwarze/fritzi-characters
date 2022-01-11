@@ -7,6 +7,7 @@ visible_controller_bone = "Driver_Controller"
 prop_bias = "bias"
 prop_blend = "blend"
 prop_blendUpDown = "blendUpDown"
+prop_driverSwitch = "driverSwitch"
 
 prop_angle_x = "angle_x"
 prop_angle_z = "angle_z"

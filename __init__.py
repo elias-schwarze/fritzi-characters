@@ -59,4 +59,4 @@ def unregister():
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)
 
-    addon_updater_ops.unregister(bl_info)
+    addon_updater_ops.unregister()
