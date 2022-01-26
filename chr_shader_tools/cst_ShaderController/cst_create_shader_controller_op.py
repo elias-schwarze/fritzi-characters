@@ -37,144 +37,150 @@ class CST_OT_CreateShaderController_OP(Operator):
         emptyController.empty_display_size = 2
         emptyController.empty_display_type = 'PLAIN_AXES'
 
-        rna_ui = emptyController.get('_RNA_UI')
-        if rna_ui is None:
-            emptyController['_RNA_UI'] = {}
-            rna_ui = emptyController['_RNA_UI']
+
+        emptyController["testProp"] = 1.0
+
+        ui_data = emptyController.id_properties_ui("testProp")
+        #ui_data.update(min=0.1)
+        #ui_data.update(max=1.1)
+        #ui_data.update(soft_min=0.1)
+        #ui_data.update(soft_max=1.1)
+        #ui_data.update(description="ein Testproperty")
+        #ui_data.update(default=0.55)
+        ui_data.update(min=0.1, max=1.1, soft_min=0.1, soft_max=1.1, description="Ein Testproperty", default=0.55)
 
         emptyController["vector_diffuse_mix"] = 0.0
 
-        rna_ui["vector_diffuse_mix"] = {
-            "description":"Mix Amount of Vector shading vs Diffuse shading",
-            "default":0.0,
-            "min":0.0,
-            "max":1.0,
-            "soft_min":0.0,
-            "soft_max":1.0
-        }
+        ui_data = emptyController.id_properties_ui("vector_diffuse_mix")
+        ui_data.update(min=0.0)
+        ui_data.update(max=1.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=1.0)
+        ui_data.update(description="Mix Amount of Vector shading vs Diffuse shading")
+        ui_data.update(default=0.0)
+
 
         emptyController["highlight_amount"] = 0.0
 
-        rna_ui["highlight_amount"] = {
-            "description":"Brightness of the highlights",
-            "default":0.0,
-            "min":0.0,
-            "soft_min":0.0
-            
-        }
+        ui_data = emptyController.id_properties_ui("highlight_amount")
+        ui_data.update(min=0.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(description="Brightness of the highlights")
+        ui_data.update(default=0.0)
+        
 
         emptyController["highlight_color"] = (1.0, 1.0, 1.0)
 
-        rna_ui["highlight_color"] = {
-            "description":"Highlight Color",
-            "default": (1.0, 1.0, 1.0),
-            "min":0.0,
-            "max":1.0,
-            "subtype":'COLOR',
-            "soft_min":0.0,
-            "soft_max":1.0
-        }
+        ui_data = emptyController.id_properties_ui("highlight_color")
+        ui_data.update(min=0.0)
+        ui_data.update(max=1.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=1.0)
+        ui_data.update(description="Highlight Color")
+        ui_data.update(default=(1.0, 1.0, 1.0))
+        ui_data.update(subtype='COLOR')
+        
 
         emptyController["rimlight_amount"] = 0.0
 
-        rna_ui["rimlight_amount"] = {
-            "description":"Brightness of the rimlights",
-            "default":0.0,
-            "min":0.0,
-            "soft_min":0.0
-        }
+        ui_data = emptyController.id_properties_ui("rimlight_amount")
+        ui_data.update(min=0.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(description="Brightness of the rimlights")
+        ui_data.update(default=0.0)
+        
 
         emptyController["rimlight_color"] = (1.0, 1.0, 1.0)
 
-        rna_ui["rimlight_color"] = {
-            "description":"Rimlight Color",
-            "default":(1.0, 1.0, 1.0),
-            "min":0.0,
-            "max":1.0,
-            "subtype":'COLOR',
-            "soft_min":0.0,
-            "soft_max":1.0
-        }
+        ui_data = emptyController.id_properties_ui("rimlight_color")
+        ui_data.update(min=0.0)
+        ui_data.update(max=1.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=1.0)
+        ui_data.update(description="Rimlight Color")
+        ui_data.update(default=(1.0, 1.0, 1.0))
+        ui_data.update(subtype='COLOR')
+        
 
         emptyController["advanced_mix_switch"] = 0.0
 
-        rna_ui["advanced_mix_switch"] = {
-            "description":"Turns Advanced mixing on and off",
-            "default":0.0,
-            "min":0.0,
-            "max":1.0,
-            "soft_min":0.0,
-            "soft_max":1.0
-        }
+        ui_data = emptyController.id_properties_ui("advanced_mix_switch")
+        ui_data.update(min=0.0)
+        ui_data.update(max=1.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=1.0)
+        ui_data.update(description="Turns Advanced mixing on and off")
+        ui_data.update(default=0.0)
+        
 
         emptyController["advanced_mix_light_amount"] = 0.2
 
-        rna_ui["advanced_mix_light_amount"] = {
-            "description":"How much light gets added to the light regions",
-            "default":0.2,
-            "min":0.0,
-            "max":1.0,
-            "soft_min":0.0,
-            "soft_max":1.0
-        }
+        ui_data = emptyController.id_properties_ui("advanced_mix_light_amount")
+        ui_data.update(min=0.0)
+        ui_data.update(max=1.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=1.0)
+        ui_data.update(description="How much light gets added to the light regions")
+        ui_data.update(default=0.2)
+        
 
         emptyController["advanced_mix_light_color"] = (1.0, 1.0, 1.0)
 
-        rna_ui["advanced_mix_light_color"] = {
-            "description":"The color of the added Light",
-            "default":(1.0, 1.0, 1.0),
-            "min":0.0,
-            "max":1.0,
-            "subtype":'COLOR',
-            "soft_min":0.0,
-            "soft_max":1.0
-        }
+        ui_data = emptyController.id_properties_ui("advanced_mix_light_color")
+        ui_data.update(min=0.0)
+        ui_data.update(max=1.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=1.0)
+        ui_data.update(description="The color of the added Light")
+        ui_data.update(default=(1.0, 1.0, 1.0))
+        ui_data.update(subtype='COLOR')
+        
 
         emptyController["advanced_mix_shadow_amount"] = 0.2
 
-        rna_ui["advanced_mix_shadow_amount"] = {
-            "description":"How much shadow tint gets multiplied to the dark regions",
-            "default":0.2,
-            "min":0.0,
-            "max":1.0,
-            "soft_min":0.0,
-            "soft_max":1.0
-        }
+        ui_data = emptyController.id_properties_ui("advanced_mix_shadow_amount")
+        ui_data.update(min=0.0)
+        ui_data.update(max=1.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=1.0)
+        ui_data.update(description="How much shadow tint gets multiplied to the dark regions")
+        ui_data.update(default=0.2)
+        
 
         emptyController["advanced_mix_shadow_tint"] = (0.0, 0.0, 0.0)
 
-        rna_ui["advanced_mix_shadow_tint"] = {
-            "description":"The color of the multiplied shadow tint",
-            "default":(0.0, 0.0, 0.0),
-            "min":0.0,
-            "max":1.0,
-            "subtype":'COLOR',
-            "soft_min":0.0,
-            "soft_max":1.0
-        }
+        ui_data = emptyController.id_properties_ui("advanced_mix_shadow_tint")
+        ui_data.update(min=0.0)
+        ui_data.update(max=1.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=1.0)
+        ui_data.update(description="The color of the multiplied shadow tint")
+        ui_data.update(default=(0.0, 0.0, 0.0))
+        ui_data.update(subtype='COLOR')
+        
 
-        emptyController["main_color_tint"] = (0.0, 0.0, 0.0)
+        emptyController["main_color_tint"] = (1.0, 1.0, 1.0)
 
-        rna_ui["main_color_tint"] = {
-            "description":"Color to tint the main Color of a Character",
-            "default":(1.0, 1.0, 1.0),
-            "min":0.0,
-            "max":2.0,
-            "subtype":'COLOR',
-            "soft_min":0.0,
-            "soft_max":2.0
-        }
+        ui_data = emptyController.id_properties_ui("main_color_tint")
+        ui_data.update(min=0.0)
+        ui_data.update(max=2.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=2.0)
+        ui_data.update(description="Color to tint the main Color of a Character")
+        ui_data.update(default=(1.0, 1.0, 1.0))
+        ui_data.update(subtype='COLOR')
+
 
         emptyController["main_color_tint_amount"] = (0.0)
 
-        rna_ui["main_color_tint_amount"] = {
-            "description":"Amount of tint being applied to the main Color",
-            "default":0.0,
-            "min":0.0,
-            "max":1.0,
-            "soft_min":0.0,
-            "soft_max":1.0
-        }
+        ui_data = emptyController.id_properties_ui("main_color_tint_amount")
+        ui_data.update(min=0.0)
+        ui_data.update(max=1.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=1.0)
+        ui_data.update(description="Amount of tint being applied to the main Color")
+        ui_data.update(default=0.0)
+        
 
         emptyController.property_overridable_library_set('["vector_diffuse_mix"]', True)
         emptyController.property_overridable_library_set('["highlight_amount"]', True)

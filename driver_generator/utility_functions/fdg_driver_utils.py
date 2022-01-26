@@ -1,5 +1,5 @@
 import bpy
-from rna_prop_ui import rna_idprop_ui_prop_get
+#from rna_prop_ui import rna_idprop_ui_prop_get
 
 
 def add_var(driver, source, name, transform_type='', type='TRANSFORMS', source_bone="", rna_data_path=""):
@@ -25,12 +25,12 @@ def add_custom_property(prop_holder, name, default=0.0, prop_min=0.0, prop_max=1
     """Adds a custom property to an object"""
     prop_holder[name] = default
 
-    prop_ui = rna_idprop_ui_prop_get(prop_holder, name)
-    prop_ui["min"] = prop_min
-    prop_ui["max"] = prop_max
-    prop_ui["soft_min"] = prop_min
-    prop_ui["soft_max"] = prop_max
-    prop_ui["description"] = description
+    prop_ui = prop_holder.id_properties_ui(name)
+    prop_ui.update(min= prop_min)
+    prop_ui.update(max= prop_max)
+    prop_ui.update(soft_min= prop_min)
+    prop_ui.update(soft_max= prop_max)
+    prop_ui.update(description= description)
 
     for area in bpy.context.screen.areas:
         area.tag_redraw()
