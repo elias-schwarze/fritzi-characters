@@ -53,53 +53,54 @@ class CST_OT_selectShaderController_OP(Operator):
                 self.add_drivers(object, controller)
 
     def add_properties(self, object):
-        rna_ui = object.get('_RNA_UI')
-        if rna_ui is None:
-            object['_RNA_UI'] = {}
-            rna_ui = object['_RNA_UI']
+        
 
+        object["highlight"] = (1.0, 1.0, 1.0, 0.0)
 
-        object["highlight"] = (1.0, 1.0, 1.0, 1.0)
+        ui_data = object.id_properties_ui("highlight")
+        ui_data.update(
+            description="Highlight Color and Amount",
+            default=(1.0, 1.0, 1.0, 0.0)
+        )
+        
 
-        rna_ui["highlight"] = {
-            "description":"Highlight Color and Amount",
-            "default": (1.0, 1.0, 1.0, 0.0)
-        }
+        object["rimlight"] = (1.0, 1.0, 1.0, 0.0)
 
-        object["rimlight"] = (1.0, 1.0, 1.0, 1.0)
+        ui_data = object.id_properties_ui("rimlight")
+        ui_data.update(
+            description="Rimlight Color and Amount",
+            default=(1.0, 1.0, 1.0, 0.0)
+        )
 
-        rna_ui["rimlight"] = {
-            "description":"Rimlight Color and Amount",
-            "default":(1.0, 1.0, 1.0, 0.0)
-        }
+        object["adv_mix_light"] = (1.0, 1.0, 1.0, 0.2)
+        ui_data = object.id_properties_ui("adv_mix_light")
+        ui_data.update(
+            description="The color of the added Loght and mix factor",
+            default=(1.0, 1.0, 1.0, 0.2)
+        )
 
-        object["adv_mix_light"] = (1.0, 1.0, 1.0, 1.0)
+        object["adv_mix_shadow"] = (0.0, 0.0, 0.0, 0.2)
 
-        rna_ui["adv_mix_light"] = {
-            "description":"The color of the added Light and mix factor",
-            "default":(1.0, 1.0, 1.0, 0.2)
-        }
-
-        object["adv_mix_shadow"] = (0.0, 0.0, 0.0, 0.0)
-
-        rna_ui["adv_mix_shadow"] = {
-            "description":"The color of the multiplied shadow tint and multiplication amount",
-            "default":(0.0, 0.0, 0.0, 0.2)
-        }
+        ui_data = object.id_properties_ui("adv_mix_shadow")
+        ui_data.update(
+            description="The color of the multiplied shadow tint and multiplication amount",
+            default=(0.0, 0.0, 0.0, 0.2)
+        )
 
         object["mix_values"] = (0.0, 0.0)
 
-        rna_ui["mix_values"] = {
-            "description":"Collection of mix values for advanced mixing and simple mixing",
-            "default":(0.0, 0.0)
-        }
+        ui_data.update(
+            description="Collection of mix values for advanced mixing and simple mixing",
+            default=(0.0, 0.0)
+        )
+        
 
-        object["main_tint"] = (0.0, 0.0, 0.0, 0.0)
+        object["main_tint"] = (1.0, 1.0, 1.0, 0.0)
 
-        rna_ui["main_tint"] = {
-            "description":"Tint Main Color and Tint amount",
-            "default":(1.0, 1.0, 1.0, 0.0)
-        }
+        ui_data.update(
+            description="Tint Main Color and Tint amount",
+            default=(1.0, 1.0, 1.0, 0.0)
+        )
 
     def add_drivers(self, object, controller):
         """Adds the drivers from the custom props of the controller to the given objects custom props"""

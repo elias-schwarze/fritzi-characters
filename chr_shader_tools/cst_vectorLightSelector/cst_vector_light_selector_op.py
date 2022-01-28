@@ -53,15 +53,15 @@ class CST_OT_VectorLightSelector_OP(Operator):
 
         for obj in collection.objects:
             if obj.type == 'MESH':
-                rna_ui = obj.get('_RNA_UI')
-                if rna_ui is None:
-                    obj['_RNA_UI'] = {}
-                    rna_ui = obj['_RNA_UI']
+                
                 obj["light_rotation"] = (0.0, 0.0, 0.0)
-                rna_ui["light_rotation"] = {"description":"Light Rotation",
-                  "default": (0.0, 0.0, 0.0),
-                  "min":-10000,
-                  "max":10000}
+                ui_data = obj.id_properties_ui("light_rotation")
+                ui_data.update(
+                    description="Light Rotation",
+                    default=(0.0, 0.0, 0.0),
+                    min=-10000,
+                    max=10000
+                )
 
                 driver_rot_x = obj.driver_add('["light_rotation"]', 0).driver
                 driver_rot_x.type = 'AVERAGE'

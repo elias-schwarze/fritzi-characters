@@ -38,25 +38,25 @@ classes = (
 
 
 def register():
-    #addon_updater_ops.register(bl_info)
+    addon_updater_ops.register(bl_info)
 
-    #for cls in classes:
-    #    addon_updater_ops.make_annotations(cls)  # Avoid blender 2.8 warnings.
-    #    bpy.utils.register_class(cls)
+    for cls in classes:
+        addon_updater_ops.make_annotations(cls)  # Avoid blender 2.8 warnings.
+        bpy.utils.register_class(cls)
 
-    #fdg_init.register()
+    fdg_init.register()
     cst_init.register()
-    #frt_retarget_tools_op.register()
-    #frt_retarget_tools_pnl.register()
+    frt_retarget_tools_op.register()
+    frt_retarget_tools_pnl.register()
 
 
 def unregister():
-    #frt_retarget_tools_pnl.unregister()
-    #frt_retarget_tools_op.unregister()
+    frt_retarget_tools_pnl.unregister()
+    frt_retarget_tools_op.unregister()
     cst_init.unregister()
-    #fdg_init.unregister()
+    fdg_init.unregister()
 
-    #for cls in reversed(classes):
-    #    bpy.utils.unregister_class(cls)
+    for cls in reversed(classes):
+        bpy.utils.unregister_class(cls)
 
-    #addon_updater_ops.unregister()
+    addon_updater_ops.unregister()
