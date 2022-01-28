@@ -26,8 +26,8 @@ bl_info = {
     "name": "fritziCharacters",
     "author": "Michael Schieber, Sophie Fink, Elias Schwarze",
     "description": "A suite of tools for character rigging in production",
-    "blender": (2, 93, 0),
-    "version": (1, 3, 0),
+    "blender": (3, 0, 1),
+    "version": (1, 3, 1),
     "location": "3D Viewport > Properties panel (N) > FCHAR Tabs",
     "category": "Rigging"
 }
