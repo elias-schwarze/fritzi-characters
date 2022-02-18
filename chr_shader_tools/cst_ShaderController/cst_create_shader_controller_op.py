@@ -26,11 +26,11 @@ class CST_OT_CreateShaderController_OP(Operator):
 
         characterName = wm.character_name
 
-        if characterName is None:
+        if characterName is None or characterName is "":
             self.report({'WARNING'}, "Please give a Character Name!")
             return {'CANCELLED'}
 
-        emptyController = bpy.data.objects.new(characterName + "ShaderController", None)
+        emptyController = bpy.data.objects.new(characterName + "_ShaderController", None)
 
         bpy.context.scene.collection.objects.link(emptyController)
 

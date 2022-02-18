@@ -1,5 +1,4 @@
 import bpy
-#from rna_prop_ui import rna_idprop_ui_prop_get
 
 
 def add_var(driver, source, name, transform_type='', type='TRANSFORMS', source_bone="", rna_data_path=""):
