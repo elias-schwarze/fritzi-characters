@@ -20,6 +20,7 @@ from .driver_generator import fdg_init
 from .retarget_tools import frt_retarget_tools_op
 from .retarget_tools import frt_retarget_tools_pnl
 from .chr_shader_tools import cst_init
+from .mocap_retarget import fmr_init
 
 
 bl_info = {
@@ -46,13 +47,16 @@ def register():
 
     fdg_init.register()
     cst_init.register()
+    fmr_init.register()
     frt_retarget_tools_op.register()
     frt_retarget_tools_pnl.register()
+
 
 
 def unregister():
     frt_retarget_tools_pnl.unregister()
     frt_retarget_tools_op.unregister()
+    fmr_init.unregister()
     cst_init.unregister()
     fdg_init.unregister()
 
