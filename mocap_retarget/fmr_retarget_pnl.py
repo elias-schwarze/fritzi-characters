@@ -1,5 +1,6 @@
 import bpy
-from bpy.props import StringProperty, PointerProperty
+from bpy.props import PointerProperty, BoolProperty
+from . import fmr_retarget_utils
 
 
 class FMR_PT_Retarget_pnl(bpy.types.Panel):
@@ -13,7 +14,11 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
     
 
     def draw(self, context):
+        
+        settings = fmr_retarget_utils.get_settings()
 
+        if settings["perforce_path"] is "":
+            layout.label(text="No Path")
 
 
         scene = context.scene
@@ -21,6 +26,7 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
         layout = self.layout
         layout.prop_search(wm, "source_rig_pointer", scene, "objects", text="Source Armature")
         layout.prop_search(wm, "target_rig_pointer", scene, "objects", text="Target Armature")
+        layout.prop(wm, "auto_scale_check")
         #layout.prop_search(scene, "source_rig", scene, "objects", text="Test: Source Rig ARP")
         #layout.prop_search(scene, "target_rig", scene, "objects", text="Test: Target Rig ARP")
 
@@ -54,8 +60,7 @@ def update_target_rig(self, context):
 def register():
     
     bpy.utils.register_class(FMR_PT_Retarget_pnl)
-    bpy.types.Scene.test_prop = StringProperty(name = "test", default="", description="", update=test_method)
-    #bpy.types.Scene.source_rig = StringProperty(name = "Source Rig", default = "", description = "Source Rig Armature to take action from")
+    bpy.types.WindowManager.auto_scale_check = BoolProperty(name = "Auto Scale", default = True)
     bpy.types.WindowManager.source_rig_pointer = PointerProperty(name = "Source Armature", type = bpy.types.Object, update = update_source_rig)
     bpy.types.WindowManager.target_rig_pointer = PointerProperty(name = "Target Armature", type = bpy.types.Object, update = update_target_rig)
 
