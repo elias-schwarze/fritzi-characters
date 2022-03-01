@@ -1,3 +1,4 @@
+from fileinput import close
 import bpy
 import json
 import os
@@ -8,7 +9,12 @@ class FMR_OT_MocapRetarget_OP(Operator):
     bl_idname = "object.mocap_retarget"
     bl_label = "Retarget Mocap"
     bl_description = "Use Auto-Rig-Pro to retarget Mocap to Control Rigs"
-    bl_options = {"REGISTER", "UNDO"}
+    bl_options = {"REGISTER"}
+
+    settings = {}
+    json_path = os.path.join(
+            os.path.dirname(__file__),
+            "fmr_settings.json")
 
     # should only work in object mode
     @classmethod
@@ -35,17 +41,21 @@ class FMR_OT_MocapRetarget_OP(Operator):
         # Import custom Bone List
         self.report({'INFO'}, "finished Building Bone List. Fetching Bone Map Location!")
         print(os.path.dirname(__file__))
-        json_path = os.path.join(
-            os.path.dirname(__file__),
-            "fmr_settings.json")
 
-        with open(json_path, 'r') as f:
-            data = json.load(f)
-            
-        print(data["bone_map_path"])
-        bone_map_path = data["bone_map_path"]
+        with open(self.json_path, 'r') as f:
+            self.settings = json.load(f)
+            f.close()
+
+        print(self.settings["bone_map_path"])
+        bone_map_path = self.settings["bone_map_path"]
+        self.load_bone_map(context, bone_map_path)
+
+
+
+        
+        
         self.report({'INFO'}, "Fetched Bone Map Lcoation. Importing Bone Map!")
-        bpy.ops.arp.import_config(filepath=bone_map_path)
+        #bpy.ops.arp.import_config(filepath=bone_map_path)
 
         # Redefine Rest Pose
         self.report({'INFO'}, "Imported Bone Map. Redefining Rest Pose!")
@@ -76,6 +86,26 @@ class FMR_OT_MocapRetarget_OP(Operator):
 
         self.report({'INFO'}, "Finished Retargeting Mocap!")
         return {'FINISHED'}
+
+
+    def load_bone_map(self, context, bone_map_path):
+
+        try:
+            bpy.ops.arp.import_config(filepath=bone_map_path)
+            
+        except Exception:
+            bone_map_path = os.path.join(os.path.join(os.path.dirname(__file__),"BoneMap"),"IKlegFKarm.bmap")
+            with open(self.json_path, 'w') as f:
+                self.settings["bone_map_path"] = bone_map_path
+                json.dump(self.settings, f)
+                f.close()
+            try:
+                bpy.ops.arp.import_config(filepath=bone_map_path)
+
+            except Exception:
+                return False
+
+        return True
 
 
 def register():

@@ -21,8 +21,8 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
         layout = self.layout
         layout.prop_search(wm, "source_rig_pointer", scene, "objects", text="Source Armature")
         layout.prop_search(wm, "target_rig_pointer", scene, "objects", text="Target Armature")
-        layout.prop_search(scene, "source_rig", scene, "objects", text="Test: Source Rig ARP")
-        layout.prop_search(scene, "target_rig", scene, "objects", text="Test: Target Rig ARP")
+        #layout.prop_search(scene, "source_rig", scene, "objects", text="Test: Source Rig ARP")
+        #layout.prop_search(scene, "target_rig", scene, "objects", text="Test: Target Rig ARP")
 
         layout.operator("object.mocap_retarget")
 
