@@ -1,6 +1,6 @@
 import bpy
 from bpy.props import PointerProperty, BoolProperty
-from . import fmr_retarget_utils
+from . import fmr_settings
 
 
 class FMR_PT_Retarget_pnl(bpy.types.Panel):
@@ -15,15 +15,19 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
 
     def draw(self, context):
         
-        settings = fmr_retarget_utils.get_settings()
+        settings = fmr_settings.Settings()
 
-        if settings["perforce_path"] is "":
-            layout.label(text="No Path")
+        
 
 
         scene = context.scene
         wm = context.window_manager
         layout = self.layout
+
+        if settings.get_setting("perforce_path") is "":
+            layout.label(text="No Path")
+
+
         layout.prop_search(wm, "source_rig_pointer", scene, "objects", text="Source Armature")
         layout.prop_search(wm, "target_rig_pointer", scene, "objects", text="Target Armature")
         layout.prop(wm, "auto_scale_check")
@@ -65,7 +69,7 @@ def register():
     bpy.types.WindowManager.target_rig_pointer = PointerProperty(name = "Target Armature", type = bpy.types.Object, update = update_target_rig)
 
 def unregister():
-    del bpy.types.Scene.test_prop
+    
     bpy.utils.unregister_class(FMR_PT_Retarget_pnl)
 
 

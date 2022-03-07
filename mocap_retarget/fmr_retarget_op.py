@@ -2,7 +2,7 @@ from fileinput import close
 import bpy
 import json
 import os
-from . import fmr_retarget_utils
+from . import fmr_settings
 
 from bpy.types import Operator
 
@@ -12,7 +12,7 @@ class FMR_OT_MocapRetarget_OP(Operator):
     bl_description = "Use Auto-Rig-Pro to retarget Mocap to Control Rigs"
     bl_options = {"REGISTER","UNDO"}
 
-    settings = {}
+    settings = None
     json_path = os.path.join(
             os.path.dirname(__file__),
             "fmr_settings.json")
@@ -30,7 +30,7 @@ class FMR_OT_MocapRetarget_OP(Operator):
 
     def execute(self, context):
         
-        self.settings = fmr_retarget_utils.get_settings()
+        self.settings = fmr_settings.Settings()
         wm = context.window_manager
 
         # Scale Source Mesh to Target Mesh
@@ -44,7 +44,7 @@ class FMR_OT_MocapRetarget_OP(Operator):
 
         # Import custom Bone List
   
-        self.load_bone_map(context, self.settings["bone_map_path"])
+        self.load_bone_map(context, self.settings.get_setting("bone_map_path"))
 
 
         # Redefine Rest Pose
@@ -73,8 +73,8 @@ class FMR_OT_MocapRetarget_OP(Operator):
             
         except Exception:
             bone_map_path = os.path.join(os.path.join(os.path.dirname(__file__),"BoneMap"),"IKlegFKarm.bmap")
-            self.settings["bone_map_path"] = bone_map_path
-            fmr_retarget_utils.write_settings(self.settings)
+            self.settings.set_setting("bone_map_path", bone_map_path)
+            
             try:
                 bpy.ops.arp.import_config(filepath=bone_map_path)
 
