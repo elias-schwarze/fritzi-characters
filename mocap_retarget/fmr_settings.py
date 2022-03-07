@@ -5,11 +5,14 @@ import os
 class Settings(object):
 
     _instance = None
-    settings_path = os.path.join(
+    _settings_path = os.path.join(
                 os.path.dirname(__file__),
                 "fmr_settings.json")
-    settings = {}
-
+    _settings = {}
+    _default_settings = {
+        "bone_map_path" : os.path.join(os.path.join(os.path.dirname(__file__),"BoneMap"),"IKlegFKarm.bmap"),
+        "perforce_path" : ""
+    }
     def __new__(cls):
         """Singleton initialization"""
         if cls._instance is None:
@@ -21,28 +24,40 @@ class Settings(object):
     def _load_settings(self):
 
         try:
+            if os.path.isfile(self._settings_path):
+                f = open(self._settings_path, 'r')
+                self._settings = json.load(f)
+                f.close()
+            else:
+                
+                self._settings = self._default_settings
+                self._write_settings()
 
-            f = open(self.settings_path, 'r')
-            self.settings = json.load(f)
         except Exception:
             pass
-        finally:
-            f.close()
+            
 
 
     def _write_settings(self):
         
         try:
-            with open(self.settings_path, 'w') as f:
-                json.dump(self.settings, f, indent=4, sort_keys=True)
+            with open(self._settings_path, 'w') as f:
+                data_out = json.dump(self._settings, f, indent=4, sort_keys=True)
+                f.write(data_out)
         except Exception:
             pass
-        finally:
-            f.close()
 
     def get_setting(self, key):
-        return self.settings[key]
+        if key in self._settings:
+           return self._settings[key]
+        else:
+            if key in self._default_settings:
+                self._settings[key] = self._default_settings[key]
+                self._write_settings()
+                return self._settings[key]
+            else:
+                return None
 
     def set_setting(self, key, value):
-        self.settings[key] = value
+        self._settings[key] = value
         self._write_settings()

@@ -1,6 +1,4 @@
-from fileinput import close
 import bpy
-import json
 import os
 from . import fmr_settings
 
