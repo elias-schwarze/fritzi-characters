@@ -30,12 +30,23 @@ class FMR_OT_ExportScaleList_OP(Operator, ExportHelper):
 
     def execute(self, context):
         print(self.filepath)
+        return {'FINISHED'}
+
+class FMR_OT_AddCharacterScale_OP(Operator):
+    bl_idname = "object.add_character_scale"
+    bl_label = "+"
+    bl_description = "Add a character and its scaling to the scale list"
+    bl_option = {"REGISTER", "UNDO"}
+    def execute(self, context):
+        return {'FINISHED'}
 
 
 def register():
     bpy.utils.register_class(FMR_OT_ImportScaleList_OP)
     bpy.utils.register_class(FMR_OT_ExportScaleList_OP)
+    bpy.utils.register_class(FMR_OT_AddCharacterScale_OP)
 
 def unregister():
+    bpy.utils.unregister_class(FMR_OT_AddCharacterScale_OP)
     bpy.utils.unregister_class(FMR_OT_ExportScaleList_OP)
     bpy.utils.unregister_class(FMR_OT_ImportScaleList_OP)

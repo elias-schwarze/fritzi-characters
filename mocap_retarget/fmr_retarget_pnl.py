@@ -1,7 +1,8 @@
 import bpy
-from bpy.props import PointerProperty, BoolProperty, FloatProperty, CollectionProperty, IntProperty
+from bpy.props import PointerProperty, BoolProperty, FloatProperty, CollectionProperty, IntProperty, StringProperty
 from bpy.types import PropertyGroup, UIList
 from . import fmr_settings
+from . import fmr_scale_list_io
 
 
 class FMR_PT_Retarget_pnl(bpy.types.Panel):
@@ -25,6 +26,7 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
         wm = context.window_manager
         layout = self.layout
 
+        scale_list = fmr_scale_list_io.ScaleListDict(wm)
         #if settings.get_setting("perforce_path") is "":
         #    layout.label(text="No Path")
 
@@ -50,17 +52,43 @@ class FMR_PT_ScaleList_pnl(bpy.types.Panel):
         wm = context.window_manager
         layout = self.layout
 
-        layout.template_list("FMR_UL_items", "", wm, "scale_list", wm, "scale_list_index", rows=2)
+        #Create a scale list here
+        #split = layout.split(factor=0.9)
+        row = layout.row()
+        row.alignment = 'RIGHT'
+        row.template_list("FMR_UL_items", "", wm, "scale_list", wm, "scale_list_index", rows=2)
+        
+        column = row.column(align=True)
+        column.alignment = 'RIGHT'
+        column
+        
+        column.operator("object.add_character_scale")
+        column.operator("object.add_character_scale")
+
         row = layout.row()
         row.operator("file.import_scale_list")
 #        split = layout.split(factor=0.5)
         row.operator("file.export_scale_list")
 
 def ScaleUpdate(self, context):
-    print("update")
+    scale_list = fmr_scale_list_io.ScaleListDict(None)
+    
+    print("scaleupdate")
+    print(self.name)
+    print(self.scale)
+    scale_list.set_scale(self.name, self.scale)
+    
+
+def NameUpdate(self, context):
+    scale_list = fmr_scale_list_io.ScaleListDict(None)
+    print("Name")
+    print(self.character)
+
+    scale_list.fetch_properties()
 
 class ScaleList(PropertyGroup):
-    scale : FloatProperty(default=1, update=ScaleUpdate)
+    scale : FloatProperty(default=1.0, update=ScaleUpdate)
+    character : StringProperty(default="", update=NameUpdate)
 
 class FMR_UL_items(UIList):
     @classmethod
@@ -68,11 +96,13 @@ class FMR_UL_items(UIList):
         return True
 
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        
         split = layout.split(factor=1.0)
-        split.prop(item, "name", text="", emboss=False, translate=False)
+        split.prop(item, "character", text="", emboss=False, translate=False)
         split = layout.split(factor=1.0)
         split.prop(item, "scale", text="", emboss=False, translate=False)
 
+        
     def invoke(self, context, event):
         pass
 

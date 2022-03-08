@@ -43,7 +43,7 @@ class Settings(object):
         try:
             with open(self._settings_path, 'w') as f:
                 data_out = json.dump(self._settings, f, indent=4, sort_keys=True)
-                f.write(data_out)
+                
         except Exception:
             pass
 
