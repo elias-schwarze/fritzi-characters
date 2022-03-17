@@ -40,13 +40,23 @@ class FMR_OT_AddCharacterScale_OP(Operator):
     def execute(self, context):
         return {'FINISHED'}
 
+class FMR_OT_RemoveCharacterScale_OP(Operator):
+    bl_idname = "object.remove_character_scale"
+    bl_label = "-"
+    bl_description = "Remove a character and its scaling from the scale list"
+    bl_option = {"REGISTER", "UNDO"}
+    def execute(self, context):
+        return {'FINISHED'}
+
 
 def register():
     bpy.utils.register_class(FMR_OT_ImportScaleList_OP)
     bpy.utils.register_class(FMR_OT_ExportScaleList_OP)
     bpy.utils.register_class(FMR_OT_AddCharacterScale_OP)
+    bpy.utils.register_class(FMR_OT_RemoveCharacterScale_OP)
 
 def unregister():
+    bpy.utils.unregister_class(FMR_OT_RemoveCharacterScale_OP)
     bpy.utils.unregister_class(FMR_OT_AddCharacterScale_OP)
     bpy.utils.unregister_class(FMR_OT_ExportScaleList_OP)
     bpy.utils.unregister_class(FMR_OT_ImportScaleList_OP)

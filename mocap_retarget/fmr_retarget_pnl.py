@@ -53,21 +53,17 @@ class FMR_PT_ScaleList_pnl(bpy.types.Panel):
         layout = self.layout
 
         #Create a scale list here
-        #split = layout.split(factor=0.9)
         row = layout.row()
-        #row.alignment = 'RIGHT'
         row.template_list("FMR_UL_items", "", wm, "scale_list", wm, "scale_list_index", rows=2)
         
         column = row.column(align=True)
-        column.alignment = 'RIGHT'
-        column.scale_x = 0.7
         
-        column.operator("object.add_character_scale")
-        column.operator("object.add_character_scale")
+        
+        column.operator("object.add_character_scale", icon='ADD', text="")
+        column.operator("object.remove_character_scale", icon='REMOVE', text="")
 
-        row = layout.row()
+        row = layout.row(align=True)
         row.operator("file.import_scale_list")
-#        split = layout.split(factor=0.5)
         row.operator("file.export_scale_list")
 
 def ScaleUpdate(self, context):
