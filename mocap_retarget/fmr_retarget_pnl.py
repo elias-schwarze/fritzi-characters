@@ -55,12 +55,12 @@ class FMR_PT_ScaleList_pnl(bpy.types.Panel):
         #Create a scale list here
         #split = layout.split(factor=0.9)
         row = layout.row()
-        row.alignment = 'RIGHT'
+        #row.alignment = 'RIGHT'
         row.template_list("FMR_UL_items", "", wm, "scale_list", wm, "scale_list_index", rows=2)
         
         column = row.column(align=True)
         column.alignment = 'RIGHT'
-        column
+        column.scale_x = 0.7
         
         column.operator("object.add_character_scale")
         column.operator("object.add_character_scale")
