@@ -102,6 +102,14 @@ class CST_OT_selectShaderController_OP(Operator):
             default=(1.0, 1.0, 1.0, 0.0)
         )
 
+
+        object["shadow_tint"] = (1.0, 1.0, 1.0, 0.0)
+
+        ui_data.update(
+            description="Tint Shadow Color and Tint amount",
+            default=(1.0, 1.0, 1.0, 0.0)
+        )
+
     def add_drivers(self, object, controller):
         """Adds the drivers from the custom props of the controller to the given objects custom props"""
 
@@ -123,6 +131,9 @@ class CST_OT_selectShaderController_OP(Operator):
 
         add_driver_color_simple(controller, '["main_color_tint"]', object, '["main_tint"]')
         add_driver_float_simple(controller, '["main_color_tint_amount"]', object, '["main_tint"]', 3)
+
+        add_driver_color_simple(controller, '["shadow_color_tint"]', object, '["shadow_tint"]')
+        add_driver_float_simple(controller, '["shadow_color_tint_amount"]', object, '["shadow_tint"]', 3)
 
 
 

@@ -38,16 +38,7 @@ class CST_OT_CreateShaderController_OP(Operator):
         emptyController.empty_display_type = 'PLAIN_AXES'
 
 
-        emptyController["testProp"] = 1.0
-
-        ui_data = emptyController.id_properties_ui("testProp")
-        #ui_data.update(min=0.1)
-        #ui_data.update(max=1.1)
-        #ui_data.update(soft_min=0.1)
-        #ui_data.update(soft_max=1.1)
-        #ui_data.update(description="ein Testproperty")
-        #ui_data.update(default=0.55)
-        ui_data.update(min=0.1, max=1.1, soft_min=0.1, soft_max=1.1, description="Ein Testproperty", default=0.55)
+        
 
         emptyController["vector_diffuse_mix"] = 0.0
 
@@ -180,6 +171,27 @@ class CST_OT_CreateShaderController_OP(Operator):
         ui_data.update(soft_max=1.0)
         ui_data.update(description="Amount of tint being applied to the main Color")
         ui_data.update(default=0.0)
+
+        emptyController["shadow_color_tint"] = (1.0, 1.0, 1.0)
+
+        ui_data = emptyController.id_properties_ui("shadow_color_tint")
+        ui_data.update(min=0.0)
+        ui_data.update(max=2.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=2.0)
+        ui_data.update(description="Color ot tint the shadow color of a Character")
+        ui_data.update(default=(1.0, 1.0, 1.0))
+        ui_data.update(subtype='COLOR')
+
+        emptyController["shadow_color_tint_amount"] = (0.0)
+
+        ui_data = emptyController.id_properties_ui("shadow_color_tint_amount")
+        ui_data.update(min=0.0)
+        ui_data.update(max=1.0)
+        ui_data.update(soft_min=0.0)
+        ui_data.update(soft_max=1.0)
+        ui_data.update(description="Amount of tint being applied to the shadow Color")
+        ui_data.update(default=0.0)
         
 
         emptyController.property_overridable_library_set('["vector_diffuse_mix"]', True)
@@ -194,6 +206,8 @@ class CST_OT_CreateShaderController_OP(Operator):
         emptyController.property_overridable_library_set('["advanced_mix_shadow_tint"]', True)
         emptyController.property_overridable_library_set('["main_color_tint"]', True)
         emptyController.property_overridable_library_set('["main_color_tint_amount"]', True)
+        emptyController.property_overridable_library_set('["shadow_color_tint"]', True)
+        emptyController.property_overridable_library_set('["shadow_color_tint_amount"]', True)
 
         wm.controller_empty = emptyController
 
