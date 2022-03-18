@@ -28,6 +28,8 @@ class CST_OT_selectShaderController_OP(Operator):
 
         controllerEmpty = wm.controller_empty
         characterCollection = wm.character_collection
+        characterRig = wm.character_rig
+        characterRigBone = wm.character_rig_bone
 
         if controllerEmpty is None:
             self.report({'WARNING'}, "Please select the Controller!")
@@ -36,6 +38,21 @@ class CST_OT_selectShaderController_OP(Operator):
         if characterCollection is None:
             self.report({'WARNING'}, "Please select a collection with the Character!")
             return {'CANCELLED'}
+
+        if characterRig:
+            constraint = controllerEmpty.constraints.new(type='CHILD_OF')
+            constraint.target = characterRig
+            if characterRigBone:
+                constraint.subtarget = characterRigBone
+
+            constraint.use_rotation_x = False
+            constraint.use_rotation_y = False
+            constraint.use_rotation_z = False
+            constraint.use_scale_x = False
+            constraint.use_scale_y = False
+            constraint.use_scale_z = False
+            constraint.set_inverse_pending = True
+        
 
         self.search_collection(characterCollection, controllerEmpty)
 

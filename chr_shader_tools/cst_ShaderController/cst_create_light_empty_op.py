@@ -37,7 +37,7 @@ class CST_OT_CreateLightEmpty_OP(Operator):
 
 
 
-        lightEmpty.rotation_euler = (0.0, 2.0, -1.3)
+        lightEmpty.rotation_euler = (0.0, -2.3, -1.3)
         lightEmpty.location = (0.0, 0.0, 2.0)
 
         bpy.context.scene.collection.objects.link(lightEmpty)

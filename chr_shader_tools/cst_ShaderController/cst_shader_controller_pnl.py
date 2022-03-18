@@ -16,6 +16,8 @@ class CST_PT_ShaderController_pnl(bpy.types.Panel):
         name="Character Collection", type=bpy.types.Collection)
     bpy.types.WindowManager.light_empty = PointerProperty(
         name="Light Empty", type=bpy.types.Object)
+    bpy.types.WindowManager.character_rig = PointerProperty(name = "Character Rig", type=bpy.types.Object)
+    bpy.types.WindowManager.character_rig_bone = StringProperty(name = "Character Rig Bone")
 
     def draw(self, context):
         
@@ -32,6 +34,14 @@ class CST_PT_ShaderController_pnl(bpy.types.Panel):
                             context.scene, "objects", text="Light Empty")
         layout.prop_search(wm, "character_collection",
                            bpy.data, "collections", text="Character Collection")
+        layout.prop_search(wm, "character_rig", bpy.data, "objects", text="Character Rig")
+        rig = wm.character_rig
+        if rig:
+            if rig.type == 'ARMATURE':
+                layout.prop_search(wm, "character_rig_bone", rig.data, "bones")
+                if 'c_root_master.x' in rig.data.bones:
+                    wm.character_rig_bone = 'c_root_master.x'
+        
         layout.operator("object.select_shader_controller")
         layout.operator("object.select_light_empty")
         layout.label(text = 'Cleanup')
