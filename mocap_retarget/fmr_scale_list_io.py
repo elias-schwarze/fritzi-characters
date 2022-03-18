@@ -68,7 +68,7 @@ class ScaleListDict(object):
                 return
 
     def _push_to_properties(self):
-        #self.loading = True
+        self.loading = True
         scale_list_prop = self._wm.scale_list
         scale_list_prop.clear()
         for key in self._scale_list:
@@ -79,7 +79,7 @@ class ScaleListDict(object):
         
         for area in bpy.context.screen.areas:
             area.tag_redraw()
-        #self.loading = False
+        self.loading = False
 
 
     def get_scale(self, key):
@@ -95,7 +95,18 @@ class ScaleListDict(object):
 
     def set_scale(self, key, value):
         self._scale_list[key] = value
+        if not self.loading:
+           self._push_to_properties()
         self._write_scale_list()
+
+    def remove_scale(self, key):
+        if key in self._scale_list:
+            del self._scale_list[key]
+
+            if not self.loading:
+                self._push_to_properties()
+            self._write_scale_list()
+
 
     def change_key(self, key, new_key):
         return
