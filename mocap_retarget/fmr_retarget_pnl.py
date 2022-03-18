@@ -104,11 +104,6 @@ class FMR_UL_items(UIList):
 
 
 
-def NameUpdate(self, context):
-    print("update")
-
-def test_method(self, context):
-        print("update")
 
 def update_source_rig(self, context):
     wm = context.window_manager

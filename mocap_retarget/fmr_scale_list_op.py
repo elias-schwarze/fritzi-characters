@@ -10,11 +10,17 @@ class FMR_OT_ImportScaleList_OP(Operator, ImportHelper):
     bl_description = "Import a JSON File with custom character scalings"
     bl_options = {"REGISTER", "UNDO"}
 
+    filter_glob: StringProperty(default='*.json', options={'HIDDEN'})
+
     def execute(self, context):
         wm = context.window_manager
         item = wm.scale_list.add()
         item.name = "Fritzi"
         item.scale = 0.4
+
+        scale_list_io = ScaleListDict(wm)
+
+        scale_list_io.load_scale_list(self.filepath)
 
         for area in bpy.context.screen.areas:
             area.tag_redraw()
@@ -30,7 +36,14 @@ class FMR_OT_ExportScaleList_OP(Operator, ExportHelper):
     bl_description = "Export a JSON File with custom character scalings"
     bl_option = {"REGISTER", "UNDO"}
 
+    filter_glob: StringProperty(default='*.json', options={'HIDDEN'})
+    filename_ext: StringProperty(default=".json")
+
     def execute(self, context):
+        wm = context.window_manager
+        scale_list_io = ScaleListDict(wm)
+
+        scale_list_io.write_scale_list(self.filepath)
         print(self.filepath)
         return {'FINISHED'}
 

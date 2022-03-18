@@ -20,11 +20,11 @@ class ScaleListDict(object):
             cls._instance = super(ScaleListDict, cls).__new__(cls)
             cls._instance._wm = window_manager
             #cls._instance.initializin = True
-            cls._instance._load_scale_list(cls._instance._scale_list_path)
+            cls._instance.load_scale_list(cls._instance._scale_list_path)
             #cls._instance.initializin = False
         return cls._instance
 
-    def _load_scale_list(self, path):
+    def load_scale_list(self, path):
         self.loading = True
         try:
             if os.path.isfile(path):
@@ -35,7 +35,7 @@ class ScaleListDict(object):
 
             else:
                 self._scale_list = self._default_scale_list
-                self._write_scale_list()
+                self.write_scale_list(self._scale_list_path)
 
             self._push_to_properties()
             
@@ -48,10 +48,10 @@ class ScaleListDict(object):
 
 
 
-    def _write_scale_list(self):
+    def write_scale_list(self, path):
         print("writing")
         try:
-            with open(self._scale_list_path, 'w') as f:
+            with open(path, 'w') as f:
                 data_out = json.dump(self._scale_list, f, indent=4, sort_keys=True)
                 #f.write(data_out)
                 print("written")
@@ -88,7 +88,7 @@ class ScaleListDict(object):
         else:
             if key in self._default_scale_list:
                 self._scale_list[key] = self._default_scale_list[key]
-                self._write_scale_list()
+                self.write_scale_list(self._scale_list_path)
                 return self._scale_list[key]
             else:
                 return None
@@ -97,7 +97,7 @@ class ScaleListDict(object):
         self._scale_list[key] = value
         if not self.loading:
            self._push_to_properties()
-        self._write_scale_list()
+        self.write_scale_list(self._scale_list_path)
 
     def remove_scale(self, key):
         if key in self._scale_list:
@@ -105,11 +105,9 @@ class ScaleListDict(object):
 
             if not self.loading:
                 self._push_to_properties()
-            self._write_scale_list()
+            self.write_scale_list(self._scale_list_path)
 
 
-    def change_key(self, key, new_key):
-        return
 
     def fetch_properties(self):
         print(self.loading)
@@ -120,4 +118,4 @@ class ScaleListDict(object):
             if length > 0:
                 for i in range(length):
                     self._scale_list[scale_props[i].character] = scale_props[i].scale
-            self._write_scale_list()
+            self.write_scale_list(self._scale_list_path)
