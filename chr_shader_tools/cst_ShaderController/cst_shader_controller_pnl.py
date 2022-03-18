@@ -7,6 +7,7 @@ class CST_PT_ShaderController_pnl(bpy.types.Panel):
     bl_category = "FCHAR"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
+    bl_idname = "CST_PT_ShaderController_pnl"
     bl_options = {"DEFAULT_CLOSED"}
 
     bpy.types.WindowManager.character_name = StringProperty(name="Character Name")
@@ -44,13 +45,33 @@ class CST_PT_ShaderController_pnl(bpy.types.Panel):
         
         layout.operator("object.select_shader_controller")
         layout.operator("object.select_light_empty")
+
+class CST_PT_ShaderControllerAdvanced_PNL(bpy.types.Panel):
+    bl_label = "Advanced"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "FCHAR"
+    bl_parent_id = "CST_PT_ShaderController_pnl"
+    bl_options = {"DEFAULT_CLOSED"}
+
+    def draw(self, context):
+
+        wm = context.window_manager
+        layout = self.layout
+
         layout.label(text = 'Cleanup')
         layout.operator("object.remove_props")
+
+        layout.separator()
+        layout.operator("object.update_shader_controller")
+
+        
 
 
 def register():
     bpy.utils.register_class(CST_PT_ShaderController_pnl)
-
+    bpy.utils.register_class(CST_PT_ShaderControllerAdvanced_PNL)
 
 def unregister():
+    bpy.utils.unregister_class(CST_PT_ShaderControllerAdvanced_PNL)
     bpy.utils.unregister_class(CST_PT_ShaderController_pnl)
