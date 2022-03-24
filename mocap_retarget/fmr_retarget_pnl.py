@@ -30,6 +30,9 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
         #if settings.get_setting("perforce_path") is "":
         #    layout.label(text="No Path")
 
+        layout.operator("settings.test")
+        op = layout.operator("retarget.select_bvhs")
+        op.filepath = settings.get_setting("perforce_path")
 
         layout.prop_search(wm, "source_rig_pointer", scene, "objects", text="Source Armature")
         layout.prop_search(wm, "target_rig_pointer", scene, "objects", text="Target Armature")
@@ -132,11 +135,7 @@ def register():
     bpy.utils.register_class(FMR_PT_ScaleList_pnl)
     bpy.utils.register_class(ScaleList)
     bpy.utils.register_class(FMR_UL_items)
-    bpy.types.WindowManager.auto_scale_check = BoolProperty(name = "Auto Scale", default = True)
-    bpy.types.WindowManager.source_rig_pointer = PointerProperty(name = "Source Armature", type = bpy.types.Object, update = update_source_rig)
-    bpy.types.WindowManager.target_rig_pointer = PointerProperty(name = "Target Armature", type = bpy.types.Object, update = update_target_rig)
-    bpy.types.WindowManager.scale_list = CollectionProperty(name = "Scale List", type=ScaleList)
-    bpy.types.WindowManager.scale_list_index = IntProperty()
+    
 
 def unregister():
     bpy.utils.unregister_class(FMR_UL_items)
