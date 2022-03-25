@@ -24,7 +24,8 @@ def register():
     bpy.types.WindowManager.scale_list = CollectionProperty(name = "Scale List", type=ScaleList)
     bpy.types.WindowManager.scale_list_index = IntProperty()
     bpy.types.WindowManager.bvh_files = CollectionProperty(name = "File Paths", type = fmr_files_ops.FileList)
-    bpy.types.WindowManager.bvh_dir = StringProperty()
+    bpy.types.WindowManager.bvh_files_index = IntProperty()
+    bpy.types.WindowManager.char_file_path = StringProperty(subtype='FILE_PATH')
 
     
 def unregister():

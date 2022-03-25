@@ -20,7 +20,7 @@ class FMR_OT_ChoosePerforcePath_OP(Operator, ImportHelper):
             bpy.ops.settings.choose_perforce_path('INVOKE_DEFAULT')
         else:
             self.report({'INFO'}, "Perforce Directory set!")
-            bpy.ops.settings.test()
+            
 
         return {'FINISHED'}
 

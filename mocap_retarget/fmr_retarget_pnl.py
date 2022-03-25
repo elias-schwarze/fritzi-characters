@@ -3,6 +3,7 @@ from bpy.props import PointerProperty, BoolProperty, FloatProperty, CollectionPr
 from bpy.types import PropertyGroup, UIList
 from . import fmr_settings
 from . import fmr_scale_list_io
+import os
 
 
 class FMR_PT_Retarget_pnl(bpy.types.Panel):
@@ -19,6 +20,7 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
         
         settings = fmr_settings.Settings()
 
+        perforce_path = settings.get_setting("perforce_path")
         
 
 
@@ -27,10 +29,14 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
         layout = self.layout
 
         scale_list = fmr_scale_list_io.ScaleListDict(wm)
-        #if settings.get_setting("perforce_path") is "":
-        #    layout.label(text="No Path")
-
-        layout.operator("settings.test")
+        
+        if not (os.path.isdir(perforce_path) and os.path.isdir(os.path.join(perforce_path, "080_scenes")) and os.path.isdir(os.path.join(perforce_path, "075_capture"))):
+            layout.label("No vaild Perforce Path set.")
+            layout.label("Please set the Perforce Path")
+            layout.operator("settings.choose_perforce_path")
+        else:
+            layout.operator("retarget.mocap_batch_retarget")
+        
         op = layout.operator("retarget.select_bvhs")
         op.filepath = settings.get_setting("perforce_path")
 
@@ -43,6 +49,44 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
         layout.operator("object.mocap_retarget")
 
         #layout.
+
+class FMR_PT_BatchRetarget_pnl(bpy.types.Panel):
+    bl_label = "Batch Retarget"
+    bl_category = "FCHAR"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_parent_id = "FMR_PT_Retarget_pnl"
+
+    def draw(self, context):
+        wm = context.window_manager
+        scene = context.scene
+        layout = self.layout
+        settings = fmr_settings.Settings()
+
+        perforce_path = settings.get_setting("perforce_path")
+
+        if not (os.path.isdir(perforce_path) and os.path.isdir(os.path.join(perforce_path, "080_scenes")) and os.path.isdir(os.path.join(perforce_path, "075_capture"))):
+            layout.label("No vaild Perforce Path set.")
+            layout.label("Please set the Perforce Path")
+            layout.operator("settings.choose_perforce_path")
+        else:
+            op = layout.operator("retarget.select_bvhs")
+            op.filepath = perforce_path
+            op = layout.operator("retarget.select_char_file")
+            op.filepath = perforce_path
+
+            if wm.bvh_files:
+                row = layout.row()
+                row.template_list("FMR_UL_BVHList_items", "", wm, "bvh_files", wm, "bvh_files_index", rows = 3)
+
+                column = row.column(align=True)
+                column.operator("object.add_bvh", icon='ADD', text="")
+                column.operator("retarget.remove_bvh", icon='REMOVE', text="")
+            
+            layout.prop_search(wm, "target_rig_pointer", scene, "objects", text="Target Armature")
+
+            layout.operator("retarget.mocap_batch_retarget")
+
 
 class FMR_PT_ScaleList_pnl(bpy.types.Panel):
     bl_label = "Scale List"
@@ -57,7 +101,7 @@ class FMR_PT_ScaleList_pnl(bpy.types.Panel):
 
         #Create a scale list here
         row = layout.row()
-        row.template_list("FMR_UL_items", "", wm, "scale_list", wm, "scale_list_index", rows=3)
+        row.template_list("FMR_UL_ScaleList_items", "", wm, "scale_list", wm, "scale_list_index", rows=3)
         
         column = row.column(align=True)
         
@@ -89,7 +133,7 @@ class ScaleList(PropertyGroup):
     scale : FloatProperty(default=1.0, update=ScaleUpdate)
     character : StringProperty(default="", update=NameUpdate)
 
-class FMR_UL_items(UIList):
+class FMR_UL_ScaleList_items(UIList):
     @classmethod
     def poll(cls, context):
         return True
@@ -106,6 +150,15 @@ class FMR_UL_items(UIList):
         pass
 
 
+class FMR_UL_BVHList_items(UIList):
+    @classmethod
+    def poll(cls, context):
+        return True
+
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        row = layout.row()
+        row.prop(item, "name", text="", emboss=False, translate=False)
+        row.enabled = False
 
 
 def update_source_rig(self, context):
@@ -131,16 +184,23 @@ def update_target_rig(self, context):
 
 def register():
     
+    
     bpy.utils.register_class(FMR_PT_Retarget_pnl)
+    bpy.utils.register_class(FMR_PT_BatchRetarget_pnl)
+    bpy.utils.register_class(FMR_UL_BVHList_items)
     bpy.utils.register_class(FMR_PT_ScaleList_pnl)
     bpy.utils.register_class(ScaleList)
-    bpy.utils.register_class(FMR_UL_items)
+    bpy.utils.register_class(FMR_UL_ScaleList_items)
     
 
 def unregister():
-    bpy.utils.unregister_class(FMR_UL_items)
+    bpy.utils.unregister_class(FMR_UL_ScaleList_items)
     bpy.utils.unregister_class(ScaleList)
     bpy.utils.unregister_class(FMR_PT_ScaleList_pnl)
+    bpy.utils.unregister_class(FMR_UL_BVHList_items)
+    bpy.utils.unregister_class(FMR_PT_BatchRetarget_pnl)
     bpy.utils.unregister_class(FMR_PT_Retarget_pnl)
+    
+
 
 
