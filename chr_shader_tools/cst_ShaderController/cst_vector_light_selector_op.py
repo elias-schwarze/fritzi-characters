@@ -28,6 +28,8 @@ class CST_OT_VectorLightSelector_OP(Operator):
         
         lightEmpty = wm.light_empty
         characterCollection = wm.character_collection
+        characterRig = wm.character_rig
+        characterRigBone = wm.character_rig_bone
 
         if lightEmpty is None:
             self.report({'WARNING'}, "Please select the Empty!")
@@ -36,6 +38,22 @@ class CST_OT_VectorLightSelector_OP(Operator):
         if characterCollection is None:
             self.report({'WARNING'}, "Please select a collection with the Character!")
             return {'CANCELLED'}
+
+        if characterRig:
+            constraint = lightEmpty.constraints.new(type='CHILD_OF')
+            constraint.target = characterRig
+            if characterRigBone:
+                constraint.subtarget = characterRigBone
+
+            constraint.use_rotation_x = False
+            constraint.use_rotation_y = False
+            constraint.use_rotation_z = False
+            constraint.use_scale_x = False
+            constraint.use_scale_y = False
+            constraint.use_scale_z = False
+            constraint.set_inverse_pending = True
+
+
 
         self.add_light_drivers(characterCollection, lightEmpty)
         

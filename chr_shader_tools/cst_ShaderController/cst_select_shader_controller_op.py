@@ -28,6 +28,8 @@ class CST_OT_selectShaderController_OP(Operator):
 
         controllerEmpty = wm.controller_empty
         characterCollection = wm.character_collection
+        characterRig = wm.character_rig
+        characterRigBone = wm.character_rig_bone
 
         if controllerEmpty is None:
             self.report({'WARNING'}, "Please select the Controller!")
@@ -36,6 +38,21 @@ class CST_OT_selectShaderController_OP(Operator):
         if characterCollection is None:
             self.report({'WARNING'}, "Please select a collection with the Character!")
             return {'CANCELLED'}
+
+        if characterRig:
+            constraint = controllerEmpty.constraints.new(type='CHILD_OF')
+            constraint.target = characterRig
+            if characterRigBone:
+                constraint.subtarget = characterRigBone
+
+            constraint.use_rotation_x = False
+            constraint.use_rotation_y = False
+            constraint.use_rotation_z = False
+            constraint.use_scale_x = False
+            constraint.use_scale_y = False
+            constraint.use_scale_z = False
+            constraint.set_inverse_pending = True
+        
 
         self.search_collection(characterCollection, controllerEmpty)
 
@@ -102,6 +119,14 @@ class CST_OT_selectShaderController_OP(Operator):
             default=(1.0, 1.0, 1.0, 0.0)
         )
 
+
+        object["shadow_tint"] = (1.0, 1.0, 1.0, 0.0)
+
+        ui_data.update(
+            description="Tint Shadow Color and Tint amount",
+            default=(1.0, 1.0, 1.0, 0.0)
+        )
+
     def add_drivers(self, object, controller):
         """Adds the drivers from the custom props of the controller to the given objects custom props"""
 
@@ -123,6 +148,9 @@ class CST_OT_selectShaderController_OP(Operator):
 
         add_driver_color_simple(controller, '["main_color_tint"]', object, '["main_tint"]')
         add_driver_float_simple(controller, '["main_color_tint_amount"]', object, '["main_tint"]', 3)
+
+        add_driver_color_simple(controller, '["shadow_color_tint"]', object, '["shadow_tint"]')
+        add_driver_float_simple(controller, '["shadow_color_tint_amount"]', object, '["shadow_tint"]', 3)
 
 
 
