@@ -7,9 +7,9 @@ class ScaleListDict(object):
     _scale_list_path = os.path.join(os.path.dirname(__file__), "fmr_scale_list.json")
     _scale_list = {}
     _default_scale_list = {
-        "Fritzi" : 0.4,
-        "Hanno" : 0.3,
-        "Kai" : 0.35
+        "fritzi" : 0.4,
+        "hanno" : 0.3,
+        "kai" : 0.35
     }
     _wm = None
     loading = True
@@ -31,19 +31,23 @@ class ScaleListDict(object):
                 f = open(path, 'r')
                 self._scale_list = json.load(f)
                 f.close()
-
+                if not self._scale_list:
+                    self._scale_list = self._default_scale_list
+                    self.write_scale_list(self._scale_list_path)
 
             else:
                 self._scale_list = self._default_scale_list
                 self.write_scale_list(self._scale_list_path)
 
-            self._push_to_properties()
+            
             
         
         except Exception:
+            self._scale_list = self._default_scale_list
+            self.write_scale_list(self._scale_list_path)
             
-            pass
         finally:
+            self._push_to_properties()
             self.loading = False
 
 
@@ -94,6 +98,7 @@ class ScaleListDict(object):
                 return None
 
     def set_scale(self, key, value):
+        key = key.lower()
         self._scale_list[key] = value
         if not self.loading:
            self._push_to_properties()
@@ -117,5 +122,6 @@ class ScaleListDict(object):
             length = len(scale_props)
             if length > 0:
                 for i in range(length):
-                    self._scale_list[scale_props[i].character] = scale_props[i].scale
+                    self._scale_list[scale_props[i].character.lower()] = scale_props[i].scale
             self.write_scale_list(self._scale_list_path)
+            self._push_to_properties()

@@ -1,6 +1,8 @@
+from unicodedata import name
 import bpy
 import os
 from . import fmr_settings
+from . import fmr_scale_list_io
 
 import re
 
@@ -16,10 +18,14 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
         return context.window_manager.bvh_files
 
     def execute(self, context):
-        settings = fmr_settings.Settings()
-        filepath = settings.get_setting("perforce_path")
 
         wm = context.window_manager
+        settings = fmr_settings.Settings()
+        scales = fmr_scale_list_io.ScaleListDict(wm)
+        filepath = settings.get_setting("perforce_path")
+
+
+        scene = context.scene
 
         if not (os.path.isdir(filepath) and os.path.isdir(os.path.join(filepath, "080_scenes")) and os.path.isdir(os.path.join(filepath, "075_capture"))):
             
@@ -36,21 +42,41 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
                 bpy.ops.retarget.select_bvhs('INVOKE_DEFAULT', filepath = settings.get_setting("perforce_path"))
             else:
                 print("Files found")
+
+                char_file_basename = os.path.basename(bpy.data.filepath)
+
                 for bvh in wm.bvh_files:
 
                     #Create the filestructure
                     dir_path = get_layout_dir(filepath, bvh.name)
                     if not os.path.isdir(dir_path):
                         os.makedirs(dir_path)
-                    filename = get_file_name(os.path.basename(wm.char_file_path), bvh.name)
+                    filename = get_file_name(char_file_basename, bvh.name)
                     
                     #Save the File with proper name into the file structure
                     bpy.ops.wm.save_as_mainfile(filepath=os.path.join(dir_path, filename))
 
                     #import the bvh (Scaling has to be fetched from scale List!)
-                    bpy.ops.import_anim.bvh(filepath=bvh.filepath, global_scale=1.0)
+                    name = char_file_basename.split("_")[2].lower()
+                    scale = scales.get_scale(name)
+                    do_auto_scale = False
+                    if not scale:
+                        scale = 1.0
+                        do_auto_scale = True
+
+                    bpy.ops.import_anim.bvh(filepath=bvh.filepath, global_scale=scale)
+
+                    print(name)
+                    print(scale)
+                    print(do_auto_scale)
 
                     #retargeting here
+                    bvh_arma_name = bvh.name.split(".")[0]
+                    scene.source_rig = bvh_arma_name
+                    wm.source_rig_pointer = bpy.data.objects[bvh_arma_name]
+                    scene.target_rig = wm.target_rig_pointer.name
+                    
+                    retarget_mocap(context, do_auto_scale)
 
                     #save after retargeting
                     bpy.ops.wm.save_mainfile()
@@ -59,7 +85,14 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
                     # delete bvh
                     # remove retargeted bvh from list
                     # goto next bvh
-                    bpy.ops.ed.undo('EXEC_DEFAULT')
+                    action = bpy.data.actions.get(bvh_arma_name)
+                    bpy.data.actions.remove(action, do_unlink=True)
+                    action = bpy.data.actions.get(bvh_arma_name + "_remap")
+                    bpy.data.actions.remove(action, do_unlink=True)
+                    bvh_armature = bpy.data.objects[bvh_arma_name]
+                    bpy.data.objects.remove(bvh_armature, do_unlink=True)
+
+                    
 
             #after each retargeted bvh delete it from the bvh list (Maybe show bvh list in UI)
             #
@@ -91,72 +124,108 @@ class FMR_OT_MocapRetarget_OP(Operator):
         return False
 
     def execute(self, context):
-        
-        self.settings = fmr_settings.Settings()
         wm = context.window_manager
-
-        # Scale Source Mesh to Target Mesh
-        if (wm.auto_scale_check):
-            bpy.ops.arp.auto_scale()
-        
-
-        # Build Bone List. This will then be overwritten with custom Bone Map
-        
-        bpy.ops.arp.build_bones_list()
-
-        # Import custom Bone List
-  
-        self.load_bone_map(context, self.settings.get_setting("bone_map_path"))
-
-
-        # Redefine Rest Pose
-        bpy.ops.arp.redefine_rest_pose(preserve=True, rest_pose='REST')
-
-        self.select_rest_bones(context)
-        
-
-        bpy.ops.arp.copy_bone_rest()
-        bpy.ops.arp.save_pose_rest()
-        
-
-        # Retarget
-        start, end = context.window_manager.source_rig_pointer.animation_data.action.frame_range
-        bpy.ops.arp.retarget(frame_start=start, frame_end=end, interpolation_type='BEZIER', handle_type='AUTO_CLAMPED')
+        retarget_mocap(context, wm.auto_scale_check)
+        #self.settings = fmr_settings.Settings()
+        #wm = context.window_manager
+#
+        ## Scale Source Mesh to Target Mesh
+        #if (wm.auto_scale_check):
+        #    bpy.ops.arp.auto_scale()
+        #
+#
+        ## Build Bone List. This will then be overwritten with custom Bone Map
+        #
+        #bpy.ops.arp.build_bones_list()
+#
+        ## Import custom Bone List
+  #
+        #self.load_bone_map(context, self.settings.get_setting("bone_map_path"))
+#
+#
+        ## Redefine Rest Pose
+        #bpy.ops.arp.redefine_rest_pose(preserve=True, rest_pose='REST')
+#
+        #self.select_rest_bones(context)
+        #
+#
+        #bpy.ops.arp.copy_bone_rest()
+        #bpy.ops.arp.save_pose_rest()
+        #
+#
+        ## Retarget
+        #start, end = context.window_manager.source_rig_pointer.animation_data.action.frame_range
+        #bpy.ops.arp.retarget(frame_start=start, frame_end=end, interpolation_type='BEZIER', handle_type='AUTO_CLAMPED')
 
 
         self.report({'INFO'}, "Finished Retargeting Mocap!")
         return {'FINISHED'}
 
 
-    def load_bone_map(self, context, bone_map_path):
 
+
+def load_bone_map(context, bone_map_path, settings):
+
+    try:
+        bpy.ops.arp.import_config(filepath=bone_map_path)
+            
+    except Exception:
+        bone_map_path = os.path.join(os.path.join(os.path.dirname(__file__),"BoneMap"),"IKlegFKarm.bmap")
+        settings.set_setting("bone_map_path", bone_map_path)
+            
         try:
             bpy.ops.arp.import_config(filepath=bone_map_path)
-            
+
         except Exception:
-            bone_map_path = os.path.join(os.path.join(os.path.dirname(__file__),"BoneMap"),"IKlegFKarm.bmap")
-            self.settings.set_setting("bone_map_path", bone_map_path)
-            
-            try:
-                bpy.ops.arp.import_config(filepath=bone_map_path)
+            return False
 
-            except Exception:
-                return False
-
-        return True
+    return True
 
     
 
-    def select_rest_bones(self, context):
-        wm = context.window_manager
+def select_rest_bones(context):
+    wm = context.window_manager
+    scene = bpy.context.scene
+    
+    for myBone in bpy.data.objects[scene.source_rig].pose.bones:
+        myBone.bone.select = True
 
-        for myBone in wm.source_rig_pointer.pose.bones:
-            myBone.bone.select = True
+    myBone = bpy.data.objects[scene.source_rig].pose.bones["RightFoot"]
+    myBone.bone.select = False
+    myBone = bpy.data.objects[scene.source_rig].pose.bones["LeftFoot"]
+    myBone.bone.select = False
 
-        myBone = wm.source_rig_pointer.pose.bones["RightFoot"]
-        myBone.bone.select = False
-        myBone = wm.source_rig_pointer.pose.bones["LeftFoot"]
-        myBone.bone.select = False
+def retarget_mocap(context, do_auto_scale=True):
+
+    settings = fmr_settings.Settings()
+
+    wm = context.window_manager
+
+    # Scale Source Mesh to Target Mesh
+    if do_auto_scale:
+        bpy.ops.arp.auto_scale()
+    
+    # Build Bone List. This will then be overwritten with custom Bone Map
+    
+    bpy.ops.arp.build_bones_list()
+
+    # Import custom Bone List
+
+    load_bone_map(context, settings.get_setting("bone_map_path"), settings)
+
+    # Redefine Rest Pose
+
+    bpy.ops.arp.redefine_rest_pose(preserve=True, rest_pose='REST')
+    select_rest_bones(context)
+    
+    bpy.ops.arp.copy_bone_rest()
+    bpy.ops.arp.save_pose_rest()
+    
+    # Retarget
+    start, end = context.window_manager.source_rig_pointer.animation_data.action.frame_range
+    bpy.ops.arp.retarget(frame_start=start, frame_end=end, interpolation_type='BEZIER', handle_type='AUTO_CLAMPED')
+    return True
+
 
 def get_layout_dir(perforce_path, bvh_file):
     dir_path = perforce_path
