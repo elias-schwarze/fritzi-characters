@@ -30,7 +30,7 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
 
         scale_list = fmr_scale_list_io.ScaleListDict(wm)
         
-        if not (os.path.isdir(perforce_path) and os.path.isdir(os.path.join(perforce_path, "080_scenes")) and os.path.isdir(os.path.join(perforce_path, "075_capture"))):
+        """ if not (os.path.isdir(perforce_path) and os.path.isdir(os.path.join(perforce_path, "080_scenes")) and os.path.isdir(os.path.join(perforce_path, "075_capture"))):
             layout.label("No vaild Perforce Path set.")
             layout.label("Please set the Perforce Path")
             layout.operator("settings.choose_perforce_path")
@@ -38,7 +38,7 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
             layout.operator("retarget.mocap_batch_retarget")
         
         op = layout.operator("retarget.select_bvhs")
-        op.filepath = settings.get_setting("perforce_path")
+        op.filepath = settings.get_setting("perforce_path") """
 
         layout.prop_search(wm, "source_rig_pointer", scene, "objects", text="Source Armature")
         layout.prop_search(wm, "target_rig_pointer", scene, "objects", text="Target Armature")
