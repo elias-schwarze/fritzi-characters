@@ -11,6 +11,7 @@ class FMR_OT_ImportScaleList_OP(Operator, ImportHelper):
     bl_options = {"REGISTER", "UNDO"}
 
     filter_glob: StringProperty(default='*.json', options={'HIDDEN'})
+    filename_ext: StringProperty(default=".json")
 
     def execute(self, context):
         wm = context.window_manager
@@ -18,7 +19,7 @@ class FMR_OT_ImportScaleList_OP(Operator, ImportHelper):
         item.name = "Fritzi"
         item.scale = 0.4
 
-        scale_list_io = ScaleListDict(wm)
+        scale_list_io = ScaleListDict()
 
         scale_list_io.load_scale_list(self.filepath)
 
@@ -41,7 +42,7 @@ class FMR_OT_ExportScaleList_OP(Operator, ExportHelper):
 
     def execute(self, context):
         wm = context.window_manager
-        scale_list_io = ScaleListDict(wm)
+        scale_list_io = ScaleListDict()
 
         scale_list_io.write_scale_list(self.filepath)
         print(self.filepath)
@@ -68,7 +69,7 @@ class FMR_OT_AddCharacterScale_OP(Operator):
         layout.prop(self,"char_scale")
 
     def execute(self, context):
-        scale_list = ScaleListDict(context.window_manager)
+        scale_list = ScaleListDict()
         scale_list.set_scale(self.char_name, self.char_scale)
         return {'FINISHED'}
 
@@ -85,7 +86,7 @@ class FMR_OT_RemoveCharacterScale_OP(Operator):
     def execute(self, context):
         wm = context.window_manager
         scale_list_UI = wm.scale_list
-        scale_list = ScaleListDict(wm)
+        scale_list = ScaleListDict()
         index = wm.scale_list_index
         name = scale_list_UI[index].character
         scale_list.remove_scale(key=name)

@@ -21,7 +21,7 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
 
         wm = context.window_manager
         settings = fmr_settings.Settings()
-        scales = fmr_scale_list_io.ScaleListDict(wm)
+        scales = fmr_scale_list_io.ScaleListDict()
         filepath = settings.get_setting("perforce_path")
 
 
@@ -63,8 +63,10 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
                     if not scale:
                         scale = 1.0
                         do_auto_scale = True
+                    
+                    bpy.context.view_layer.active_layer_collection = bpy.context.view_layer.layer_collection
 
-                    bpy.ops.import_anim.bvh(filepath=bvh.filepath, global_scale=scale)
+                    bpy.ops.import_anim.bvh(filepath=bvh.filepath, global_scale=scale, use_fps_scale=True, update_scene_duration=True)
 
                     print(name)
                     print(scale)
@@ -91,6 +93,7 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
                     bpy.data.actions.remove(action, do_unlink=True)
                     bvh_armature = bpy.data.objects[bvh_arma_name]
                     bpy.data.objects.remove(bvh_armature, do_unlink=True)
+                    
 
                     
 

@@ -39,7 +39,7 @@ class FMR_PT_SingleRetarget_pnl(bpy.types.Panel):
         wm = context.window_manager
         layout = self.layout
 
-        scale_list = fmr_scale_list_io.ScaleListDict(wm)
+        scale_list = fmr_scale_list_io.ScaleListDict()
         
         
 
@@ -72,7 +72,8 @@ class FMR_PT_BatchRetarget_pnl(bpy.types.Panel):
             layout.label(text="Please set the Perforce Path")
             layout.operator("settings.choose_perforce_path")
         else:
-            
+            op = layout.operator("retarget.select_char_file")
+            op.filepath = perforce_path
             op = layout.operator("retarget.select_bvhs")
             op.filepath = perforce_path
             
@@ -105,6 +106,9 @@ class FMR_PT_ScaleList_pnl(bpy.types.Panel):
         row = layout.row()
         row.template_list("FMR_UL_ScaleList_items", "", wm, "scale_list", wm, "scale_list_index", rows=3)
         
+        scale_list = fmr_scale_list_io.ScaleListDict()
+        scale_list.push_to_properties()
+
         column = row.column(align=True)
         
         
@@ -115,19 +119,21 @@ class FMR_PT_ScaleList_pnl(bpy.types.Panel):
         row.operator("file.import_scale_list")
         row.operator("file.export_scale_list")
 
+
+
 def ScaleUpdate(self, context):
-    scale_list = fmr_scale_list_io.ScaleListDict(None)
+    scale_list = fmr_scale_list_io.ScaleListDict()
     
-    print("scaleupdate")
-    print(self.name)
-    print(self.scale)
+    #print("scaleupdate")
+    #print(self.name)
+    #print(self.scale)
     scale_list.set_scale(self.name, self.scale)
     
 
 def NameUpdate(self, context):
-    scale_list = fmr_scale_list_io.ScaleListDict(None)
-    print("Name")
-    print(self.character)
+    scale_list = fmr_scale_list_io.ScaleListDict()
+    #print("Name")
+    #print(self.character)
 
     scale_list.fetch_properties()
 
@@ -149,6 +155,7 @@ class FMR_UL_ScaleList_items(UIList):
 
         
     def invoke(self, context, event):
+        
         pass
 
 
