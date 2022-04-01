@@ -54,7 +54,17 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
                     filename = get_file_name(char_file_basename, bvh.name)
                     
                     #Save the File with proper name into the file structure
-                    bpy.ops.wm.save_as_mainfile(filepath=os.path.join(dir_path, filename))
+                    #Check if file already exists and save with _### suffix (001, 002. etc) if it does
+                    blendpath = os.path.join(dir_path, filename)
+                    suffix = 1
+                    while os.path.isfile(blendpath):
+                        filename = get_file_name(char_file_basename, bvh.name, suffix= '_' + str(suffix))
+                        
+                        blendpath = os.path.join(dir_path, filename)
+                        suffix+=1
+
+
+                    bpy.ops.wm.save_as_mainfile(filepath=blendpath)
 
                     #import the bvh (Scaling has to be fetched from scale List!)
                     name = char_file_basename.split("_")[2].lower()
@@ -242,7 +252,7 @@ def get_layout_dir(perforce_path, bvh_file):
     return dir_path
    
 
-def get_file_name(char_file, bvh_file):
+def get_file_name(char_file, bvh_file, suffix = ""):
     char_parts = char_file.split("_")
     filename = ""
     for i in range(0,3):
@@ -252,6 +262,7 @@ def get_file_name(char_file, bvh_file):
     filename = filename + "_p" + get_part(bvh_file)
     filename = filename + "_m" + get_mocap(bvh_file)
     filename = filename + "_t" + get_take(bvh_file)
+    filename = filename + suffix
     filename = filename + ".blend"
     
     return filename
