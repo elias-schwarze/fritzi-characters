@@ -18,6 +18,17 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
 
     def draw(self, context):
         
+        pass
+
+class FMR_PT_SingleRetarget_pnl(bpy.types.Panel):
+    bl_label = "Single Retarget"
+    bl_category = "FCHAR"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_parent_id = "FMR_PT_Retarget_pnl"
+
+    def draw(self, context):
+        
         settings = fmr_settings.Settings()
 
         perforce_path = settings.get_setting("perforce_path")
@@ -30,25 +41,16 @@ class FMR_PT_Retarget_pnl(bpy.types.Panel):
 
         scale_list = fmr_scale_list_io.ScaleListDict(wm)
         
-        """ if not (os.path.isdir(perforce_path) and os.path.isdir(os.path.join(perforce_path, "080_scenes")) and os.path.isdir(os.path.join(perforce_path, "075_capture"))):
-            layout.label("No vaild Perforce Path set.")
-            layout.label("Please set the Perforce Path")
-            layout.operator("settings.choose_perforce_path")
-        else:
-            layout.operator("retarget.mocap_batch_retarget")
         
-        op = layout.operator("retarget.select_bvhs")
-        op.filepath = settings.get_setting("perforce_path") """
 
         layout.prop_search(wm, "source_rig_pointer", scene, "objects", text="Source Armature")
         layout.prop_search(wm, "target_rig_pointer", scene, "objects", text="Target Armature")
         layout.prop(wm, "auto_scale_check")
-        #layout.prop_search(scene, "source_rig", scene, "objects", text="Test: Source Rig ARP")
-        #layout.prop_search(scene, "target_rig", scene, "objects", text="Test: Target Rig ARP")
+        
 
         layout.operator("object.mocap_retarget")
 
-        #layout.
+        
 
 class FMR_PT_BatchRetarget_pnl(bpy.types.Panel):
     bl_label = "Batch Retarget"
@@ -70,10 +72,10 @@ class FMR_PT_BatchRetarget_pnl(bpy.types.Panel):
             layout.label("Please set the Perforce Path")
             layout.operator("settings.choose_perforce_path")
         else:
+            
             op = layout.operator("retarget.select_bvhs")
             op.filepath = perforce_path
-            op = layout.operator("retarget.select_char_file")
-            op.filepath = perforce_path
+            
 
             if wm.bvh_files:
                 row = layout.row()
@@ -186,6 +188,7 @@ def register():
     
     
     bpy.utils.register_class(FMR_PT_Retarget_pnl)
+    bpy.utils.register_class(FMR_PT_SingleRetarget_pnl)
     bpy.utils.register_class(FMR_PT_BatchRetarget_pnl)
     bpy.utils.register_class(FMR_UL_BVHList_items)
     bpy.utils.register_class(FMR_PT_ScaleList_pnl)
@@ -199,6 +202,7 @@ def unregister():
     bpy.utils.unregister_class(FMR_PT_ScaleList_pnl)
     bpy.utils.unregister_class(FMR_UL_BVHList_items)
     bpy.utils.unregister_class(FMR_PT_BatchRetarget_pnl)
+    bpy.utils.unregister_class(FMR_PT_SingleRetarget_pnl)
     bpy.utils.unregister_class(FMR_PT_Retarget_pnl)
     
 

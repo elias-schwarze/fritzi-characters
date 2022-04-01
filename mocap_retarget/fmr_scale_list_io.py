@@ -7,9 +7,8 @@ class ScaleListDict(object):
     _scale_list_path = os.path.join(os.path.dirname(__file__), "fmr_scale_list.json")
     _scale_list = {}
     _default_scale_list = {
-        "fritzi" : 0.4,
-        "hanno" : 0.3,
-        "kai" : 0.35
+        "hanno" : 0.52,
+        "sophie" : 0.86
     }
     _wm = None
     loading = True

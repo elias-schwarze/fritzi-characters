@@ -97,7 +97,7 @@ class FMR_OT_SelectCharacter_OP(Operator, ImportHelper):
 
         if file and ext == '.blend':
             wm.char_file_path = path
-            #bpy.ops.wm.open_mainfile(filepath=path)
+            bpy.ops.wm.open_mainfile(filepath=path)
 
 
         return {'FINISHED'}
