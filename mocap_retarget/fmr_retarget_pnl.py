@@ -68,8 +68,8 @@ class FMR_PT_BatchRetarget_pnl(bpy.types.Panel):
         perforce_path = settings.get_setting("perforce_path")
 
         if not (os.path.isdir(perforce_path) and os.path.isdir(os.path.join(perforce_path, "080_scenes")) and os.path.isdir(os.path.join(perforce_path, "075_capture"))):
-            layout.label("No vaild Perforce Path set.")
-            layout.label("Please set the Perforce Path")
+            layout.label(text="No vaild Perforce Path set.")
+            layout.label(text="Please set the Perforce Path")
             layout.operator("settings.choose_perforce_path")
         else:
             
