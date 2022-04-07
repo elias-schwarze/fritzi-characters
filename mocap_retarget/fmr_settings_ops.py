@@ -1,10 +1,8 @@
-from ast import Return
 import bpy
 from bpy.types import Operator
 from bpy_extras.io_utils import ImportHelper
 from .fmr_settings import Settings
 import os
-import time
 
 
 class FMR_OT_ChoosePerforcePath_OP(Operator, ImportHelper):

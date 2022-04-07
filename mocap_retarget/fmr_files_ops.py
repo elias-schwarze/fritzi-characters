@@ -9,8 +9,10 @@ from .fmr_settings import Settings
 from bpy_extras.io_utils import ImportHelper
 
 class FMR_OT_SelectBVHs_OP(Operator, ImportHelper):
+    """Operator which opens a file dialog to select multiple bvhs to be retargeted."""
     bl_idname = "retarget.select_bvhs"
     bl_label = "Select BVHs"
+    bl_description = "Select multiple bvhs to be retargeted"
     files: CollectionProperty(name="File Path", type=OperatorFileListElement)
     directory:  StringProperty(subtype='DIR_PATH')
 
@@ -32,6 +34,7 @@ class FMR_OT_SelectBVHs_OP(Operator, ImportHelper):
         return {'FINISHED'}
 
 class FileList(PropertyGroup):
+    """A Propertygroup which can hold the Name of a bvh file and the Filepath to it."""
     name : StringProperty()
     filepath : StringProperty()
 

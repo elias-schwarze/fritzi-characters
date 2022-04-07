@@ -3,7 +3,7 @@ import os
 
 
 class Settings(object):
-
+    """A Singleton class which stores all the custom settings for the FCHAR MoCap retarget AddOn and keeps them synced with a json."""
     _instance = None
     _settings_path = os.path.join(
                 os.path.dirname(__file__),
@@ -22,7 +22,7 @@ class Settings(object):
         return cls._instance
 
     def _load_settings(self):
-
+        """Loads the Settings. If no settings JSON is found, uses the default settings and writes them to disk as JSON."""
         try:
             if os.path.isfile(self._settings_path):
                 f = open(self._settings_path, 'r')
@@ -39,6 +39,7 @@ class Settings(object):
 
 
     def _write_settings(self):
+        """Writes the SettingsDict to disk as JSON"""
         
         try:
             with open(self._settings_path, 'w') as f:
@@ -48,6 +49,8 @@ class Settings(object):
             pass
 
     def get_setting(self, key):
+        """Gets a Setting from the Dict. If the Setting is not in the Dict, it tries to find it in the default settings.
+        If it is not in either retuns None."""
         if key in self._settings:
            return self._settings[key]
         else:
@@ -59,5 +62,6 @@ class Settings(object):
                 return None
 
     def set_setting(self, key, value):
+        """Sets a Setting in the dict and updates the Json afterwards."""
         self._settings[key] = value
         self._write_settings()

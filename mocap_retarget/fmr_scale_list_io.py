@@ -3,6 +3,7 @@ import os
 import bpy
 
 class ScaleListDict(object):
+    """A Singleton class which stores all the custom scalings for characters and keeps them synced with a json."""
     _instance = None
     _scale_list_path = os.path.join(os.path.dirname(__file__), "fmr_scale_list.json")
     _scale_list = {}
@@ -30,6 +31,9 @@ class ScaleListDict(object):
         return cls._instance
 
     def load_scale_list(self, path):
+        """Loads the Scale List JSON and pushes it to the UI.
+        Sets the loading flag, so UI updates do not trigger infinite recursion.
+        If no Scale List JSON is found, the default scale list gets used and written to disk."""
         self.loading = True
         try:
             if os.path.isfile(path):
@@ -58,25 +62,22 @@ class ScaleListDict(object):
 
 
     def write_scale_list(self, path):
-        print("writing")
+        """ Writes the Scale List to disk as JSON."""
+        # print("writing")
         try:
             with open(path, 'w') as f:
                 data_out = json.dump(self._scale_list, f, indent=4, sort_keys=True)
-                #f.write(data_out)
-                print("written")
+                
+                # print("written")
         except Exception as e:
             print("exception")
             print(e)
             pass
 
-    def _update_property(self, key, value):
-        length = len(bpy.context.window_manager.scale_list)
-        if length > 0:
-            for i in range(length):
-                #probably not needed
-                return
+    
 
     def push_to_properties(self):
+        """ Pushes all scales and character Names to the UI. Sets the Loading flag while doing it, so UI Updates do not cause infinite recursion."""
         self.loading = True
         scale_list_prop = bpy.context.window_manager.scale_list
         scale_list_prop.clear()
@@ -92,6 +93,9 @@ class ScaleListDict(object):
 
 
     def get_scale(self, key):
+        """Returns the scale of a given character. If the Character is not in the scale list dict, searches for it in the default values.
+        If it is not in there either, returns None"""
+        
         if key in self._scale_list:
             return self._scale_list[key]
         else:
@@ -103,6 +107,7 @@ class ScaleListDict(object):
                 return None
 
     def set_scale(self, key, value):
+        """Sets a scale in the scale List Dict."""
         if not self.loading:
             key = key.lower()
             self._scale_list[key] = value
@@ -111,6 +116,7 @@ class ScaleListDict(object):
             self.write_scale_list(self._scale_list_path)
 
     def remove_scale(self, key):
+        """Removes a Character Scaling from the scale list dict if it exists."""
         if key in self._scale_list:
             del self._scale_list[key]
 
@@ -121,7 +127,8 @@ class ScaleListDict(object):
 
 
     def fetch_properties(self):
-        
+        """ Gets the Scale List Properties from the UI and puts them in the scale list dict, if the Loading flag is not set.
+        Whis prevents infinite recursion, since the update methods in the ui also get triggered on API calls."""
         if not self.loading:
             self._scale_list.clear()
             scale_props = bpy.context.window_manager.scale_list

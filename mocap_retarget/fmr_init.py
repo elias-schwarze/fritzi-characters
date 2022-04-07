@@ -6,7 +6,6 @@ from . import fmr_scale_list_op
 from . import fmr_files_ops
 from . import fmr_settings_ops
 
-from bpy.types import OperatorFileListElement
 from bpy.props import BoolProperty, PointerProperty, CollectionProperty, IntProperty, StringProperty
 from .fmr_retarget_pnl import ScaleList, update_source_rig, update_target_rig
 

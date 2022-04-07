@@ -1,5 +1,5 @@
 import bpy
-from bpy.props import PointerProperty, BoolProperty, FloatProperty, CollectionProperty, IntProperty, StringProperty
+from bpy.props import FloatProperty, StringProperty
 from bpy.types import PropertyGroup, UIList
 from . import fmr_settings
 from . import fmr_scale_list_io
@@ -7,6 +7,7 @@ import os
 
 
 class FMR_PT_Retarget_pnl(bpy.types.Panel):
+    """Main Panel for the retarget Operators. Only is a container for subpanels"""
     bl_label = "MoCap Retarget"
     bl_category = "FCHAR"
     bl_space_type = "VIEW_3D"
@@ -67,6 +68,8 @@ class FMR_PT_BatchRetarget_pnl(bpy.types.Panel):
 
         perforce_path = settings.get_setting("perforce_path")
 
+        # checks if the perforce directory is correctly set: If it is, the retarget Operators are displayed.
+        # If not, an Operator to select the Perforce directory is displayed.
         if not (os.path.isdir(perforce_path) and os.path.isdir(os.path.join(perforce_path, "080_scenes")) and os.path.isdir(os.path.join(perforce_path, "075_capture"))):
             layout.label(text="No vaild Perforce Path set.")
             layout.label(text="Please set the Perforce Path")
@@ -102,10 +105,10 @@ class FMR_PT_ScaleList_pnl(bpy.types.Panel):
         wm = context.window_manager
         layout = self.layout
 
-        #Create a scale list here
         row = layout.row()
         row.template_list("FMR_UL_ScaleList_items", "", wm, "scale_list", wm, "scale_list_index", rows=3)
         
+        # Fetches the newest Scales every update.
         scale_list = fmr_scale_list_io.ScaleListDict()
         scale_list.push_to_properties()
 
@@ -122,6 +125,8 @@ class FMR_PT_ScaleList_pnl(bpy.types.Panel):
 
 
 def ScaleUpdate(self, context):
+    """This Method gets triggered if a Scaleproperty gets updated (Either by the User or through the API.
+    The new property value gets set in the Scale List Dict."""
     scale_list = fmr_scale_list_io.ScaleListDict()
     
     #print("scaleupdate")
@@ -131,6 +136,8 @@ def ScaleUpdate(self, context):
     
 
 def NameUpdate(self, context):
+    """ This Method gets triggered if the Name Property gets updated (Either by the User or through the API.
+    Triggers the Scale List Dict to fetch all new Properties from the UI"""
     scale_list = fmr_scale_list_io.ScaleListDict()
     #print("Name")
     #print(self.character)
@@ -138,6 +145,7 @@ def NameUpdate(self, context):
     scale_list.fetch_properties()
 
 class ScaleList(PropertyGroup):
+    """ A PropertyGroup which can Store the Name and Scale of characters"""
     scale : FloatProperty(default=1.0, update=ScaleUpdate)
     character : StringProperty(default="", update=NameUpdate)
 
@@ -171,6 +179,7 @@ class FMR_UL_BVHList_items(UIList):
 
 
 def update_source_rig(self, context):
+    """Updates the Source Rig Property of ARP if a new Source Rig is selected in FCHAR"""
     wm = context.window_manager
     scene = context.scene
     print("update")
@@ -181,6 +190,7 @@ def update_source_rig(self, context):
         scene.source_rig = ""
 
 def update_target_rig(self, context):
+    """Updates the Target Rig Property of ARP if a new Target Rig is selected in FCHAR"""
     wm = context.window_manager
     scene = context.scene
 
