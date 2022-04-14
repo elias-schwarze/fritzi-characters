@@ -92,8 +92,7 @@ def lerp_custom_curve(grease_pencil, distance, start, end):
         point.location[1] = value
         print(point.location[1])
     gp.grease_pencil_modifiers["Thickness"].curve.update()
-    gp.grease_pencil_modifiers["Thickness"].use_custom_curve = False
-    gp.grease_pencil_modifiers["Thickness"].use_custom_curve = True
+    
     #bpy.context.view_layer.update()
     return factor
 
