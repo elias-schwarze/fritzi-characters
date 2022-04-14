@@ -8,6 +8,7 @@ class FDG_PT_CameraUtilities_pnl(bpy.types.Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_options = {"DEFAULT_CLOSED"}
+    bl_parent_id = "FDG_PT_DriverGenerator_pnl"
 
     bpy.types.Scene.auto_link_toggle = BoolProperty(default=False)
 
@@ -17,7 +18,7 @@ class FDG_PT_CameraUtilities_pnl(bpy.types.Panel):
 
         box = layout.box()
 
-        box.prop_search(wm, "object2", context.scene,
+        box.prop_search(wm, "camera", context.scene,
                         "objects", text="Camera")
 
         box.operator("object.link_camera")

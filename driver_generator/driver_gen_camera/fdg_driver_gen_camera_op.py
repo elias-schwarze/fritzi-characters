@@ -22,7 +22,7 @@ class FDG_OT_LinkCamera_Op(Operator):
         
         wm = bpy.context.window_manager
 
-        cam = wm.object2
+        cam = wm.camera
 
         if cam is None:
             self.report({'WARNING'}, "Please select the Camera!")
@@ -75,11 +75,11 @@ def link_camera(camera):
     if camera is None:
         return
 
-    cam_empty = bpy.context.scene.objects.get(fdg_names.emtpy_cam)
+    cam_empty = bpy.context.scene.objects.get(fdg_names.empty_cam)
 
     if cam_empty is None:
             
-        cam_empty = bpy.data.objects.new(fdg_names.emtpy_cam, None)
+        cam_empty = bpy.data.objects.new(fdg_names.empty_cam, None)
 
         cam_empty.location = camera.location
 

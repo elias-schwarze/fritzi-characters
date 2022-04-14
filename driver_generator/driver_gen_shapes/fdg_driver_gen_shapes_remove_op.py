@@ -15,7 +15,7 @@ class FDG_OT_RemoveShapeDrivers_Op(Operator):
 
         collection = wm.face_collection
 
-        arma = wm.object1
+        arma = wm.character_rig
 
         if arma is None:
             self.report({'WARNING'}, "Please select the Armature!")
