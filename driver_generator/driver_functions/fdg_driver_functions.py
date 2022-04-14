@@ -77,11 +77,33 @@ def angle_x(head_loc_x, head_loc_y, head_loc_z, cam_loc_x, cam_loc_y, cam_loc_z,
 
     return angle
 
+def lerp_custom_curve(grease_pencil, distance, start, end):
+    factor = (distance - start) / (end - start)
+    factor = min(1.0, max(0.0, factor))
+    gp =  bpy.data.objects["c001_fritzi_GPencil_Main"]
+    gp.grease_pencil_modifiers["Thickness"].curve.update()
+    standard_values = [0.425, 0.61875, 1.0, 0.625, 0.425]
+    
+    for i in range (0,5):
+        point = gp.grease_pencil_modifiers["Thickness"].curve.curves[0].points[i]
+        #grease_pencil.grease_pencil_modifiers["Thickness"].curve.curves[0].points.new(0.25, 0.5)
+        value = standard_values[i] * (1.0-factor) + 1.0 * factor
+        print(value)
+        point.location[1] = value
+        print(point.location[1])
+    gp.grease_pencil_modifiers["Thickness"].curve.update()
+    gp.grease_pencil_modifiers["Thickness"].use_custom_curve = False
+    gp.grease_pencil_modifiers["Thickness"].use_custom_curve = True
+    #bpy.context.view_layer.update()
+    return factor
+
+
 
 @persistent
 def load_handler(dummy):
     bpy.app.driver_namespace["angle_x_func"] = angle_x
     bpy.app.driver_namespace["angle_z_func"] = angle_z
+    bpy.app.driver_namespace["lerp_custom_curve"] = lerp_custom_curve
 
 
 # Add functions defined in this script into the drivers namespace.
@@ -89,9 +111,11 @@ def register():
     append_function_unique(bpy.app.handlers.load_post, load_handler)
     bpy.app.driver_namespace["angle_x_func"] = angle_x
     bpy.app.driver_namespace["angle_z_func"] = angle_z
+    bpy.app.driver_namespace["lerp_custom_curve"] = lerp_custom_curve
 
 
 def unregister():
     # remove_function(bpy.app.handlers.load_post, load_handler)
     bpy.app.driver_namespace["angle_x_func"] = None
     bpy.app.driver_namespace["angle_z_func"] = None
+    bpy.app.driver_namespace["lerp_custom_curve"] = None

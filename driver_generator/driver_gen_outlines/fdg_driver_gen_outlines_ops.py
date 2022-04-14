@@ -35,6 +35,14 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         add_custom_property(gp, "Min Thickness", default=0.85, prop_min=0.0, prop_max=100.0, description="The minimum thickness multiplier applied at the minimum distance")
         add_custom_property(gp, "Max Thickness", default=1.8, prop_min=0.0, prop_max=100.0, description="The maximum thickness multiplier applied at the maximum distance.")
 
+        add_custom_property(gp, "Curve Start Distance", default=2.0, prop_min=-100.0, prop_max=100.0)
+        add_custom_property(gp, "Curve End Distance", default=4.0, prop_min=-100.0, prop_max=100.0)
+        
+        gp["Grease Pencil Name"] = gp.name
+
+        
+
+
         driver = gp.data.driver_add('pixel_factor').driver
 
         add_var(driver, gp, "min_thick", type='SINGLE_PROP', rna_data_path='["Min Thickness"]')
@@ -57,7 +65,7 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
 
         p2 = gp.grease_pencil_modifiers["Thickness"].curve.curves[0].points[2]
         print(p2.location[0])
-        driver = p2.driver_add('[location][0]').driver
+        #driver = p2.driver_add('[location][0]').driver
 
 
 
