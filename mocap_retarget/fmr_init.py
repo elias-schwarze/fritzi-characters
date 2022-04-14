@@ -18,6 +18,7 @@ def register():
     fmr_files_ops.register()
     fmr_settings_ops.register()
     bpy.types.WindowManager.auto_scale_check = BoolProperty(name = "Auto Scale", default = True)
+    bpy.types.WindowManager.crowd_check = BoolProperty(name = "Crowd Animation", default = False)
     bpy.types.WindowManager.source_rig_pointer = PointerProperty(name = "Source Armature", type = bpy.types.Object, update = update_source_rig)
     bpy.types.WindowManager.target_rig_pointer = PointerProperty(name = "Target Armature", type = bpy.types.Object, update = update_target_rig)
     bpy.types.WindowManager.scale_list = CollectionProperty(name = "Scale List", type=ScaleList)

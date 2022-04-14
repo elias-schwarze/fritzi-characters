@@ -49,14 +49,15 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
                     dir_path = get_layout_dir(filepath, bvh.name)
                     if not os.path.isdir(dir_path):
                         os.makedirs(dir_path)
-                    filename = get_file_name(char_file_basename, bvh.name)
+
+                    filename = get_file_name(char_file_basename, bvh.name, is_crowd=wm.crowd_check)
                     
                     # Save the File with proper name into the file structure
                     # Check if file already exists and save with _### suffix (001, 002. etc) if it does
                     blendpath = os.path.join(dir_path, filename)
                     suffix = 1
                     while os.path.isfile(blendpath):
-                        filename = get_file_name(char_file_basename, bvh.name, suffix= '_' + str(suffix))
+                        filename = get_file_name(char_file_basename, bvh.name, suffix= '_' + str(suffix), is_crowd=wm.crowd_check)
                         
                         blendpath = os.path.join(dir_path, filename)
                         suffix+=1
@@ -227,7 +228,7 @@ def get_layout_dir(perforce_path, bvh_file):
     return dir_path
    
 
-def get_file_name(char_file, bvh_file, suffix = ""):
+def get_file_name(char_file, bvh_file, suffix = "", is_crowd=False):
     """Builds the filename for a retarget blendfile out of the character filename and the bvh File name."""
     char_parts = char_file.split("_")
     filename = ""
@@ -238,6 +239,9 @@ def get_file_name(char_file, bvh_file, suffix = ""):
     filename = filename + "_p" + get_part(bvh_file)
     filename = filename + "_m" + get_mocap(bvh_file)
     filename = filename + "_t" + get_take(bvh_file)
+    filename = filename + "_" + get_actor(bvh_file)
+    if is_crowd:
+        filename = filename + "_crowd"
     filename = filename + suffix
     filename = filename + ".blend"
     
@@ -296,6 +300,14 @@ def get_take(bvh_file):
     length = len(take)
     return take[1:length]
 
+def get_actor(bvh_file):
+    """Returns the name of the actor which played the animation in the given bvh Filename"""
+    parts = bvh_file.split("_")
+    actor = parts[len(parts) - 1]
+
+    actor = actor.split(".")[0]
+    return actor
+    
 
 def register():
     bpy.utils.register_class(FMR_OT_MocapBatchRetarget_Op)

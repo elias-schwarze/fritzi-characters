@@ -88,6 +88,8 @@ class FMR_PT_BatchRetarget_pnl(bpy.types.Panel):
                 column = row.column(align=True)
                 column.operator("object.add_bvh", icon='ADD', text="")
                 column.operator("retarget.remove_bvh", icon='REMOVE', text="")
+
+            layout.prop(wm, "crowd_check")
             
             layout.prop_search(wm, "target_rig_pointer", scene, "objects", text="Target Armature")
 
