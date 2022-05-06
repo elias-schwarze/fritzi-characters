@@ -26,7 +26,7 @@ class CST_OT_CreateLightEmpty_OP(Operator):
 
         characterName = wm.character_name
 
-        if characterName is None or characterName is "":
+        if not characterName or characterName == "":
             self.report({'WARNING'}, "Please give a Character Name!")
             return {'CANCELLED'}
 
