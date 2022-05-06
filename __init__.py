@@ -17,10 +17,10 @@ from . import addon_updater_ops
 from . import updater_ui
 
 from .driver_generator import fdg_init
-from .retarget_tools import frt_retarget_tools_op
-from .retarget_tools import frt_retarget_tools_pnl
+from .retarget_tools import frt_retarget_tools_op, frt_retarget_tools_pnl
 from .chr_shader_tools import cst_init
 from .mocap_retarget import fmr_init
+from .rig_tools import fchar_rig_tools_op, fchar_rig_tools_pnl
 
 
 bl_info = {
@@ -50,10 +50,14 @@ def register():
     fmr_init.register()
     frt_retarget_tools_op.register()
     frt_retarget_tools_pnl.register()
+    fchar_rig_tools_op.register()
+    fchar_rig_tools_pnl.register()
 
 
 
 def unregister():
+    fchar_rig_tools_pnl.unregister()
+    fchar_rig_tools_op.unregister()
     frt_retarget_tools_pnl.unregister()
     frt_retarget_tools_op.unregister()
     fmr_init.unregister()
