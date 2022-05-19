@@ -30,27 +30,32 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
 
         cam_empty.hide_viewport = True
 
-        add_custom_property(gp, "Min Distance", default=1.0, prop_min=-100.0, prop_max=100.0)
-        add_custom_property(gp, "Max Distance", default=5.5, prop_min=-100.0, prop_max=100.0)
-        add_custom_property(gp, "Min Thickness", default=0.85, prop_min=0.0, prop_max=100.0, description="The minimum thickness multiplier applied at the minimum distance")
-        add_custom_property(gp, "Max Thickness", default=1.8, prop_min=0.0, prop_max=100.0, description="The maximum thickness multiplier applied at the maximum distance.")
+        add_custom_property(gp, "Min Distance", default=8.0, prop_min=-1000.0, prop_max=1000.0)
+        add_custom_property(gp, "Max Distance", default=23.5, prop_min=-1000.0, prop_max=1000.0)
+        add_custom_property(gp, "Min Thickness", default=300.0, prop_min=0.0, prop_max=1000.0, description="The minimum thickness multiplier applied at the minimum distance")
+        add_custom_property(gp, "Max Thickness", default=500.0, prop_min=0.0, prop_max=1000.0, description="The maximum thickness multiplier applied at the maximum distance.")
 
-        add_custom_property(gp, "Curve Start Distance", default=2.0, prop_min=-100.0, prop_max=100.0)
-        add_custom_property(gp, "Curve End Distance", default=4.0, prop_min=-100.0, prop_max=100.0)
+        add_custom_property(gp, "Curve Start Distance", default=8.0, prop_min=-1000.0, prop_max=1000.0)
+        add_custom_property(gp, "Curve End Distance", default=10.0, prop_min=-1000.0, prop_max=1000.0)
         
         gp["Grease Pencil Name"] = gp.name
 
         
 
+        curve_modifier = gp.grease_pencil_modifiers.new("char_curve_Thickness", 'GP_THICK')
 
-        driver = gp.data.driver_add('pixel_factor').driver
+        curve_modifier.use_custom_curve = True
+        curve_driver = curve_modifier.driver_add('thickness_factor').driver
+        curve_modifier.curve.curves[0].points.new(0.25, 0.5)
+        curve_modifier.curve.curves[0].points.new(0.5, 0.5)
+        curve_modifier.curve.curves[0].points.new(0.65, 0.85)
+        curve_modifier.curve.curves[0].points.new(0.85, 0.4)
+        curve_modifier.curve.update()
 
-        add_var(driver, gp, "min_thick", type='SINGLE_PROP', rna_data_path='["Min Thickness"]')
-        add_var(driver, gp, "max_thick", type='SINGLE_PROP', rna_data_path='["Max Thickness"]')
-        add_var(driver, gp, "min_dist", type='SINGLE_PROP', rna_data_path='["Min Distance"]')
-        add_var(driver, gp, "max_dist", type='SINGLE_PROP', rna_data_path='["Max Distance"]')
+        add_var(curve_driver, gp, "crv_start_dist", type='SINGLE_PROP', rna_data_path='["Curve Start Distance"]')
+        add_var(curve_driver, gp, "crv_end_dist", type='SINGLE_PROP', rna_data_path='["Curve End Distance"]')
 
-        var = driver.variables.new()
+        var = curve_driver.variables.new()
         var.name = "dist"
         var.type = 'LOC_DIFF'
 
@@ -61,11 +66,36 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         target.id = wm.character_rig
         target.bone_target = wm.character_rig_bone
 
-        driver.expression = "(min_thick * (1 - (dist - min_dist) / (max_dist - min_dist))) + (max_thick * (dist - min_dist) / (max_dist - min_dist))"
+        curve_driver.expression = "max(1, min(2, ((1 * (1 - (dist - crv_end_dist) / (crv_start_dist - crv_end_dist))) + (2 * (dist - crv_end_dist) / (crv_start_dist - crv_end_dist)) ) ))"
 
-        p2 = gp.grease_pencil_modifiers["Thickness"].curve.curves[0].points[2]
-        print(p2.location[0])
-        #driver = p2.driver_add('[location][0]').driver
+        thickness_modifier = gp.grease_pencil_modifiers.new("char_Thickness", 'GP_THICK')
+
+        thickness_driver = thickness_modifier.driver_add('thickness_factor').driver
+
+        add_var(thickness_driver, gp, "max_thick", type='SINGLE_PROP', rna_data_path='["Max Thickness"]')
+        add_var(thickness_driver, gp, "min_thick", type='SINGLE_PROP', rna_data_path='["Min Thickness"]')
+        add_var(thickness_driver, gp, "min_dist", type='SINGLE_PROP', rna_data_path='["Min Distance"]')
+        add_var(thickness_driver, gp, "max_dist", type='SINGLE_PROP', rna_data_path='["Max Distance"]')
+        add_var(thickness_driver, gp, "crv_value", type='SINGLE_PROP', rna_data_path='grease_pencil_modifiers["char_curve_Thickness"].thickness_factor')
+
+        #var = thickness_driver.variables.new()
+        #var.name = "crv_value"
+        #var.type = 'SINGLE_PROP'
+
+
+        var = thickness_driver.variables.new()
+        var.name = "dist"
+        var.type = 'LOC_DIFF'
+
+        target = var.targets[0]
+        target.id = cam_empty
+
+        target = var.targets[1]
+        target.id = wm.character_rig
+        target.bone_target = wm.character_rig_bone
+
+        thickness_driver.expression = "((min_thick * (1 - (dist - min_dist) / (max_dist - min_dist))) + (max_thick * (dist - min_dist) / (max_dist - min_dist)))/crv_value"
+
 
 
 
