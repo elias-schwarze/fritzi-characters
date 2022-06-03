@@ -7,7 +7,7 @@ from ..utility_functions import fdg_names
 class FDG_OT_GenerateOutlineDriver_Op(Operator):
     bl_idname = "fdg.gen_outline_driver"
     bl_label = "Generate Outline Driver"
-    bl_description = "Generate a Driver for the thickness of the outline compared to the distance between the camera and the character."
+    bl_description = "Generate a Driver for the thickness of the outline tied to the distance between the camera and the character."
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
@@ -15,7 +15,13 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
 
         cam = wm.camera
         gp = wm.gp_object
+        pass_nr = wm.Pass_Number
+        pass_name = wm.Pass_Name
         cam_empty = bpy.context.scene.objects.get(fdg_names.empty_cam)
+
+        modifier_name = "pass_" + str(pass_nr) + "_" + pass_name + "_Thickness"
+
+        print(modifier_name)
 
         if cam_empty is None:
             cam_empty = bpy.data.objects.new(fdg_names.empty_cam, None)
@@ -27,6 +33,8 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
             bpy.context.collection.objects.link(cam_empty)
 
             parent_objects(cam, cam_empty)
+
+        
 
         cam_empty.hide_viewport = True
 
@@ -42,9 +50,10 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
 
         
 
-        curve_modifier = gp.grease_pencil_modifiers.new("char_curve_Thickness", 'GP_THICK')
+        curve_modifier = gp.grease_pencil_modifiers.new(modifier_name + "_CURVE", 'GP_THICK')
 
         curve_modifier.use_custom_curve = True
+        curve_modifier.layer_pass = pass_nr
         curve_driver = curve_modifier.driver_add('thickness_factor').driver
         curve_modifier.curve.curves[0].points.new(0.25, 0.5)
         curve_modifier.curve.curves[0].points.new(0.5, 0.5)
@@ -68,15 +77,17 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
 
         curve_driver.expression = "max(1, min(2, ((1 * (1 - (dist - crv_end_dist) / (crv_start_dist - crv_end_dist))) + (2 * (dist - crv_end_dist) / (crv_start_dist - crv_end_dist)) ) ))"
 
-        thickness_modifier = gp.grease_pencil_modifiers.new("char_Thickness", 'GP_THICK')
+        thickness_modifier = gp.grease_pencil_modifiers.new(modifier_name + "_MAIN", 'GP_THICK')
 
+        thickness_modifier.layer_pass = pass_nr
+        
         thickness_driver = thickness_modifier.driver_add('thickness_factor').driver
 
         add_var(thickness_driver, gp, "max_thick", type='SINGLE_PROP', rna_data_path='["Max Thickness"]')
         add_var(thickness_driver, gp, "min_thick", type='SINGLE_PROP', rna_data_path='["Min Thickness"]')
         add_var(thickness_driver, gp, "min_dist", type='SINGLE_PROP', rna_data_path='["Min Distance"]')
         add_var(thickness_driver, gp, "max_dist", type='SINGLE_PROP', rna_data_path='["Max Distance"]')
-        add_var(thickness_driver, gp, "crv_value", type='SINGLE_PROP', rna_data_path='grease_pencil_modifiers["char_curve_Thickness"].thickness_factor')
+        add_var(thickness_driver, gp, "crv_value", type='SINGLE_PROP', rna_data_path='grease_pencil_modifiers["'+ modifier_name + '_CURVE"].thickness_factor')
 
         #var = thickness_driver.variables.new()
         #var.name = "crv_value"

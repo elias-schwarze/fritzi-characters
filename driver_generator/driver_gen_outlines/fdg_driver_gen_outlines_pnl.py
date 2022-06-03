@@ -1,6 +1,7 @@
+from tokenize import String
 import bpy
 
-from bpy.props import PointerProperty
+from bpy.props import PointerProperty, IntProperty, StringProperty
 
 class FDG_PT_DriverGenOutlines_pnl(bpy.types.Panel):
     bl_label = "Outline Driver Generator"
@@ -11,11 +12,16 @@ class FDG_PT_DriverGenOutlines_pnl(bpy.types.Panel):
     bl_parent_id = "FDG_PT_DriverGenerator_pnl"
 
     bpy.types.WindowManager.gp_object = PointerProperty(name="Grease Pencil", type = bpy.types.Object)
+    bpy.types.WindowManager.Pass_Name = StringProperty(name="Pass Name")
+    bpy.types.WindowManager.Pass_Number = IntProperty(name="Pass Number", min=0, max=100)
 
 
     def draw(self, context):
         wm = context.window_manager
         layout = self.layout
+
+        layout.prop(wm, "Pass_Number")
+        layout.prop(wm, "Pass_Name")
 
         layout.prop_search(wm, "character_rig", bpy.data, "objects", text="Character Rig")
         rig = wm.character_rig
