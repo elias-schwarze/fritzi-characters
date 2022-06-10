@@ -21,6 +21,7 @@ from .retarget_tools import frt_retarget_tools_op, frt_retarget_tools_pnl
 from .chr_shader_tools import cst_init
 from .mocap_retarget import fmr_init
 from .rig_tools import fchar_rig_tools_op, fchar_rig_tools_pnl
+from .cam_rig_auto_visibility import cav_init
 
 
 bl_info = {
@@ -52,10 +53,13 @@ def register():
     frt_retarget_tools_pnl.register()
     fchar_rig_tools_op.register()
     fchar_rig_tools_pnl.register()
+    cav_init.register()
+
 
 
 
 def unregister():
+    cav_init.unregister()
     fchar_rig_tools_pnl.unregister()
     fchar_rig_tools_op.unregister()
     frt_retarget_tools_pnl.unregister()
