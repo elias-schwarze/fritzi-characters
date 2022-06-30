@@ -14,6 +14,9 @@ class CAV_OT_ActivateAutoToggleCamVisibility_OP(Operator):
 
     def execute(self, context):
         bpy.context.scene.auto_visibility_toggle = True
+        cam_collection = bpy.context.scene.cameras_collection
+        if cam_collection is None:
+            bpy.context.scene.cameras_collection = bpy.data.collections.get("CAMERAS")
         append_function_unique(bpy.app.handlers.frame_change_pre, on_frame_change_visibility_handler)
 
         return {'FINISHED'}
@@ -29,7 +32,15 @@ class CAV_OT_DeactivateAutoToggleCamVisibility_OP(Operator):
         bpy.context.scene.auto_visibility_toggle = False
         remove_function(bpy.app.handlers.frame_change_pre, on_frame_change_visibility_handler)
 
+        cam_collections = bpy.data.collections
 
+        if bpy.context.scene.cameras_collection is not None:
+            cam_collections = bpy.context.scene.cameras_collection.children
+
+        for c in cam_collections:
+            if c.name.startswith('CAM.') or c.name.startswith('CAM_'):
+                c.hide_viewport = False
+                
         return {'FINISHED'}
 
 @persistent
@@ -45,8 +56,12 @@ def on_frame_change_visibility_handler(dummy):
         return
     bpy.context.window_manager.last_active_camera = active_camera
     #print(active_camera.name)
+    cam_collections = bpy.data.collections
 
-    for c in bpy.data.collections:
+    if bpy.context.scene.cameras_collection is not None:
+        cam_collections = bpy.context.scene.cameras_collection.children
+
+    for c in cam_collections:
         if c.name.startswith('CAM.') or c.name.startswith('CAM_'):
             
             if c.name.endswith(active_camera.name[-3:]):

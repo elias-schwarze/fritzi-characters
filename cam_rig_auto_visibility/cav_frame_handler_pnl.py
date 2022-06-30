@@ -10,6 +10,7 @@ class CAV_PT_CamVisibility_pnl(bpy.types.Panel):
     bl_options = {"DEFAULT_CLOSED"}
 
     bpy.types.Scene.auto_visibility_toggle = BoolProperty(default=False)
+    bpy.types.Scene.cameras_collection = PointerProperty(name="Cam Collection", type=bpy.types.Collection)
     bpy.types.WindowManager.last_active_camera = PointerProperty(name="Camera", type=bpy.types.Object)
     def draw(self, context):
         wm = context.window_manager
@@ -26,6 +27,8 @@ class CAV_PT_CamVisibility_pnl(bpy.types.Panel):
         else:
             row.operator("object.activate_auto_toggle_cam_visibility", depress=False)            
             row.operator("object.deactivate_auto_toggle_cam_visibility", depress=True)
+
+        box.prop_search(context.scene, "cameras_collection", bpy.data, "collections", text="Cam Collection")
 
 
 def register():
