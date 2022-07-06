@@ -22,6 +22,7 @@ from .chr_shader_tools import cst_init
 from .mocap_retarget import fmr_init
 from .rig_tools import fchar_rig_tools_op, fchar_rig_tools_pnl
 from .cam_rig_auto_visibility import cav_init
+from .animation_mover import anm_init
 
 
 bl_info = {
@@ -54,11 +55,13 @@ def register():
     fchar_rig_tools_op.register()
     fchar_rig_tools_pnl.register()
     cav_init.register()
+    anm_init.register()
 
 
 
 
 def unregister():
+    anm_init.unregister()
     cav_init.unregister()
     fchar_rig_tools_pnl.unregister()
     fchar_rig_tools_op.unregister()
