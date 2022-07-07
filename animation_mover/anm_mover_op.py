@@ -1,4 +1,10 @@
+import operator
 import bpy
+from bpy.types import PropertyGroup, UIList
+from bpy.props import StringProperty, CollectionProperty, IntProperty, BoolProperty
+from . import Anim_Mover
+
+
 
 class ANM_OT_AnimMover_OP(bpy.types.Operator):
     bl_idname = "object.move_animation"
@@ -12,156 +18,26 @@ class ANM_OT_AnimMover_OP(bpy.types.Operator):
     frame_out: None
     frame_amount: None
 
-    problematic_keys = []
-
     def execute(self, context):
-
+        
         wm = bpy.context.window_manager
         self.move_type = wm.move_type
         self.move_direction = wm.move_direction
         self.frame_in = wm.frame_in
         self.frame_out = wm.frame_out
         self.frame_amount = wm.frame_amount
-
-        if self.check_keys():
-            self.report({'WARNING'}, "Problem Keys")
-            return {'CANCELLED'}
-
-        #for ob in bpy.data.objects:
-        #    print(ob.name)
-        #    if wm.move_keys:
-        #        self.move_keys_on_object(ob)
-        #    
-        #    if wm.move_NLA:
-        #        self.move_NLA_strips_on_object(ob)
-        #    
-        #if wm.move_marker:
-        #    for marker in context.scene.timeline_markers:
-        #        if self.move_type == 'BEFORE':
-        #            if marker.frame <= self.frame_in:
-        #                self.move_marker(marker)
-        #        elif self.move_type == 'AFTER':
-        #            if marker.frame >= self.frame_in:
-        #                self.move_marker(marker)
-        #        elif self.move_type == 'BETWEEN':
-        #            if marker.frame >= self.frame_in and marker.frame <= self.frame_out:
-        #                self.move_marker(marker)
+        anim_mover = Anim_Mover.Anim_Mover(wm, context)
+        if wm.move_keys:
+            if anim_mover.check_keys():
+                print(bpy.ops.object.show_problem_keys_window('INVOKE_DEFAULT'))
+                self.report({'WARNING'}, "Problem Keys")
+                return {'CANCELLED'}
+        
+        anim_mover.move_anim()
+        
 
         self.report({'INFO'}, "No Problem Keys")
         return {'FINISHED'}
-
-    def check_keys(self):
-
-        problem = False
-
-        for ob in bpy.data.objects:
-            if (ob.animation_data and ob.animation_data.action and ob.animation_data.action.fcurves):
-                for fCurve in ob.animation_data.action.fcurves:
-                    for key in fCurve.keyframe_points:
-                        if self.move_type == 'BEFORE':
-                            if self.move_direction == 'FORWARD':
-                                if key.co[0] > self.frame_in and key.co[0] <= self.frame_in + self.frame_amount:
-                                    problem = True
-                                    self.problematic_keys.append(ob.name +': ' + fCurve.data_path + ' ' +  str(fCurve.array_index) + ' Frame: ' + str(key.co[0]))
-                                    print(ob.name +': ' + fCurve.data_path + ' ' +  str(fCurve.array_index) + ' Frame: ' + str(key.co[0]))
-                            if self.move_direction == 'BACKWARD':
-                                pass
-                                #this can not have problematic keys
-                        
-                        if self.move_type == 'AFTER':
-                            if self.move_direction == 'FORWARD':
-                                pass
-                                #this can not have problematic keys
-                            if self.move_direction == 'BACKWARD':
-                                if key.co[0] < self.frame_in and key.co[0] >= self.frame_in - self.frame_amount:
-                                    problem = True
-                                    self.problematic_keys.append(ob.name +': ' + fCurve.data_path + ' ' +  str(fCurve.array_index) + ' Frame: ' + str(key.co[0]))
-                                    print(ob.name +': ' + fCurve.data_path + ' ' +  str(fCurve.array_index) + ' Frame: ' + str(key.co[0]))
-
-                        if self.move_type == 'BETWEEN':
-                            if self.move_direction == 'FORWARD':
-                                if key.co[0] > self.frame_out and key.co[0] <= self.frame_out + self.frame_amount:
-                                    problem = True
-                                    self.problematic_keys.append(ob.name +': ' + fCurve.data_path + ' ' +  str(fCurve.array_index) + ' Frame: ' + str(key.co[0]))
-                                    print(ob.name +': ' + fCurve.data_path + ' ' +  str(fCurve.array_index) + ' Frame: ' + str(key.co[0]))
-                            if self.move_direction == 'BACKWARD':
-                                if key.co[0] < self.frame_in and key.co[0] >= self.frame_in - self.frame_amount:
-                                    problem = True
-                                    self.problematic_keys.append(ob.name +': ' + fCurve.data_path + ' ' +  str(fCurve.array_index) + ' Frame: ' + str(key.co[0]))
-                                    print(ob.name +': ' + fCurve.data_path + ' ' +  str(fCurve.array_index) + ' Frame: ' + str(key.co[0]))
-        
-        return problem
-
-
-    def move_keys_on_object(self, ob):
-        if (ob.animation_data and ob.animation_data.action and ob.animation_data.action.fcurves):
-                for fCurve in ob.animation_data.action.fcurves:
-                    print(fCurve.data_path)
-                    print(fCurve.array_index)
-                    for key in fCurve.keyframe_points:
-                        print(ob.name +': ' + fCurve.data_path + ' ' +  str(fCurve.array_index) + ' Frame: ' + str(key.co[0]))
-                        if self.move_type == 'BEFORE':
-                            if key.co[0] <= self.frame_in:
-                                self.move_key(key)
-                        elif self.move_type == 'AFTER':
-                            if key.co[0] >= self.frame_in:
-                                self.move_key(key)
-                        elif self.move_type == 'BETWEEN':
-                            if key.co[0] >= self.frame_in and key.co[0]<=self.frame_out:
-                                self.move_key(key)
-
-                        print(key.co)
-                        #key.co[0] = key.co[0] + 10
-
-    def move_NLA_strips_on_object(self, ob):
-        if (ob.animation_data and ob.animation_data.nla_tracks):
-                for track in ob.animation_data.nla_tracks:
-                    for strip in track.strips:
-                        
-                        if self.move_type == 'BEFORE':
-                            if strip.frame_start <= self.frame_in and strip.frame_end >= self.frame_in:
-                                print("IN BETWEEN")
-                                pass
-                                # Save strip, track and ob to later give ui feedback that it could not be moved
-                            elif strip.frame_end <= self.frame_in:
-                                self.move_strip(strip)
-
-                        elif self.move_type == 'AFTER':
-                            if strip.frame_start <= self.frame_in and strip.frame_end >= self.frame_in:
-                                print("IN BETWEEN")
-                                pass
-                                # Save strip, track and ob to later give ui feedback that it could not be moved
-                            elif strip.frame_start >= self.frame_in:
-                                self.move_strip(strip)
-
-                        elif self.move_type == 'BETWEEN':
-                            if strip.frame_start >= self.frame_in and strip.frame_start <= self.frame_out and strip.frame_end >= self.frame_in and strip.frame_end <= self.frame_out:
-                                self.move_strip(strip)
-                            elif (strip.frame_start <= self.frame_in and strip.frame_end >= self.frame_in) or (strip.frame_end >= self.frame_out and strip.frame_start <= self.frame_out):
-                                print("IN BETWEEN")
-                                pass
-                                #Save strip, track and ob to later give UI feedback why it could not be moved
-
-    def move_key(self, key):
-        if self.move_direction == 'FORWARD':
-            key.co[0] = key.co[0] + self.frame_amount
-        elif self.move_direction =='BACKWARD':
-            key.co[0] = key.co[0] - self.frame_amount
-
-    def move_marker(self, marker):
-        if self.move_direction == 'FORWARD':
-            marker.frame = marker.frame + self.frame_amount
-        elif self.move_direction == 'BACKWARD':
-            marker.frame = marker.frame - self.frame_amount
-
-    def move_strip(self, strip):
-        if self.move_direction == 'FORWARD':
-            strip.frame_end = strip.frame_end + self.frame_amount
-            strip.frame_start = strip.frame_start + self.frame_amount
-            
-        if self.move_direction == 'BACKWARD':
-            strip.frame_start = strip.frame_start - self.frame_amount
-            strip.frame_end = strip.frame_end - self.frame_amount
 
 class ANM_OT_AnimMoverBefore_OP(bpy.types.Operator):
     bl_idname = "object.move_animation_before"
@@ -228,6 +104,68 @@ class ANM_OT_AnimMoverForward_OP(bpy.types.Operator):
 
         return {'FINISHED'}
 
+class ANM_OT_ShowProblemKeysWindow_OP(bpy.types.Operator):
+    bl_idname = "object.show_problem_keys_window"
+    bl_label = "OK"
+    bl_description = "Shows a Window with a List of all Problematic Keys"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        
+        return wm.invoke_popup(self,width=600)
+
+    def modal(self, context, event):
+        print("HElp")
+        if not context.window_manager.show_key_list_window:
+            return {'FINISHED'}
+        return {'RUNNING_MODAL'}
+
+    def draw(self, context):
+        
+        wm = context.window_manager
+        layout = self.layout
+        layout.template_list("ANM_UL_KeyList_Items", "", wm, "key_list", wm, "key_list_index", rows=20)
+        row = layout.row()
+        row.alert = True
+        row.operator("object.problem_keys_accept")
+        
+    def execute(self, context):
+        return {'FINISHED'}
+
+
+class Problem_Keys(PropertyGroup):
+    """ A PropertyGroup which stores all the problematic Keys that were found while moving the Keyframes"""
+    object : StringProperty()
+    curve : StringProperty()
+    frame : StringProperty()
+
+class ANM_UL_KeyList_Items(UIList):
+    @classmethod
+    def poll(cls, context):
+        return True
+
+    def draw_item(self, context, layout, data, item, icon, active_data, active_property, index, flt_flag):
+        row = layout.row()
+        row = row.split(factor=0.2)
+        row.label(text=item.object)
+        row = row.split(factor=0.6)
+        row.label(text=item.curve)
+        row = row.split(factor=0.2)
+        row.label(text=item.frame)
+
+class ANM_ProblemKeyWindowAccept_OP(bpy.types.Operator):
+    bl_idname = "object.problem_keys_accept"
+    bl_label = "Move Keys Anyway"
+    bl_description = "Does move Keys despite problems. May result in weird Animation!"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        anim_mover = Anim_Mover.Anim_Mover(bpy.context.window_manager, context)
+        anim_mover.move_anim()
+
+        return {'FINISHED'}
+
 
 
 def register():
@@ -237,8 +175,18 @@ def register():
     bpy.utils.register_class(ANM_OT_AnimMoverBetween_OP)
     bpy.utils.register_class(ANM_OT_AnimMoverForward_OP)
     bpy.utils.register_class(ANM_OT_AnimMoverBackward_OP)
+    bpy.utils.register_class(Problem_Keys)
+    bpy.utils.register_class(ANM_UL_KeyList_Items)
+    bpy.utils.register_class(ANM_OT_ShowProblemKeysWindow_OP)
+    bpy.utils.register_class(ANM_ProblemKeyWindowAccept_OP)
+    bpy.types.WindowManager.key_list = CollectionProperty(name= "Key List", type = Problem_Keys)
+    bpy.types.WindowManager.key_list_index = IntProperty()
 
 def unregister():
+    bpy.utils.unregister_class(ANM_ProblemKeyWindowAccept_OP)
+    bpy.utils.unregister_class(ANM_OT_ShowProblemKeysWindow_OP)
+    bpy.utils.unregister_class(ANM_UL_KeyList_Items)
+    bpy.utils.unregister_class(Problem_Keys)
     bpy.utils.unregister_class(ANM_OT_AnimMoverBackward_OP)
     bpy.utils.unregister_class(ANM_OT_AnimMoverForward_OP)
     bpy.utils.unregister_class(ANM_OT_AnimMoverBetween_OP)

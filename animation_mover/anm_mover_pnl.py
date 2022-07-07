@@ -28,12 +28,14 @@ class ANM_PT_KeyframeMover_pnl(bpy.types.Panel):
     bpy.types.WindowManager.move_keys = BoolProperty(name='Move Keyframes', description='Should the Move Operator Move Keyframes', default=True)
     bpy.types.WindowManager.move_NLA = BoolProperty(name='Move NLA Strips', description='Should the Move Operator Move NLA Strips', default=True)
     bpy.types.WindowManager.move_marker = BoolProperty(name='Move Camera Marker', description='Should the Move Operator Move Camera Markers', default=True)
-
+    bpy.types.WindowManager.move_sounds = BoolProperty(name= 'Move Sounds', description= 'Should the Move Operator move Sound Strips', default=True)
     def draw(self, context):
         wm = context.window_manager
         layout = self.layout
         layout.label(text="Move all Keyframes")
         row = layout.row(align=True)
+        
+        
         if wm.move_type == 'BEFORE':
             row.operator("object.move_animation_before", depress=True)
             row.operator("object.move_animation_after", depress=False)
@@ -41,6 +43,7 @@ class ANM_PT_KeyframeMover_pnl(bpy.types.Panel):
             layout.label(text= 'Frame')
             layout.prop(wm, "frame_in", text="")
         elif wm.move_type == 'AFTER':
+            
             row.operator("object.move_animation_before", depress=False)
             row.operator("object.move_animation_after", depress=True)
             row.operator("object.move_animation_between", depress=False)
@@ -85,6 +88,7 @@ class ANM_PT_MoveOptions_pnl(bpy.types.Panel):
         layout.prop(wm, 'move_keys')
         layout.prop(wm, 'move_NLA')
         layout.prop(wm, 'move_marker')
+        layout.prop(wm, 'move_sounds')
 
 
 
