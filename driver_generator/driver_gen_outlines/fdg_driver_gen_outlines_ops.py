@@ -55,10 +55,9 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         curve_modifier.use_custom_curve = True
         curve_modifier.layer_pass = pass_nr
         curve_driver = curve_modifier.driver_add('thickness_factor').driver
-        curve_modifier.curve.curves[0].points.new(0.25, 0.5)
-        curve_modifier.curve.curves[0].points.new(0.5, 0.5)
-        curve_modifier.curve.curves[0].points.new(0.65, 0.85)
-        curve_modifier.curve.curves[0].points.new(0.85, 0.4)
+        curve_modifier.curve.curves[0].points.new(0.0, 0.0)
+        curve_modifier.curve.curves[0].points.new(0.5, 1.0)
+        curve_modifier.curve.curves[0].points.new(1.0, 0.0)
         curve_modifier.curve.update()
 
         add_var(curve_driver, gp, "crv_start_dist", type='SINGLE_PROP', rna_data_path='["Curve Start Distance"]')
