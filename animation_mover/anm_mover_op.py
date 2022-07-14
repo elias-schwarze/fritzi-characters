@@ -26,16 +26,21 @@ class ANM_OT_AnimMover_OP(bpy.types.Operator):
         self.frame_in = wm.frame_in
         self.frame_out = wm.frame_out
         self.frame_amount = wm.frame_amount
+        NLA_strip_list = bpy.context.window_manager.NLA_strip_list
+        NLA_strip_list.clear()
+        Sound_strip_list = bpy.context.window_manager.Sound_strip_list
+        Sound_strip_list.clear()
         anim_mover = Anim_Mover.Anim_Mover(wm, context)
         if wm.move_keys:
+            anim_mover.get_min_max_key_frames()
             if anim_mover.check_keys():
-                print(bpy.ops.object.show_problem_keys_window('INVOKE_DEFAULT'))
+                bpy.ops.object.show_problem_keys_window('INVOKE_DEFAULT')
                 self.report({'WARNING'}, "Problem Keys")
                 return {'CANCELLED'}
         
         anim_mover.move_anim()
         
-
+        bpy.ops.object.show_problem_strips_window('INVOKE_DEFAULT')
         self.report({'INFO'}, "No Problem Keys")
         return {'FINISHED'}
 
@@ -115,11 +120,7 @@ class ANM_OT_ShowProblemKeysWindow_OP(bpy.types.Operator):
         
         return wm.invoke_popup(self,width=600)
 
-    def modal(self, context, event):
-        print("HElp")
-        if not context.window_manager.show_key_list_window:
-            return {'FINISHED'}
-        return {'RUNNING_MODAL'}
+    
 
     def draw(self, context):
         
@@ -133,6 +134,26 @@ class ANM_OT_ShowProblemKeysWindow_OP(bpy.types.Operator):
     def execute(self, context):
         return {'FINISHED'}
 
+class ANM_OT_ShowProblemStripsWindow_OP(bpy.types.Operator):
+    bl_idname = "object.show_problem_strips_window"
+    bl_label = "OK"
+    bl_description = "Shows a window with a list of NLA and Sound Strips which need to be manually looked at"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+
+        return wm.invoke_popup(self, width=600)
+
+    def draw(self, context):
+        wm = context.window_manager
+        layout = self.layout
+        layout.template_list("ANM_UL_NLAStripList_Items", "", wm, "NLA_strip_list", wm, "NLA_strip_list_index", rows=15)
+        layout.template_list("ANM_UL_SoundStripList_Items", "", wm, "Sound_strip_list", wm, "Sound_strip_list_index", rows=15)
+
+    def execute(self, context):
+        return {'FINISHED'}
+
 
 class Problem_Keys(PropertyGroup):
     """ A PropertyGroup which stores all the problematic Keys that were found while moving the Keyframes"""
@@ -140,7 +161,33 @@ class Problem_Keys(PropertyGroup):
     curve : StringProperty()
     frame : StringProperty()
 
+class Problem_NLA_Strips(PropertyGroup):
+    """ A PropertyGroup which stores all the problematic NLA Strips that were found while moving NLA Strips"""
+    object : StringProperty()
+    track : StringProperty()
+    strip : StringProperty()
+
+class Problem_Sound_Strips(PropertyGroup):
+    """ A PropertyGroup which stores all the problematic NLA Strips that were found while moving NLA Strips"""
+    track : StringProperty()
+    strip : StringProperty()
+
 class ANM_UL_KeyList_Items(UIList):
+    @classmethod
+    def poll(cls, context):
+        return True
+
+    def draw_item(self, context, layout, data, item, icon, active_data, active_property, index, flt_flag):
+        print(item.object)
+        row = layout.row()
+        row = row.split(factor=0.2)
+        row.label(text=item.object)
+        row = row.split(factor=0.6)
+        row.label(text=item.curve)
+        row = row.split(factor=0.2)
+        row.label(text=item.frame)
+
+class ANM_UL_NLAStripList_Items(UIList):
     @classmethod
     def poll(cls, context):
         return True
@@ -150,9 +197,23 @@ class ANM_UL_KeyList_Items(UIList):
         row = row.split(factor=0.2)
         row.label(text=item.object)
         row = row.split(factor=0.6)
-        row.label(text=item.curve)
+        row.label(text=item.track)
         row = row.split(factor=0.2)
-        row.label(text=item.frame)
+        row.label(text=item.strip)
+
+class ANM_UL_SoundStripList_Items(UIList):
+    @classmethod
+    def poll(cls, context):
+        return True
+
+    def draw_item(self, context, layout, data, item, icon, active_data, active_property, index, flt_flag):
+        row = layout.row()
+        row = row.split(factor=0.2)
+        row.label(text=item.track)
+        row = row.split(factor=0.8)
+        row.label(text=item.strip)
+
+
 
 class ANM_ProblemKeyWindowAccept_OP(bpy.types.Operator):
     bl_idname = "object.problem_keys_accept"
@@ -179,10 +240,24 @@ def register():
     bpy.utils.register_class(ANM_UL_KeyList_Items)
     bpy.utils.register_class(ANM_OT_ShowProblemKeysWindow_OP)
     bpy.utils.register_class(ANM_ProblemKeyWindowAccept_OP)
+    bpy.utils.register_class(Problem_NLA_Strips)
+    bpy.utils.register_class(ANM_UL_NLAStripList_Items)
+    bpy.utils.register_class(ANM_OT_ShowProblemStripsWindow_OP)
+    bpy.utils.register_class(Problem_Sound_Strips)
+    bpy.utils.register_class(ANM_UL_SoundStripList_Items)
     bpy.types.WindowManager.key_list = CollectionProperty(name= "Key List", type = Problem_Keys)
     bpy.types.WindowManager.key_list_index = IntProperty()
+    bpy.types.WindowManager.NLA_strip_list = CollectionProperty(name= "NLA Strip List", type = Problem_NLA_Strips)
+    bpy.types.WindowManager.NLA_strip_list_index = IntProperty()
+    bpy.types.WindowManager.Sound_strip_list = CollectionProperty(name= "Sound Strip List", type = Problem_Sound_Strips)
+    bpy.types.WindowManager.Sound_strip_list_index = IntProperty()
 
 def unregister():
+    bpy.utils.unregister_class(ANM_UL_SoundStripList_Items)
+    bpy.utils.unregister_class(Problem_Sound_Strips)
+    bpy.utils.unregister_class(ANM_OT_ShowProblemStripsWindow_OP)
+    bpy.utils.unregister_class(ANM_UL_NLAStripList_Items)
+    bpy.utils.unregister_class(Problem_NLA_Strips)
     bpy.utils.unregister_class(ANM_ProblemKeyWindowAccept_OP)
     bpy.utils.unregister_class(ANM_OT_ShowProblemKeysWindow_OP)
     bpy.utils.unregister_class(ANM_UL_KeyList_Items)
