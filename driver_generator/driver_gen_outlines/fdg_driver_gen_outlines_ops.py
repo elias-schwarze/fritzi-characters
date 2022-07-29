@@ -1,3 +1,4 @@
+from tokenize import String
 import bpy
 
 from bpy.types import Operator
@@ -9,10 +10,27 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
     bl_label = "Generate Outline Driver"
     bl_description = "Generate a Driver for the thickness of the outline tied to the distance between the camera and the character."
     bl_options = {"REGISTER", "UNDO"}
+    
+    @classmethod
+    def poll(cls, context):
+        wm = context.window_manager
+        if not (wm.gp_object and wm.Pass_Name and wm.character_rig and wm.camera):
+            return False
+        
+        if not wm.do_create_gp_layer and not wm.gp_layer:
+            return False
+
+        if not wm.do_create_view_layer and not wm.view_layer:
+            return False
+
+        if wm.do_create_view_layer and not wm.new_view_layer_name:
+            return False
+
+        return True
 
     def execute(self, context):
         wm = context.window_manager
-
+        
         cam = wm.camera
         gp = wm.gp_object
         pass_nr = wm.Pass_Number
@@ -20,6 +38,19 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         cam_empty = bpy.context.scene.objects.get(fdg_names.empty_cam)
 
         modifier_name = "pass_" + str(pass_nr) + "_" + pass_name + "_Thickness"
+        view_layer : String
+        if wm.do_create_view_layer:
+            view_layer = context.scene.view_layers.new(wm.new_view_layer_name).name
+        else:
+            view_layer = wm.view_layer
+        
+        gp_layer = None
+        if wm.do_create_gp_layer:
+            layer = wm.gp_object.data.layers.new(name=pass_name)
+            layer.pass_index = pass_nr
+            layer.use_lights = False
+            layer.viewlayer_render = view_layer
+
 
         print(modifier_name)
 
@@ -40,8 +71,8 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
 
         add_custom_property(gp, "Min Distance", default=8.0, prop_min=-1000.0, prop_max=1000.0)
         add_custom_property(gp, "Max Distance", default=23.5, prop_min=-1000.0, prop_max=1000.0)
-        add_custom_property(gp, "Min Thickness", default=300.0, prop_min=0.0, prop_max=1000.0, description="The minimum thickness multiplier applied at the minimum distance")
-        add_custom_property(gp, "Max Thickness", default=500.0, prop_min=0.0, prop_max=1000.0, description="The maximum thickness multiplier applied at the maximum distance.")
+        add_custom_property(gp, "Min Thickness", default=24.0, prop_min=0.0, prop_max=1000.0, description="The minimum thickness multiplier applied at the minimum distance")
+        add_custom_property(gp, "Max Thickness", default=30.0, prop_min=0.0, prop_max=1000.0, description="The maximum thickness multiplier applied at the maximum distance.")
 
         add_custom_property(gp, "Curve Start Distance", default=8.0, prop_min=-1000.0, prop_max=1000.0)
         add_custom_property(gp, "Curve End Distance", default=10.0, prop_min=-1000.0, prop_max=1000.0)
