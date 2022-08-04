@@ -31,7 +31,7 @@ class FDG_PT_DriverGenOutlines_pnl(bpy.types.Panel):
     bpy.types.WindowManager.Pass_Number = IntProperty(name="Pass Number", min=0, max=100)
     bpy.types.WindowManager.modifier = StringProperty(name= "ThickMod")
     bpy.types.WindowManager.do_create_view_layer = BoolProperty(name= "Create a new View Layer", default=True)
-    bpy.types.WindowManager.do_create_gp_layer = BoolProperty(name="Create a new Grease Pencil Layer", default=True)
+    bpy.types.WindowManager.do_create_gp_layer = BoolProperty(name="Create a new Grease Pencil Layer", default=False)
     bpy.types.WindowManager.gp_layer = StringProperty(name="GP Layer")
     bpy.types.WindowManager.view_layer = StringProperty(name="View Layer")
     bpy.types.WindowManager.new_view_layer_name = StringProperty(name="New View Layer Name")

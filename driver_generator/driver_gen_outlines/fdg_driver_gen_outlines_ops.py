@@ -1,4 +1,4 @@
-from tokenize import String
+import string
 import bpy
 
 from bpy.types import Operator
@@ -38,7 +38,7 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         cam_empty = bpy.context.scene.objects.get(fdg_names.empty_cam)
 
         modifier_name = "pass_" + str(pass_nr) + "_" + pass_name + "_Thickness"
-        view_layer : String
+        view_layer : string
         if wm.do_create_view_layer:
             view_layer = context.scene.view_layers.new(wm.new_view_layer_name).name
         else:
