@@ -1,7 +1,7 @@
 import bpy
 
 
-def add_var(driver, source, name, transform_type='', type='TRANSFORMS', source_bone="", rna_data_path=""):
+def add_var(driver, source, name, transform_type='', type='TRANSFORMS', source_bone="", rna_data_path="", id_type=""):
     """Adds an input variable to a driver, types can be 'TRANSFORMS' or 'SINGLE_PROP'"""
     if source is not None:
         var = driver.variables.new()
@@ -9,6 +9,8 @@ def add_var(driver, source, name, transform_type='', type='TRANSFORMS', source_b
         var.type = type
         if type == 'SINGLE_PROP':
             target = var.targets[0]
+            if id_type:
+                target.id_type = id_type
             target.id = source
             target.data_path = rna_data_path
         else:
