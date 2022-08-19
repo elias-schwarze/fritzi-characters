@@ -16,15 +16,15 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         wm = context.window_manager
         if not (wm.gp_object and wm.Pass_Name and wm.character_rig and wm.camera):
             return False
-        
-        if not wm.do_create_gp_layer and not wm.gp_layer:
-            return False
+        if wm.gp_auto_advanced_toggle:
+            if not wm.do_create_gp_layer and not wm.gp_layer:
+                return False
 
-        if not wm.do_create_view_layer and not wm.view_layer:
-            return False
+            if not wm.do_create_view_layer and not wm.view_layer:
+                return False
 
-        if wm.do_create_view_layer and not wm.new_view_layer_name:
-            return False
+            if wm.do_create_view_layer and not wm.new_view_layer_name:
+                return False
 
         if context.scene.gp_settings.get(wm.Pass_Name):
             return False
@@ -44,36 +44,43 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         item.name=pass_name
         setting_index = context.scene.gp_settings.find(pass_name)
         
+        item.gp_object=gp
         
         item.thick_dist_close = 1.0
         item.thick_dist_far = 2.0
         item.thick_close = 1.0
         item.thick_far = 2.0
 
+        item.crv_max_dist = 0.0
+        item.crv_off_dist = -1.0
+        item.crv_mode = True
+        item.crv_amount = 1.0
+
         
 
         modifier_name = "pass_" + str(pass_nr) + "_" + pass_name + "_Thickness"
         
+        if wm.gp_auto_advanced_toggle:
 
-        view_layer : string
-        if wm.do_create_view_layer:
-            view_layer = context.scene.view_layers.new(wm.new_view_layer_name).name
-        else:
-            view_layer = wm.view_layer
+            view_layer : string
+            if wm.do_create_view_layer:
+                view_layer = context.scene.view_layers.new(wm.new_view_layer_name).name
+            else:
+                view_layer = wm.view_layer
 
-        item.view_layer = view_layer
-        
-        gp_layer = None
-        if wm.do_create_gp_layer:
-            gp_layer = wm.gp_object.data.layers.new(name=pass_name, set_active = True)
-            gp_layer.frames.new(0)
-            gp_layer.pass_index = pass_nr
-            gp_layer.use_lights = False
-            gp_layer.viewlayer_render = view_layer
-        else:
-            gp_layer = wm.gp_layer
+            item.view_layer = view_layer
 
-        item.GP_layer = gp_layer.info
+            gp_layer = None
+            if wm.do_create_gp_layer:
+                gp_layer = wm.gp_object.data.layers.new(name=pass_name, set_active = True)
+                gp_layer.frames.new(0)
+                gp_layer.pass_index = pass_nr
+                gp_layer.use_lights = False
+                gp_layer.viewlayer_render = view_layer
+            else:
+                gp_layer = wm.gp_layer
+
+            item.GP_layer = gp_layer.info
 
         print(modifier_name)
 
@@ -115,8 +122,10 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         curve_modifier.curve.curves[0].points.new(1.0, 0.0)
         curve_modifier.curve.update()
 
-        add_var(curve_driver, gp, "crv_start_dist", type='SINGLE_PROP', rna_data_path='["Curve Start Distance"]')
-        add_var(curve_driver, gp, "crv_end_dist", type='SINGLE_PROP', rna_data_path='["Curve End Distance"]')
+        data_path_start = '["gp_settings"][' + str(setting_index) + ']'
+        add_var(curve_driver, context.scene, "crv_max_dist", type='SINGLE_PROP', rna_data_path=data_path_start + '["crv_max_dist"]', id_type='SCENE')
+        add_var(curve_driver, context.scene, "crv_off_dist", type='SINGLE_PROP', rna_data_path=data_path_start + '["crv_off_dist"]', id_type='SCENE')
+        add_var(curve_driver, context.scene, "crv_amount", type='SINGLE_PROP', rna_data_path=data_path_start + '["crv_amount"]', id_type='SCENE')
 
         var = curve_driver.variables.new()
         var.name = "dist"
@@ -129,7 +138,7 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         target.id = wm.character_rig
         target.bone_target = wm.character_rig_bone
 
-        curve_driver.expression = "max(1, min(2, ((1 * (1 - (dist - crv_end_dist) / (crv_start_dist - crv_end_dist))) + (2 * (dist - crv_end_dist) / (crv_start_dist - crv_end_dist)) ) ))"
+        curve_driver.expression = "max(1, min(1 + crv_amount, ((1 * (1 - (dist - crv_off_dist) / (crv_max_dist - crv_off_dist))) + ((1 + crv_amount) * (dist - crv_off_dist) / (crv_max_dist - crv_off_dist)) ) ))"
 
         thickness_modifier = gp.grease_pencil_modifiers.new(modifier_name + "_MAIN", 'GP_THICK')
         item.thick_modifier = modifier_name + "_MAIN"
@@ -159,7 +168,7 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         target.id = wm.character_rig
         target.bone_target = wm.character_rig_bone
 
-        thickness_driver.expression = "((close_thick * (1 - (dist - close_dist) / (far_dist - close_dist))) + (far_thick * (dist - close_dist) / (far_dist - close_dist)))/crv_value"
+        thickness_driver.expression = "min(far_thick, ((close_thick * (1 - (dist - close_dist) / (far_dist - close_dist))) + (far_thick * (dist - close_dist) / (far_dist - close_dist))))/crv_value"
 
 
 
