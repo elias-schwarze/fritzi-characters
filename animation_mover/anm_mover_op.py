@@ -148,7 +148,9 @@ class ANM_OT_ShowProblemStripsWindow_OP(bpy.types.Operator):
     def draw(self, context):
         wm = context.window_manager
         layout = self.layout
+        layout.label(text="NLA Strips that cross over the moving range:")
         layout.template_list("ANM_UL_NLAStripList_Items", "", wm, "NLA_strip_list", wm, "NLA_strip_list_index", rows=15)
+        layout.label(text="Sound Strips that cross over the moving range:")
         layout.template_list("ANM_UL_SoundStripList_Items", "", wm, "Sound_strip_list", wm, "Sound_strip_list_index", rows=15)
 
     def execute(self, context):
@@ -196,9 +198,9 @@ class ANM_UL_NLAStripList_Items(UIList):
         row = layout.row()
         row = row.split(factor=0.2)
         row.label(text=item.object)
-        row = row.split(factor=0.6)
+        row = row.split(factor=0.4)
         row.label(text=item.track)
-        row = row.split(factor=0.2)
+        #row = row.split(factor=0.2)
         row.label(text=item.strip)
 
 class ANM_UL_SoundStripList_Items(UIList):
