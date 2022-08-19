@@ -1,5 +1,5 @@
 import bpy
-from bpy.props import FloatProperty, StringProperty
+from bpy.props import FloatProperty, StringProperty, PointerProperty
 from bpy.types import PropertyGroup, UIList
 from . import fmr_settings
 from . import fmr_scale_list_io

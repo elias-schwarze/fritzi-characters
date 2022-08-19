@@ -17,9 +17,9 @@ class FDG_OT_RemoveDrivers_Op(Operator):
         wm = bpy.context.window_manager
 
         prefix = wm.character_prefix
-        arma = wm.object1
-        head_bone_name = wm.bone1
-        cam = wm.object2
+        arma = wm.character_rig
+        head_bone_name = wm.character_head_bone
+        cam = wm.camera
 
         if prefix == "":
             self.report({'WARNING'}, "Please enter a Character Prefix!")
@@ -61,7 +61,7 @@ class FDG_OT_RemoveDrivers_Op(Operator):
         
         bpy.ops.object.mode_set(mode='OBJECT', toggle=False)
 
-        empty_cam = bpy.data.objects.get(fdg_names.emtpy_cam)
+        empty_cam = bpy.data.objects.get(fdg_names.empty_cam)
 
         if empty_cam is not None:
             bpy.data.objects.remove(empty_cam, do_unlink=True)
