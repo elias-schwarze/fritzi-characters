@@ -1,4 +1,4 @@
-emtpy_cam = "Empty.cam"
+empty_cam = "Empty.cam"
 empty_head = "Empty.head"
 
 hidden_controller_bone = "Driven_Props"

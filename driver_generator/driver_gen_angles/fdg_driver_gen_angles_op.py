@@ -22,9 +22,9 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         wm = bpy.context.window_manager
 
         prefix = wm.character_prefix
-        arma = wm.object1
-        head_bone_name = wm.bone1
-        cam = wm.object2
+        arma = wm.character_rig
+        head_bone_name = wm.character_head_bone
+        cam = wm.camera
 
         if prefix == "":
             self.report({'WARNING'}, "Please enter a Character Prefix!")
@@ -66,9 +66,9 @@ class FDG_OT_GenerateDrivers_Op(Operator):
         head_empty.hide_viewport = True
 
         # Create an Empty at the Camera and parent it to the Camera
-        cam_empty = bpy.context.scene.objects.get(fdg_names.emtpy_cam)
+        cam_empty = bpy.context.scene.objects.get(fdg_names.empty_cam)
         if cam_empty is None:
-            cam_empty = bpy.data.objects.new(fdg_names.emtpy_cam, None)
+            cam_empty = bpy.data.objects.new(fdg_names.empty_cam, None)
 
             
             cam_empty.location = cam.location
