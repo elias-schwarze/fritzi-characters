@@ -259,8 +259,12 @@ class Anim_Mover():
     def move_key(self, key):
         if self.move_direction == 'FORWARD':
             key.co[0] = key.co[0] + self.frame_amount
+            key.handle_left[0] += self.frame_amount
+            key.handle_right[0] += self.frame_amount
         elif self.move_direction =='BACKWARD':
             key.co[0] = key.co[0] - self.frame_amount
+            key.handle_left[0] -= self.frame_amount
+            key.handle_right[0] -= self.frame_amount
 
     def move_marker(self, marker):
         if self.move_direction == 'FORWARD':
@@ -269,6 +273,7 @@ class Anim_Mover():
             marker.frame = marker.frame - self.frame_amount
 
     def move_strip(self, strip):
+        scale = strip.scale
         if self.move_direction == 'FORWARD':
             strip.frame_end = strip.frame_end + self.frame_amount
             strip.frame_start = strip.frame_start + self.frame_amount
@@ -276,6 +281,8 @@ class Anim_Mover():
         if self.move_direction == 'BACKWARD':
             strip.frame_start = strip.frame_start - self.frame_amount
             strip.frame_end = strip.frame_end - self.frame_amount
+
+        strip.scale = scale
 
     def move_sound_sqeuence(self, sound_sequence):
         if self.move_direction == 'FORWARD':
