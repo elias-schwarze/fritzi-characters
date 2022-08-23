@@ -116,9 +116,11 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         curve_modifier.use_custom_curve = True
         curve_modifier.layer_pass = pass_nr
         curve_driver = curve_modifier.driver_add('thickness_factor').driver
-        curve_modifier.curve.curves[0].points.new(0.0, 0.0)
+        curve_modifier.curve.curves[0].points[0].location = (0.0, 0.625)
+        curve_modifier.curve.curves[0].points[1].location = (1.0, 0.625)
         curve_modifier.curve.curves[0].points.new(0.5, 1.0)
-        curve_modifier.curve.curves[0].points.new(1.0, 0.0)
+        for point in curve_modifier.curve.curves[0].points:
+            point.handle_type = 'AUTO'
         curve_modifier.curve.update()
 
         # The Values which get used here are stored in the FritziGPSetup PropertyGroup in a Collectionproperty in the scene

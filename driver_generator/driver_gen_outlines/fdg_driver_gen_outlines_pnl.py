@@ -112,8 +112,8 @@ class FDG_PT_DriverGenOutlines_pnl(bpy.types.Panel):
         if rig:
             if rig.type == 'ARMATURE':
                 layout.prop_search(wm, "character_rig_bone", rig.data, "bones")
-                if 'c_root_master.x' in rig.data.bones:
-                    wm.character_rig_bone = 'c_root_master.x'
+                if 'c_head.x' in rig.data.bones:
+                    wm.character_rig_bone = 'c_head.x'
 
         
         
