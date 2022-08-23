@@ -1,6 +1,9 @@
 
 import bpy
 
+def start(elem):
+        return elem.frame_start
+
 class Anim_Mover():
 
     move_type: None
@@ -188,7 +191,7 @@ class Anim_Mover():
         
         if (ob.animation_data and ob.animation_data.nla_tracks):
                 for track in ob.animation_data.nla_tracks:
-                    for strip in track.strips:
+                    for strip in self.sort_track(track):
                         
                         if self.move_type == 'BEFORE':
                             if strip.frame_start <= self.frame_in and strip.frame_end >= self.frame_in:
@@ -216,6 +219,15 @@ class Anim_Mover():
                                 self.add_NLA_strip_list_item(ob, track, strip)
                                 pass
                                 #Save strip, track and ob to later give UI feedback why it could not be moved
+    
+    def sort_track(self, track):
+        
+        if self.move_direction == 'FORWARD':
+            strips = sorted(track.strips, key=start, reverse=True)
+        else :
+            strips = sorted(track.strips, key=start)
+        
+        return strips
 
     def add_sound_strip_list_item(self, strip):
         Sound_strip_list = bpy.context.window_manager.Sound_strip_list
