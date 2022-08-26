@@ -30,7 +30,7 @@ remove_unpacked_files_after_zip = True
 
 
 # do not build files that match following patterns, to exclude development files that the end user does not need
-IGNORE_PATTERNS = ('*.pyc', 'tmp*', '*__pycache__*', '.git', '.vscode', '.gitignore', '.gitattributes', 'build.py', 'fritzi-characters_updater')
+IGNORE_PATTERNS = ('*.pyc', 'tmp*', '*__pycache__*', '.git', '.vscode', '.gitignore', '.gitattributes', 'build.py', 'fritzi-characters_updater', '*.json')
 
 
 # Add root folder to path
