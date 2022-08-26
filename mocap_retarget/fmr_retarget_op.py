@@ -63,7 +63,7 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
                         suffix+=1
 
 
-                    bpy.ops.wm.save_as_mainfile(filepath=blendpath)
+                    bpy.ops.wm.save_as_mainfile(filepath=blendpath, compress=True)
 
                     #import the bvh (Scaling has to be fetched from scale List!)
                     name = char_file_basename.split("_")[2].lower()
@@ -90,7 +90,7 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
                     retarget_mocap(context, do_auto_scale)
 
                     #save after retargeting
-                    bpy.ops.wm.save_mainfile()
+                    bpy.ops.wm.save_mainfile(compress=True)
                     
                     
                     # undo retarget and import before heading to next bvh
