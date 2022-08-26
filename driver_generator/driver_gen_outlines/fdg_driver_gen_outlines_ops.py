@@ -51,7 +51,7 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         # These are the default Values of the Settings
         item.thick_dist_close = 0.65
         item.thick_dist_far = 2.3
-        item.thick_close = 1.0
+        item.thick_close = 18.0
         item.thick_far = 28.0
 
         item.crv_max_dist = 0.0
