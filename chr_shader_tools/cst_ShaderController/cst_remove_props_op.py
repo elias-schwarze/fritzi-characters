@@ -12,7 +12,7 @@ class CST_OT_removeProps_OP(Operator):
 
     propNames = ["highlight_col", "rimlight_col", "AdvMixLightCol", "AdvMixShadowTint", "mix_values",
      "highlight_rimlight_mix_values", "AdvMixFactor", "advMixLightAmount", "AdvMixShadowTint", "highlight_amount",
-     "rimlight_amount", "vector_diffuse_mix", "highlight", "rimlight", "adv_mix_light", "adv_mix_shadow", "main_tint", "light_rotation"]
+     "rimlight_amount", "vector_diffuse_mix", "highlight", "rimlight", "adv_mix_light", "adv_mix_shadow", "main_tint", "light_rotation", "shadow_tint"]
 
     # should only work in object mode
     @classmethod
