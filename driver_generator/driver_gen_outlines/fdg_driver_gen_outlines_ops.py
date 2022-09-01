@@ -185,9 +185,57 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         self.report({'INFO'}, "Outline thickness automated!")
         return {'FINISHED'}
 
+class FDG_OT_GenerateLineArtPass_OP(Operator):
+    bl_idname = "fdg.gen_lineart_pass"
+    bl_label = "Generate Lineart Pass"
+    bl_description = "Generate a Lineart Pass with a Lineart Modifier and 2 thickness modifiers with Drivers for the thickness of the outline tied to the distance between the camera and the character."
+    bl_options = {"REGISTER", "UNDO"}
+
+    @classmethod
+    def poll(cls, context):
+        wm = context.window_manager
+        if not (wm.gp_object and wm.Pass_Name and wm.character_rig and wm.camera):
+            return False
+        if wm.gp_auto_advanced_toggle:
+            if not wm.do_create_gp_layer and not wm.gp_layer:
+                return False
+
+            if not wm.do_create_view_layer and not wm.view_layer:
+                return False
+
+            if wm.do_create_view_layer and not wm.new_view_layer_name:
+                return False
+
+        if context.scene.gp_settings.get(wm.Pass_Name):
+            return False
+
+        return True
+
+    def execute(self, context):
+        wm = context.window_manager
+        gp = wm.gp_object
+        collection = wm.lineart_collection
+        #view_layer = context.scene.view_layers.new("pass_" + str(wm.Pass_Number) + "_" + wm.Pass_Name).name
+        gp_layer = wm.gp_object.data.layers.new(name="pass_" + str(wm.Pass_Number) + "_" + wm.Pass_Name, set_active = True)
+        gp_layer.frames.new(0)
+        gp_layer.pass_index = wm.Pass_Number
+        gp_layer.use_lights = False
+        lineart = gp.grease_pencil_modifiers.new(wm.Pass_Name, 'GP_LINEART')
+        lineart.source_type = 'COLLECTION'
+        lineart.source_collection = collection
+        lineart.target_layer = gp_layer.info
+        if gp.data.materials:
+            lineart.target_material = gp.data.materials[0]
+        lineart.thickness = 1
+        lineart.use_intersection_mask = collection.lineart_intersection_mask
+
+        return {'FINISHED'}
+
 
 def register():
     bpy.utils.register_class(FDG_OT_GenerateOutlineDriver_Op)
+    bpy.utils.register_class(FDG_OT_GenerateLineArtPass_OP)
 
 def unregister():
+    bpy.utils.unregister_class(FDG_OT_GenerateLineArtPass_OP)
     bpy.utils.unregister_class(FDG_OT_GenerateOutlineDriver_Op)

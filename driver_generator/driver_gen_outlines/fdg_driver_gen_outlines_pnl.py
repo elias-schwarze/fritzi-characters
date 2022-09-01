@@ -94,11 +94,14 @@ class FDG_PT_DriverGenOutlines_pnl(bpy.types.Panel):
     bpy.types.WindowManager.new_view_layer_name = StringProperty(name="New View Layer Name")
     bpy.types.WindowManager.gp_auto_enum = EnumProperty(name = "",items=gp_enum_callback)
     bpy.types.WindowManager.gp_auto_advanced_toggle = BoolProperty(name = "Advanced", default=False)
+    bpy.types.WindowManager.lineart_collection = PointerProperty(name="Line Art Collection", type=bpy.types.Collection)
     
 
     def draw(self, context):
         wm = context.window_manager
         layout = self.layout
+
+        layout.prop_search(wm, "lineart_collection", bpy.data, "collections")
 
         layout.prop(wm, "Pass_Number")
         layout.prop(wm, "Pass_Name")
@@ -122,6 +125,7 @@ class FDG_PT_DriverGenOutlines_pnl(bpy.types.Panel):
         layout.prop_search(wm, "camera", bpy.data, "objects", text="Camera")
 
         layout.operator("fdg.gen_outline_driver")
+        layout.operator("fdg.gen_lineart_pass")
 
 
         #This will be implemented in the future
