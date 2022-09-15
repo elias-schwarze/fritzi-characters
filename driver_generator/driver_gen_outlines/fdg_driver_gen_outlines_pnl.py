@@ -246,7 +246,7 @@ class FDG_PT_PreviewOutlines_pnl(bpy.types.Panel):
         layout.label(text= "Output Directory:")
         layout.prop(wm, "output_path", text="")
         layout.label(text="File Name:")
-        layout.prop(wm, "file_name", text="")
+        layout.prop(wm, "file_name", text="")  
         layout.operator("fdg.gen_preview_outlines")
         layout.separator()
         

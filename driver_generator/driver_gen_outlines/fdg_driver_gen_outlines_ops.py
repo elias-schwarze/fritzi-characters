@@ -231,6 +231,55 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
 
         return {'FINISHED'}
 
+def create_collection_unique(name, parent = bpy.context.scene.collection):
+    collection = bpy.data.collections.get(name)
+    if not collection:
+        collection = bpy.data.collections.new(name)
+        parent.children.link(collection)
+
+    return collection
+
+class FDG_OT_GenerateCollections_OP(Operator):
+    bl_idname = "fdg.gen_lineart_collections"
+    bl_label = "Generate Standard Collections"
+    bl_description = "Generates all the needed Collections for the Lineart Setup"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        scene = context.scene
+        wm = context.window_manager
+
+        outline_collection = create_collection_unique("OUTLINES")
+
+        objects_collection = create_collection_unique("OUTLINE_groups")
+        environment_collection = create_collection_unique("ENVIRONMENTS", objects_collection)
+        character_collection = create_collection_unique("CHARACTERS", objects_collection)
+        excluded_collection = create_collection_unique("OBJECTS_Excluded", objects_collection)
+        nointersection_collection = create_collection_unique("OBJECTS_NoIntersection", objects_collection)
+
+        gp_data = bpy.data.grease_pencils.new("OUTLINES_scene")
+        gp_ob = bpy.data.objects.new("OUTLINES_scene", gp_data)
+        outline_collection.objects.link(gp_ob)
+        gp_ob.show_in_front = True
+
+        gp_layer = gp_data.layers.new(name="ENVIRONMENTS", set_active=True)
+        gp_layer.frames.new(0)
+
+        gp_mat = bpy.data.materials.new("gp_mat")
+
+        bpy.data.materials.create_gpencil_data(gp_mat)
+        gp_data.materials.append(gp_mat)
+
+        lineart = gp_ob.grease_pencil_modifiers.new("pass_0_ENVIRONMENTS", 'GP_LINEART')
+        lineart.source_collection = environment_collection
+        lineart.target_layer = gp_layer.info
+        lineart.target_material = gp_mat
+        lineart.smooth_tolerance = 0.0
+        lineart.thickness = 1
+        lineart.use_intersection_mask[0] = True
+            
+
+
 
 def register():
     bpy.utils.register_class(FDG_OT_GenerateOutlineDriver_Op)
