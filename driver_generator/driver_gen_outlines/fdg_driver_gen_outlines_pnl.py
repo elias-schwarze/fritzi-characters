@@ -217,6 +217,7 @@ class FDG_UL_CollectionList_items(UIList):
 
 class CharacterProp(PropertyGroup):
     character_collection : PointerProperty(type=bpy.types.Collection)
+    outline_object : PointerProperty(type=bpy.types.Object)
 
 class FDG_PT_PreviewOutlines_pnl(bpy.types.Panel):
     bl_label = "Preview Outlines"
@@ -242,13 +243,13 @@ class FDG_PT_PreviewOutlines_pnl(bpy.types.Panel):
         column.operator("fdg.add_collection", icon='ADD', text="")
         column.operator("fdg.remove_collection", icon='REMOVE', text="")
         
-        
-        layout.operator("fdg.gen_preview_outlines")
-        layout.separator()
         layout.label(text= "Output Directory:")
         layout.prop(wm, "output_path", text="")
         layout.label(text="File Name:")
         layout.prop(wm, "file_name", text="")
+        layout.operator("fdg.gen_preview_outlines")
+        layout.separator()
+        
 
         row = layout.row()
         row.prop(scene, "frame_start", text="Start")

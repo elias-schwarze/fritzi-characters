@@ -9,6 +9,16 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
     bl_description = "Generates the preview Outlines for the selected Characters"
     bl_options = {"REGISTER", "UNDO"}
 
+    @classmethod
+    def poll(cls, context):
+        wm = context.window_manager
+        if not (wm.output_path or wm.file_name):
+            return False
+        if len(context.scene.collection_list) == 0:
+            return False
+
+        return True
+
     def execute(self, context):
         wm = context.window_manager
         scene = context.scene
@@ -16,25 +26,30 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
         for item in scene.collection_list:
             collection = item.character_collection
             print(collection)
-            self.prepare_collection_for_render(collection)
+            print(item)
+            self.prepare_collection_for_render(collection, item)
         self.prepare_scene_for_render(context)
         filepath = bpy.data.filepath
         filepath = filepath[:-6] + "_line" + filepath[-6:]
-        bpy.ops.wm.save_as_mainfile(filepath=filepath)
+        #bpy.ops.wm.save_as_mainfile(filepath=filepath)
         
         print("a")
 
 
         return {'FINISHED'}
 
-    def create_preview_line(self, collection, transmission: bool):
+    def create_preview_line(self, collection, transmission: bool, item=None):
         context = bpy.context
-        outline_collection = bpy.data.collections.new("Outlines")
-        context.scene.collection.children.link(outline_collection)
+        outline_collection = bpy.data.collections.get("Outlines")
+        if not outline_collection:
+            outline_collection = bpy.data.collections.new("Outlines")
+            context.scene.collection.children.link(outline_collection)
         
         gp_data = bpy.data.grease_pencils.new(collection.name + "_lines")
         gp_ob = bpy.data.objects.new(collection.name + "_lines", gp_data)
         outline_collection.objects.link(gp_ob)
+        if item:
+            item.outline_object = gp_ob
 
         gp_ob.show_in_front = True
 
@@ -57,6 +72,7 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
         lineart.source_collection = collection
         lineart.target_layer = gp_layer.info
         lineart.target_material = gp_mat
+        lineart.smooth_tolerance = 0.0
 
         
 
@@ -71,6 +87,7 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
             transmission_lineart.level_start = 1
             transmission_lineart.use_material_mask = True
             transmission_lineart.use_material_mask_bits[0] = True
+            transmission_lineart.smooth_tolerance = 0.0
 
         thickness = gp_ob.grease_pencil_modifiers.new("Thickness", 'GP_THICK')
         thickness.use_normalized_thickness = True
@@ -101,9 +118,11 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
                     mod.solver = 'EXACT'
                     mod.use_self = True
 
-    def prepare_collection_for_render(self, collection):
-        
-        self.create_preview_line(collection, self.check_for_glasses(collection))
+    def prepare_collection_for_render(self, collection, item):
+        print(not item)
+        if not item.outline_object:
+            
+            self.create_preview_line(collection, self.check_for_glasses(collection), item)
                 
         self.setup_booleans_in_collection(collection)
 
