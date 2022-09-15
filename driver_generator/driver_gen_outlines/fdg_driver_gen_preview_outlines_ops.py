@@ -1,3 +1,4 @@
+from enum import Enum
 import os
 import bpy
 from bpy.types import Operator
@@ -5,18 +6,22 @@ from bpy.types import Operator
 class FDG_OT_GeneratePreviewOutlines_Op(Operator):
     bl_idname = "fdg.gen_preview_outlines"
     bl_label = "Generate Preview Outlines"
-    bl_description = "Generates the prwview Outlines for one Character"
+    bl_description = "Generates the preview Outlines for the selected Characters"
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
         wm = context.window_manager
-
-        self.prepare_collection_for_render(wm.character_collection)
+        scene = context.scene
+    	
+        for item in scene.collection_list:
+            collection = item.character_collection
+            print(collection)
+            self.prepare_collection_for_render(collection)
         self.prepare_scene_for_render(context)
         filepath = bpy.data.filepath
         filepath = filepath[:-6] + "_line" + filepath[-6:]
         bpy.ops.wm.save_as_mainfile(filepath=filepath)
-        bpy.ops.render.opengl(animation=True)
+        
         print("a")
 
 
@@ -115,6 +120,44 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
         path = os.path.join(wm.output_path, wm.file_name + ".####.jpg")
         context.scene.render.filepath = path
 
+class FDG_OT_RenderPreview_Op(Operator):
+    bl_idname = "fdg.render_preview"
+    bl_label = "Render Preview"
+    bl_description = "Renders the Preview"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        bpy.ops.render.opengl(animation=True)
+
+        return {'FINISHED'}
+
+class FDG_OT_AddCollection_Op(Operator):
+    bl_idname = "fdg.add_collection"
+    bl_label = "Add Collection"
+    bl_description = "Adds Empty Collection Pointer to Selection List"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        
+        scene = context.scene
+        scene.collection_list.add()
+        
+        return {'FINISHED'}
+
+class FDG_OT_RemoveCollection_Op(Operator):
+    bl_idname = "fdg.remove_collection"
+    bl_label = "Remove Collection"
+    bl_description = "Removes the selected Collection from Selection List"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        scene = context.scene
+        index = scene.collection_list_index
+        scene.collection_list.remove(index)
+        scene.collection_list_index = min(max(0, index - 1), len(scene.collection_list) - 1)
+        
+        return {'FINISHED'}
+
 class FDG_OT_AddCollections_Op(Operator):
     bl_idname = "fdg.add_collections"
     bl_label = "Add Selected"
@@ -123,18 +166,31 @@ class FDG_OT_AddCollections_Op(Operator):
 
     def execute(self, context):
         wm = context.window_manager
-        collection = wm.character_collection
-        item = wm.collection_list.add()
-        
-        
-        item.character_collection = collection
+        scene = context.scene
+        selected_collections = [sel for sel in context.selected_ids if sel.rna_type.name == 'Collection']
+        for thing in selected_collections:
+            
+            
+            item = scene.collection_list.add()
+            item.character_collection = thing
+            for window in wm.windows:
+                for area in window.screen.areas:
+                    area.tag_redraw()
         return {'FINISHED'}
+
 
 def register():
     bpy.utils.register_class(FDG_OT_GeneratePreviewOutlines_Op)
+    bpy.utils.register_class(FDG_OT_RenderPreview_Op)
+    bpy.utils.register_class(FDG_OT_AddCollection_Op)
+    bpy.utils.register_class(FDG_OT_RemoveCollection_Op)
     bpy.utils.register_class(FDG_OT_AddCollections_Op)
 
 
 def unregister():
-    bpy.utils.unregister_class(FDG_OT_GeneratePreviewOutlines_Op)
     bpy.utils.unregister_class(FDG_OT_AddCollections_Op)
+    bpy.utils.unregister_class(FDG_OT_RemoveCollection_Op)
+    bpy.utils.unregister_class(FDG_OT_AddCollection_Op)
+    bpy.utils.unregister_class(FDG_OT_RenderPreview_Op)
+    bpy.utils.unregister_class(FDG_OT_GeneratePreviewOutlines_Op)
+    

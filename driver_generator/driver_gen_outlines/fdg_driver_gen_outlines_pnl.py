@@ -1,4 +1,3 @@
-from multiprocessing import context
 import bpy
 from bpy.types import PropertyGroup, UIList
 from bpy.props import PointerProperty, IntProperty, StringProperty, FloatProperty, CollectionProperty, BoolProperty, EnumProperty
@@ -214,7 +213,7 @@ class FDG_UL_CollectionList_items(UIList):
         return True
 
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
-        layout.prop_search(item, "character_collection", bpy.data, "collections")
+        layout.prop_search(item, "character_collection", bpy.data, "collections", text = "Collection")
 
 class CharacterProp(PropertyGroup):
     character_collection : PointerProperty(type=bpy.types.Collection)
@@ -227,48 +226,71 @@ class FDG_PT_PreviewOutlines_pnl(bpy.types.Panel):
     bl_options = {"DEFAULT_CLOSED"}
     bl_parent_id = "FDG_PT_Outlines_pnl"
 
-    bpy.types.WindowManager.character_collection = PointerProperty(name = "Character Collection", type= bpy.types.Collection)
+    
     bpy.types.WindowManager.output_path = StringProperty(name="Output Path", subtype='DIR_PATH')
     bpy.types.WindowManager.file_name = StringProperty(name="File Name", subtype='FILE_NAME')
     
 
     def draw(self, context):
         wm = context.window_manager
+        scene = context.scene
         layout = self.layout
 
-        layout.template_list("FDG_UL_CollectionList_items", "", wm, "collection_list", wm, "collection_list_index")
-        layout.operator("fdg.add_collections")
-        layout.prop_search(wm, "character_collection", bpy.data, "collections")
+        row = layout.row()
+        row.template_list("FDG_UL_CollectionList_items", "", scene, "collection_list", scene, "collection_list_index")
+        column = row.column(align=True)
+        column.operator("fdg.add_collection", icon='ADD', text="")
+        column.operator("fdg.remove_collection", icon='REMOVE', text="")
+        
+        
+        layout.operator("fdg.gen_preview_outlines")
+        layout.separator()
         layout.label(text= "Output Directory:")
         layout.prop(wm, "output_path", text="")
         layout.label(text="File Name:")
         layout.prop(wm, "file_name", text="")
-        layout.operator("fdg.gen_preview_outlines")
-        pass
 
+        row = layout.row()
+        row.prop(scene, "frame_start", text="Start")
+        row.prop(scene, "frame_end", text="End")
+        layout.operator("fdg.render_preview")
+        
 
+def draw_fritzi_outliner_menu(self, context):
+
+    layout = self.layout
+    layout.separator()
+    layout.operator("fdg.add_collections", text="Add Selected Collections to Preview Outlines")
 
 def register():
     bpy.utils.register_class(fritziGpSetup)
     bpy.types.Scene.gp_settings = CollectionProperty(type=fritziGpSetup)
     bpy.types.Scene.gp = PointerProperty(type=fritziGpSetup)
     bpy.utils.register_class(CharacterProp)
-    bpy.types.WindowManager.collection_list = CollectionProperty(name = "Character Collections", type=CharacterProp)
-    bpy.types.WindowManager.collection_list_index = IntProperty()
+    bpy.types.Scene.collection_list = CollectionProperty(name = "Character Collections", type=CharacterProp)
+    bpy.types.Scene.collection_list_index = IntProperty()
     bpy.utils.register_class(FDG_PT_Outlines_pnl)
     bpy.utils.register_class(FDG_PT_PreviewOutlines_pnl)
     bpy.utils.register_class(FDG_PT_DriverGenOutlines_pnl)
     bpy.utils.register_class(FDG_PT_DriverGenOutlinesSettings_pnl)
     
     bpy.utils.register_class(FDG_UL_CollectionList_items)
+    bpy.types.OUTLINER_MT_context_menu.append(draw_fritzi_outliner_menu)
+    bpy.types.OUTLINER_MT_collection.append(draw_fritzi_outliner_menu)
     
 
 def unregister():
+    bpy.types.OUTLINER_MT_context_menu.remove(draw_fritzi_outliner_menu)
+    bpy.types.OUTLINER_MT_collection.remove(draw_fritzi_outliner_menu)
     bpy.utils.unregister_class(FDG_UL_CollectionList_items)
     
     bpy.utils.unregister_class(FDG_PT_DriverGenOutlinesSettings_pnl)
     bpy.utils.unregister_class(FDG_PT_DriverGenOutlines_pnl)
     bpy.utils.unregister_class(FDG_PT_PreviewOutlines_pnl)
     bpy.utils.unregister_class(FDG_PT_Outlines_pnl)
+    del bpy.types.Scene.collection_list_index
+    del bpy.types.Scene.collection_list
     bpy.utils.unregister_class(CharacterProp)
+
+    
     bpy.utils.unregister_class(fritziGpSetup)
