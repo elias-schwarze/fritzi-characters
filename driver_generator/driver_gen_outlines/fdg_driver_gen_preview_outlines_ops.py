@@ -73,6 +73,7 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
         lineart.target_layer = gp_layer.info
         lineart.target_material = gp_mat
         lineart.smooth_tolerance = 0.0
+        lineart.use_intersection = False
 
         
 
@@ -88,6 +89,7 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
             transmission_lineart.use_material_mask = True
             transmission_lineart.use_material_mask_bits[0] = True
             transmission_lineart.smooth_tolerance = 0.0
+            transmission_lineart.use_intersection = False
 
         thickness = gp_ob.grease_pencil_modifiers.new("Thickness", 'GP_THICK')
         thickness.use_normalized_thickness = True
