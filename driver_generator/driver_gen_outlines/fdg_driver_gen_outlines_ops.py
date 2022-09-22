@@ -305,7 +305,19 @@ class FDG_OT_GenerateCollections_OP(Operator):
         lineart.smooth_tolerance = 0.0
         lineart.thickness = 1
         lineart.use_intersection_mask[0] = True
+
+        curve_modifier = gp_ob.grease_pencil_modifiers.new("pass_0_ENVIRONMENTS_CURVE", 'GP_THICK')
+        
+        curve_modifier.use_custom_curve = True
+        curve_modifier.layer_pass = 0
+        curve_modifier.curve.curves[0].points[0].location = (0.0, 0.625)
+        curve_modifier.curve.curves[0].points[1].location = (1.0, 0.625)
+        curve_modifier.curve.curves[0].points.new(0.5, 1.0)
+        for point in curve_modifier.curve.curves[0].points:
+            point.handle_type = 'AUTO'
+        curve_modifier.curve.update()
             
+        # Here be Curve Settings
         
         scene.gp_settings.gp_object = gp_ob
         scene.gp_settings.outline_collection = outline_collection
@@ -317,7 +329,7 @@ class FDG_OT_GenerateCollections_OP(Operator):
         scene.gp_settings.gp_material = gp_mat.name
         scene.gp_settings.environment_layer = gp_layer.info
         scene.gp_settings.environment_lineart = lineart.name
-        scene.gp_settings.environment_thickness = "" # Missing as of now. Need to know which Values it has first
+        scene.gp_settings.environment_thickness = curve_modifier.name
         scene.gp_settings.mask_counter = 0
 
         return {'FINISHED'}
