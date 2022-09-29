@@ -81,10 +81,10 @@ class fritziGPPass(PropertyGroup):
 
 def gp_enum_callback(scene, context):
     """Callback Method which returns a dynamic Enum filled with the modifier names of all individual PropertyGroups
-    stored in the gp_pass_settings CollectionProperty in the Scene."""
+    stored in the gp_settings CollectionProperty in the Scene."""
     items = []
-    if context.scene.gp_pass_settings:
-        for setting in context.scene.gp_pass_settings:
+    if context.scene.gp_settings:
+        for setting in context.scene.gp_settings:
             if(setting.name):
                 items.append((setting.name, setting.name, ""))
                 
@@ -194,18 +194,18 @@ class FDG_PT_DriverGenOutlinesGeneralSettings_pnl(bpy.types.Panel):
         scene = context.scene
 
         layout = self.layout
-        settings = scene.gp_settings
+        settings = scene.gp_defaults
         layout.prop_search(settings, "gp_object", bpy.data, "objects", text="Grease Pencil")
         layout.prop_search(settings, "outline_collection", bpy.data, "collections")
-        layout.prop_search(settings, "objects_collection", bpy.data, "collections")
-        layout.prop_search(settings, "environment_collection", bpy.data, "collections")
+#        layout.prop_search(settings, "objects_collection", bpy.data, "collections")
+#        layout.prop_search(settings, "environment_collection", bpy.data, "collections")
         layout.prop_search(settings, "character_collection", bpy.data, "collections")
-        layout.prop_search(settings, "excluded_collection", bpy.data, "collections")
-        layout.prop_search(settings, "nointersection_collection", bpy.data, "collections")
-        layout.prop_search(settings, "gp_material", bpy.data, "materials")
-        layout.prop_search(settings, "environment_layer", settings.gp_object.data, "layers", text="Environment Layer", icon='GREASEPENCIL')
-        layout.prop_search(settings, "environment_lineart", settings.gp_object, "grease_pencil_modifiers", text="Environment Line Art", icon='MOD_LINEART')
-        layout.prop_search(settings, "environment_thickness", settings.gp_object, "grease_pencil_modifiers", text="Environment Thickness Modifier", icon='MOD_THICKNESS')
+#        layout.prop_search(settings, "excluded_collection", bpy.data, "collections")
+#        layout.prop_search(settings, "nointersection_collection", bpy.data, "collections")
+#        layout.prop_search(settings, "gp_material", bpy.data, "materials")
+#        layout.prop_search(settings, "environment_layer", settings.gp_object.data, "layers", text="Environment Layer", icon='GREASEPENCIL')
+#        layout.prop_search(settings, "environment_lineart", settings.gp_object, "grease_pencil_modifiers", text="Environment Line Art", icon='MOD_LINEART')
+#        layout.prop_search(settings, "environment_thickness", settings.gp_object, "grease_pencil_modifiers", text="Environment Thickness Modifier", icon='MOD_THICKNESS')
 
 class FDG_PT_DriverGenOutlinesPassSettings_pnl(bpy.types.Panel):
     bl_label = "Outline Driver Settings"
@@ -222,8 +222,8 @@ class FDG_PT_DriverGenOutlinesPassSettings_pnl(bpy.types.Panel):
         
 
         layout.prop(wm, "gp_auto_enum")
-        if scene.gp_pass_settings:
-            settings = scene.gp_pass_settings.get(wm.gp_auto_enum)
+        if scene.gp_settings:
+            settings = scene.gp_settings.get(wm.gp_auto_enum)
             #layout.label(text=settings.GP_layer)
 
 
@@ -259,6 +259,32 @@ class FDG_PT_DriverGenOutlinesPassSettings_pnl(bpy.types.Panel):
                 column = layout.column(align=True)
                 column.prop(settings, "crv_max_dist")
                 column.prop(settings, "crv_off_dist")
+
+class FDG_PT_DriverGenOutlinesDebug_pnl(bpy.types.Panel):
+    bl_label = "Debug"
+    bl_category = "FCHAR"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_options = {"DEFAULT_CLOSED"}
+    bl_parent_id = "FDG_PT_DriverGenOutlinesSettings_pnl"
+
+    def draw(self, context):
+        wm = context.window_manager
+        scene = context.scene
+
+        layout = self.layout
+        settings = scene.gp_defaults
+        layout.prop_search(settings, "gp_object", bpy.data, "objects", text="Grease Pencil")
+        layout.prop_search(settings, "outline_collection", bpy.data, "collections")
+        layout.prop_search(settings, "objects_collection", bpy.data, "collections")
+        layout.prop_search(settings, "environment_collection", bpy.data, "collections")
+        layout.prop_search(settings, "character_collection", bpy.data, "collections")
+        layout.prop_search(settings, "excluded_collection", bpy.data, "collections")
+        layout.prop_search(settings, "nointersection_collection", bpy.data, "collections")
+        layout.prop_search(settings, "gp_material", bpy.data, "materials")
+        layout.prop_search(settings, "environment_layer", settings.gp_object.data, "layers", text="Environment Layer", icon='GREASEPENCIL')
+        layout.prop_search(settings, "environment_lineart", settings.gp_object, "grease_pencil_modifiers", text="Environment Line Art", icon='MOD_LINEART')
+        layout.prop_search(settings, "environment_thickness", settings.gp_object, "grease_pencil_modifiers", text="Environment Thickness Modifier", icon='MOD_THICKNESS')
 
 class FDG_UL_CollectionList_items(UIList):
 
@@ -319,9 +345,9 @@ def draw_fritzi_outliner_menu(self, context):
 
 def register():
     bpy.utils.register_class(fritziGPPass)
-    bpy.types.Scene.gp_pass_settings = CollectionProperty(type=fritziGPPass)
+    bpy.types.Scene.gp_settings = CollectionProperty(type=fritziGPPass)
     bpy.utils.register_class(fritziGPSettings)
-    bpy.types.Scene.gp_settings = PointerProperty(type=fritziGPSettings)
+    bpy.types.Scene.gp_defaults = PointerProperty(type=fritziGPSettings)
     bpy.utils.register_class(CharacterProp)
     bpy.types.Scene.collection_list = CollectionProperty(name = "Character Collections", type=CharacterProp)
     bpy.types.Scene.collection_list_index = IntProperty()

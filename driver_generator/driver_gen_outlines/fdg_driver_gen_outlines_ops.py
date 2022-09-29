@@ -33,7 +33,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
             return False
         
 
-        if context.scene.gp_pass_settings.get(wm.Pass_Name + "L0"):
+        if context.scene.gp_settings.get(wm.Pass_Name + "L0"):
             return False
 
         return True
@@ -41,7 +41,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
     def execute(self, context):
         
         scene = context.scene
-        settings = scene.gp_settings
+        settings = scene.gp_defaults
         gp = settings.gp_object
         character_collection = settings.character_collection
         
@@ -57,7 +57,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
     def create_gp_pass(self, context, subpass : subpass, gp, character_collection, mask_bit):
         wm = context.window_manager
         scene = context.scene
-        item = scene.gp_pass_settings.add()
+        item = scene.gp_settings.add()
         if subpass == subpass.L0:
             pass_name = wm.Pass_Name + "_L0"
             
@@ -121,24 +121,24 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
 
         cam_empty = self.getCamEmpty()
 
-        crv_mod, thick_mod = self.createThicknessModifiers(pass_nr, pass_name, gp, context, cam_empty, context.scene.gp_pass_settings.find(item.name))
+        crv_mod, thick_mod = self.createThicknessModifiers(pass_nr, pass_name, gp, context, cam_empty, context.scene.gp_settings.find(item.name))
         item.thick_modifier = thick_mod.name
         item.crv_modifier = crv_mod.name
  
 
     def find_free_mask(self, context):
         scene = context.scene
-        if len(scene.gp_pass_settings) > 0:
+        if len(scene.gp_settings) > 0:
 
             for i in range(1,8):
-                if not self.is_mask_used(i, scene.gp_pass_settings): # is mask used has to be added
+                if not self.is_mask_used(i, scene.gp_settings): # is mask used has to be added
                     return i
             return -1
         return 1
 
-    def is_mask_used(self, mask_nr, gp_pass_settings):
+    def is_mask_used(self, mask_nr, gp_settings):
 
-        for item in gp_pass_settings:
+        for item in gp_settings:
             lineart = item.gp_object.grease_pencil_modifiers.get(item.lineart)
             if lineart.use_intersection_mask[mask_nr]:
                 return True
@@ -146,17 +146,17 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
 
     def find_free_pass(self, context):
         scene = context.scene
-        if len(scene.gp_pass_settings) > 0:
+        if len(scene.gp_settings) > 0:
                         
             for i in range(1, 101):
-                if not self.is_pass_used(i, scene.gp_pass_settings):
+                if not self.is_pass_used(i, scene.gp_settings):
                     return i
             return -1
         return 1
 
-    def is_pass_used(self, pass_nr, gp_pass_settings):
+    def is_pass_used(self, pass_nr, gp_settings):
 
-        for item in gp_pass_settings:
+        for item in gp_settings:
             if item.pass_nr == pass_nr:
                 return True
         return False
@@ -182,7 +182,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
             cam_empty.location = cam.location
             cam_empty.rotation_euler = cam.rotation_euler
 
-            bpy.context.scene.gp_settings.outline_collection.objects.link(cam_empty)
+            bpy.context.scene.gp_defaults.outline_collection.objects.link(cam_empty)
 
             parent_objects(cam, cam_empty)
         cam_empty.hide_viewport = True
@@ -210,7 +210,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         curve_modifier.curve.update()
 
         # The Values which get used here are stored in the fritziGPPass PropertyGroup in a Collectionproperty in the scene
-        data_path_start = '["gp_pass_settings"][' + str(setting_index) + ']'
+        data_path_start = '["gp_settings"][' + str(setting_index) + ']'
         add_var(curve_driver, context.scene, "crv_max_dist", type='SINGLE_PROP', rna_data_path=data_path_start + '["crv_max_dist"]', id_type='SCENE')
         add_var(curve_driver, context.scene, "crv_off_dist", type='SINGLE_PROP', rna_data_path=data_path_start + '["crv_off_dist"]', id_type='SCENE')
         add_var(curve_driver, context.scene, "crv_amount", type='SINGLE_PROP', rna_data_path=data_path_start + '["crv_amount"]', id_type='SCENE')
@@ -241,7 +241,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         thickness_modifier.layer_pass = pass_nr
         
         thickness_driver = thickness_modifier.driver_add('thickness_factor').driver
-        data_path_start = '["gp_pass_settings"][' + str(setting_index) + ']'
+        data_path_start = '["gp_settings"][' + str(setting_index) + ']'
         add_var(thickness_driver, context.scene, "far_dist", type='SINGLE_PROP', rna_data_path=data_path_start + '["thick_dist_far"]', id_type='SCENE')
         add_var(thickness_driver, context.scene, "close_dist", type='SINGLE_PROP', rna_data_path=data_path_start + '["thick_dist_close"]', id_type='SCENE')
         add_var(thickness_driver, context.scene, "close_thick", type='SINGLE_PROP', rna_data_path=data_path_start + '["thick_close"]', id_type='SCENE')
@@ -319,18 +319,18 @@ class FDG_OT_GenerateCollections_OP(Operator):
             
         # Here be Curve Settings
         
-        scene.gp_settings.gp_object = gp_ob
-        scene.gp_settings.outline_collection = outline_collection
-        scene.gp_settings.objects_collection = objects_collection
-        scene.gp_settings.environment_collection = environment_collection
-        scene.gp_settings.character_collection = character_collection
-        scene.gp_settings.excluded_collection = excluded_collection
-        scene.gp_settings.nointersection_collection = nointersection_collection
-        scene.gp_settings.gp_material = gp_mat.name
-        scene.gp_settings.environment_layer = gp_layer.info
-        scene.gp_settings.environment_lineart = lineart.name
-        scene.gp_settings.environment_thickness = curve_modifier.name
-        scene.gp_settings.mask_counter = 0
+        scene.gp_defaults.gp_object = gp_ob
+        scene.gp_defaults.outline_collection = outline_collection
+        scene.gp_defaults.objects_collection = objects_collection
+        scene.gp_defaults.environment_collection = environment_collection
+        scene.gp_defaults.character_collection = character_collection
+        scene.gp_defaults.excluded_collection = excluded_collection
+        scene.gp_defaults.nointersection_collection = nointersection_collection
+        scene.gp_defaults.gp_material = gp_mat.name
+        scene.gp_defaults.environment_layer = gp_layer.info
+        scene.gp_defaults.environment_lineart = lineart.name
+        scene.gp_defaults.environment_thickness = curve_modifier.name
+        scene.gp_defaults.mask_counter = 0
 
         return {'FINISHED'}
 
