@@ -90,14 +90,31 @@ class ANM_PT_MoveOptions_pnl(bpy.types.Panel):
         layout.prop(wm, 'move_marker')
         layout.prop(wm, 'move_sounds')
 
+class ANM_PT_SyncLength_pnl(bpy.types.Panel):
+    bl_label = "Sync Length"
+    bl_category = "FCHAR"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_parent_id = "ANM_PT_KeyframeMover_pnl"
 
+    def draw(self, context):
+        wm = context.window_manager
+        layout = self.layout
+
+        layout.label(text="For all NLA Strips:")
+
+        row = layout.row(align=True)
+        row.operator("object.sync_length_on")
+        row.operator("object.sync_length_off")
 
         
 
 def register():
     bpy.utils.register_class(ANM_PT_KeyframeMover_pnl)
     bpy.utils.register_class(ANM_PT_MoveOptions_pnl)
+    bpy.utils.register_class(ANM_PT_SyncLength_pnl)
 
 def unregister():
+    bpy.utils.unregister_class(ANM_PT_SyncLength_pnl)
     bpy.utils.unregister_class(ANM_PT_MoveOptions_pnl)
     bpy.utils.unregister_class(ANM_PT_KeyframeMover_pnl)

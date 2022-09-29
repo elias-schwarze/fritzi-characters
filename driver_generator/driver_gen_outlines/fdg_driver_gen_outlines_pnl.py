@@ -112,8 +112,8 @@ class FDG_PT_DriverGenOutlines_pnl(bpy.types.Panel):
         if rig:
             if rig.type == 'ARMATURE':
                 layout.prop_search(wm, "character_rig_bone", rig.data, "bones")
-                if 'c_root_master.x' in rig.data.bones:
-                    wm.character_rig_bone = 'c_root_master.x'
+                if 'c_head.x' in rig.data.bones:
+                    wm.character_rig_bone = 'c_head.x'
 
         
         
@@ -170,8 +170,8 @@ class FDG_PT_DriverGenOutlinesSettings_pnl(bpy.types.Panel):
             #layout.prop(settings, "GP_layer")
             #layout.prop(settings, "view_layer")
             layout.prop_search(settings, "gp_object", bpy.data, "objects", text="Grease Pencil")
-            layout.prop_search(settings, "thick_modifier", wm.gp_object, "grease_pencil_modifiers", text = "Thickness Modifier")
-            layout.prop_search(settings, "crv_modifier", wm.gp_object, "grease_pencil_modifiers", text = "Curve Modifier")
+            layout.prop_search(settings, "thick_modifier", settings.gp_object, "grease_pencil_modifiers", text = "Thickness Modifier")
+            layout.prop_search(settings, "crv_modifier", settings.gp_object, "grease_pencil_modifiers", text = "Curve Modifier")
             layout.separator()
             column = layout.column(align=True)
             column.prop(settings, "thick_dist_close")

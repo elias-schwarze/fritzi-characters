@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 import operator
 import bpy
 from bpy.types import PropertyGroup, UIList
@@ -196,9 +197,9 @@ class ANM_UL_NLAStripList_Items(UIList):
 
     def draw_item(self, context, layout, data, item, icon, active_data, active_property, index, flt_flag):
         row = layout.row()
-        row = row.split(factor=0.2)
+        row = row.split(factor=0.3)
         row.label(text=item.object)
-        row = row.split(factor=0.4)
+        row = row.split(factor=0.5)
         row.label(text=item.track)
         #row = row.split(factor=0.2)
         row.label(text=item.strip)
@@ -229,7 +230,33 @@ class ANM_ProblemKeyWindowAccept_OP(bpy.types.Operator):
 
         return {'FINISHED'}
 
+def set_sync_length_global(use_sync_length:bool):
 
+    for ob in bpy.data.objects:
+        if (ob.animation_data and ob.animation_data.nla_tracks):
+            for track in ob.animation_data.nla_tracks:
+                for strip in track.strips:
+                    strip.use_sync_length = use_sync_length
+
+class ANM_SyncLengthOn_Op(bpy.types.Operator):
+    bl_idname = "object.sync_length_on"
+    bl_label = "Turn Sync Length on"
+    bl_description = "Turns the Sync Length option for all NLA Strips in the file on"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        set_sync_length_global(True)
+        return {'FINISHED'}
+
+class ANM_SyncLengthOff_Op(bpy.types.Operator):
+    bl_idname = "object.sync_length_off"
+    bl_label = "Turn Sync Length off"
+    bl_description = "Turns the Sync Length option for all NLA Strips in the file off"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        set_sync_length_global(False)
+        return {'FINISHED'}
 
 def register():
     bpy.utils.register_class(ANM_OT_AnimMover_OP)
@@ -253,8 +280,12 @@ def register():
     bpy.types.WindowManager.NLA_strip_list_index = IntProperty()
     bpy.types.WindowManager.Sound_strip_list = CollectionProperty(name= "Sound Strip List", type = Problem_Sound_Strips)
     bpy.types.WindowManager.Sound_strip_list_index = IntProperty()
+    bpy.utils.register_class(ANM_SyncLengthOn_Op)
+    bpy.utils.register_class(ANM_SyncLengthOff_Op)
 
 def unregister():
+    bpy.utils.unregister_class(ANM_SyncLengthOff_Op)
+    bpy.utils.unregister_class(ANM_SyncLengthOn_Op)
     bpy.utils.unregister_class(ANM_UL_SoundStripList_Items)
     bpy.utils.unregister_class(Problem_Sound_Strips)
     bpy.utils.unregister_class(ANM_OT_ShowProblemStripsWindow_OP)

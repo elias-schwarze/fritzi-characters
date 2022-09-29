@@ -49,10 +49,10 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         item.gp_object=gp
         
         # These are the default Values of the Settings
-        item.thick_dist_close = 1.0
-        item.thick_dist_far = 2.0
-        item.thick_close = 1.0
-        item.thick_far = 2.0
+        item.thick_dist_close = 0.65
+        item.thick_dist_far = 2.3
+        item.thick_close = 18.0
+        item.thick_far = 28.0
 
         item.crv_max_dist = 0.0
         item.crv_off_dist = -1.0
@@ -116,9 +116,11 @@ class FDG_OT_GenerateOutlineDriver_Op(Operator):
         curve_modifier.use_custom_curve = True
         curve_modifier.layer_pass = pass_nr
         curve_driver = curve_modifier.driver_add('thickness_factor').driver
-        curve_modifier.curve.curves[0].points.new(0.0, 0.0)
+        curve_modifier.curve.curves[0].points[0].location = (0.0, 0.625)
+        curve_modifier.curve.curves[0].points[1].location = (1.0, 0.625)
         curve_modifier.curve.curves[0].points.new(0.5, 1.0)
-        curve_modifier.curve.curves[0].points.new(1.0, 0.0)
+        for point in curve_modifier.curve.curves[0].points:
+            point.handle_type = 'AUTO'
         curve_modifier.curve.update()
 
         # The Values which get used here are stored in the FritziGPSetup PropertyGroup in a Collectionproperty in the scene
