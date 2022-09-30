@@ -31,7 +31,7 @@ class CST_OT_LinkCharacterShader_OP(Operator):
 
         return {'FINISHED'}
 
-def add_shader(context, rgb: tuple[float, float, float, float], shadowHSV: tuple[float, float, float] = (5.0, 1.0, 1.0)):
+def add_shader(context, rgb: tuple[float, float, float, float], shadowHSV: tuple[float, float, float] = (5.0, 1.0, 0.55), hasHighlights: bool = True):
     mat = context.material
     tree = mat.node_tree
     for node in tree.nodes:
@@ -58,6 +58,10 @@ def add_shader(context, rgb: tuple[float, float, float, float], shadowHSV: tuple
     fritzi_shader_node.inputs["ShadowHue"].default_value = shadowHSV[0]
     fritzi_shader_node.inputs["ShadowSaturation"].default_value = shadowHSV[1]
     fritzi_shader_node.inputs["ShadowValue"].default_value = shadowHSV[2]
+
+    if not hasHighlights:
+        fritzi_shader_node.inputs["OverrideCharacterHighlight"].default_value = 1.0
+        fritzi_shader_node.inputs["OverrideCharacterRimlight"].default_value = 1.0
 
 
 class CST_OT_CreateH1Shader_OP(Operator):
@@ -107,6 +111,14 @@ class CST_OT_CreateClothShader_OP(Operator):
         add_shader(context, context.window_manager.shader_color)
         return bpy.ops.transform.translate('INVOKE_DEFAULT')
 
+class CST_OT_CreateMouthInsideShader_Op(Operator):
+    bl_idname = "cst.create_mouthinside_shader"
+    bl_label = "MouthInside Shader"
+    bl_description = "Creates the Mouthinside Shader Nodes"
+
+    def execute(self, context):
+        add_shader(context, (0.152272, 0.049334, 0.037427, 1.000000), (5.0, 1.0, 1.0), False)
+        return bpy.ops.transform.translate('INVOKE_DEFAULT')
 
 def register():
     bpy.utils.register_class(CST_OT_ChooseShaderPath_OP)
@@ -116,8 +128,10 @@ def register():
     bpy.utils.register_class(CST_OT_CreateH3Shader_OP)
     bpy.utils.register_class(CST_OT_CreateH4Shader_OP)
     bpy.utils.register_class(CST_OT_CreateClothShader_OP)
+    bpy.utils.register_class(CST_OT_CreateMouthInsideShader_Op)
 
 def unregister():
+    bpy.utils.unregister_class(CST_OT_CreateMouthInsideShader_Op)
     bpy.utils.unregister_class(CST_OT_CreateClothShader_OP)
     bpy.utils.unregister_class(CST_OT_CreateH4Shader_OP)
     bpy.utils.unregister_class(CST_OT_CreateH3Shader_OP)

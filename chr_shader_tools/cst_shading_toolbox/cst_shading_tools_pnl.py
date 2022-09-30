@@ -25,9 +25,12 @@ class CST_PT_ShadingTools_pnl(bpy.types.Panel):
         layout.operator("cst.create_h3_shader")
         layout.operator("cst.create_h4_shader")
         layout.separator()
+        layout.operator("cst.create_mouthinside_shader")
+        layout.separator()
         layout.label(text="Cloth Shader")
         layout.prop(wm, "shader_color")
         layout.operator("cst.create_cloth_shader")
+
 
 def register():
     bpy.utils.register_class(CST_PT_ShadingTools_pnl)
