@@ -2,6 +2,7 @@ import bpy
 import os
 from . import fmr_settings
 from . import fmr_scale_list_io
+from ..helper_functions import signal_last
 
 import re
 
@@ -43,7 +44,7 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
                 
                 char_file_basename = os.path.basename(bpy.data.filepath)
 
-                for bvh in wm.bvh_files:
+                for is_last, bvh in signal_last(wm.bvh_files):
 
                     #Create the filestructure where the retargeted File should be stored (based on the bvh name and the character file name)
                     dir_path = get_layout_dir(filepath, bvh.name)
@@ -96,13 +97,14 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
                     # undo retarget and import before heading to next bvh
                     # delete actions (are named after bvh and one is named after bvh with _remap suffix)
                     # delete bvh
-                                        
-                    action = bpy.data.actions.get(bvh_arma_name)
-                    bpy.data.actions.remove(action, do_unlink=True)
-                    action = bpy.data.actions.get(bvh_arma_name + "_remap")
-                    bpy.data.actions.remove(action, do_unlink=True)
-                    bvh_armature = bpy.data.objects[bvh_arma_name]
-                    bpy.data.objects.remove(bvh_armature, do_unlink=True)
+                    # does not happen on last bvh in the list
+                    if not is_last:               
+                        action = bpy.data.actions.get(bvh_arma_name)
+                        bpy.data.actions.remove(action, do_unlink=True)
+                        action = bpy.data.actions.get(bvh_arma_name + "_remap")
+                        bpy.data.actions.remove(action, do_unlink=True)
+                        bvh_armature = bpy.data.objects[bvh_arma_name]
+                        bpy.data.objects.remove(bvh_armature, do_unlink=True)
                     
 
                     
