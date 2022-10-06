@@ -16,7 +16,7 @@ import shutil
 destination_path = 'C:/Users/FilmBIlder/Desktop/Fritzi_Modells/Add_on_workspace/Releases/Release/'
 
 # Version number of addon. NO trailing dot at the end. Should match bl_info in __init__.py
-version_number = '1.6.7'
+version_number = '1.6.8'
 
 # Automatically pack into .zip archive. Needed for installing the addon in Blender.
 pack_to_zip = True
@@ -30,7 +30,7 @@ remove_unpacked_files_after_zip = True
 
 
 # do not build files that match following patterns, to exclude development files that the end user does not need
-IGNORE_PATTERNS = ('*.pyc', 'tmp*', '*__pycache__*', '.git', '.vscode', '.gitignore', '.gitattributes', 'build.py', 'fritzi-characters_updater', '*.json')
+IGNORE_PATTERNS = ('*.pyc', 'tmp*', '*__pycache__*', '.git', '.vscode', '.gitignore', '.gitattributes', 'build.py', 'fritzi-characters_updater', '*.json', '.VSCodeCounter')
 
 
 # Add root folder to path
