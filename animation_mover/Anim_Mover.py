@@ -297,6 +297,16 @@ class Anim_Mover():
         strip.scale = scale
 
     def move_sound_sqeuence(self, sound_sequence):
+        
+        if sound_sequence.parent_meta():
+            return
+
+        if sound_sequence.type in {'SPEED', 'ADD', 'ALPHA_OVER', 'ALPHA_UNDER', 'SUBTRACT', 
+                                    'Cross', 'GAMMA_CROSS', 'MULTIPLY', 'OVER_DROP',
+                                    'WIPE', 'GLOW', 'TRANSFORM', 'COLOR', 'MULTICAM',
+                                    'ADJUSTMENT', 'GAUSSIAN_BLUR', 'TEXT', 'COLORMIX'}:
+            return
+
         if self.move_direction == 'FORWARD':
             #sound_sequence.frame_final_end = sound_sequence.frame_final_end + self.frame_amount
             sound_sequence.frame_start = sound_sequence.frame_start + self.frame_amount

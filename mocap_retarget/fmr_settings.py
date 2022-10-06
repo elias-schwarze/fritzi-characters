@@ -11,7 +11,8 @@ class Settings(object):
     _settings = {}
     _default_settings = {
         "bone_map_path" : os.path.join(os.path.join(os.path.dirname(__file__),"BoneMap"),"IKlegFKarm.bmap"),
-        "perforce_path" : ""
+        "perforce_path" : "",
+        "shader_path" : ""
     }
     def __new__(cls):
         """Singleton initialization"""
