@@ -41,6 +41,7 @@ def poll_gp_object(self, object):
 
 class fritziGPSettings(PropertyGroup):
     """A Property Group which stores the general settings for the Grease Pencil Setup"""
+    default_view_layer : StringProperty(name="3D Layer")
     gp_object : PointerProperty(name="Grease_Pencil", type=bpy.types.Object, poll=poll_gp_object)
     outline_collection : PointerProperty(name="Outline Collection", type=bpy.types.Collection)
     objects_collection : PointerProperty(name="Objects Collection", type=bpy.types.Collection)
@@ -48,11 +49,14 @@ class fritziGPSettings(PropertyGroup):
     character_collection : PointerProperty(name="Character Collection", type=bpy.types.Collection)
     excluded_collection : PointerProperty(name="Excluded Collection", type=bpy.types.Collection)
     nointersection_collection : PointerProperty(name="NoIntersection Collection", type= bpy.types.Collection)
+    extraobjects_collection : PointerProperty(name= "Extra Objects Collection", type=bpy.types.Collection)
     gp_material : StringProperty(name="GP Material") # Change all materials if changed!
     environment_layer : StringProperty(name="Environment Layer")
     environment_lineart : StringProperty(name="Environment Lineart")
     environment_thickness : StringProperty(name="Environment Thickness Modifier")
-    
+    environment_view_layer : StringProperty(name="Environment View Layer")
+    character_view_layer : StringProperty(name="Character View Layer")
+    extra_view_layer : StringProperty(name="Extra View Layer")
 
 
 class fritziGPPass(PropertyGroup):
@@ -281,10 +285,16 @@ class FDG_PT_DriverGenOutlinesDebug_pnl(bpy.types.Panel):
         layout.prop_search(settings, "character_collection", bpy.data, "collections")
         layout.prop_search(settings, "excluded_collection", bpy.data, "collections")
         layout.prop_search(settings, "nointersection_collection", bpy.data, "collections")
+        layout.prop_search(settings, "extraobjects_collection", bpy.data, "collections")
         layout.prop_search(settings, "gp_material", bpy.data, "materials")
         layout.prop_search(settings, "environment_layer", settings.gp_object.data, "layers", text="Environment Layer", icon='GREASEPENCIL')
         layout.prop_search(settings, "environment_lineart", settings.gp_object, "grease_pencil_modifiers", text="Environment Line Art", icon='MOD_LINEART')
         layout.prop_search(settings, "environment_thickness", settings.gp_object, "grease_pencil_modifiers", text="Environment Thickness Modifier", icon='MOD_THICKNESS')
+        layout.prop_search(settings, "default_view_layer", scene, "view_layers")
+        layout.prop_search(settings, "environment_view_layer", scene, "view_layers")
+        layout.prop_search(settings, "character_view_layer", scene, "view_layers")
+        layout.prop_search(settings, "extra_view_layer", scene, "view_layers")
+
 
 class FDG_UL_CollectionList_items(UIList):
 
@@ -357,6 +367,7 @@ def register():
     bpy.utils.register_class(FDG_PT_DriverGenOutlinesSettings_pnl)
     bpy.utils.register_class(FDG_PT_DriverGenOutlinesGeneralSettings_pnl)
     bpy.utils.register_class(FDG_PT_DriverGenOutlinesPassSettings_pnl)
+    bpy.utils.register_class(FDG_PT_DriverGenOutlinesDebug_pnl)
     
     bpy.utils.register_class(FDG_UL_CollectionList_items)
     bpy.types.OUTLINER_MT_context_menu.append(draw_fritzi_outliner_menu)
@@ -368,6 +379,7 @@ def unregister():
     bpy.types.OUTLINER_MT_collection.remove(draw_fritzi_outliner_menu)
     bpy.utils.unregister_class(FDG_UL_CollectionList_items)
     
+    bpy.utils.unregister_class(FDG_PT_DriverGenOutlinesDebug_pnl)
     bpy.utils.unregister_class(FDG_PT_DriverGenOutlinesPassSettings_pnl)
     bpy.utils.unregister_class(FDG_PT_DriverGenOutlinesGeneralSettings_pnl)
     bpy.utils.unregister_class(FDG_PT_DriverGenOutlinesSettings_pnl)

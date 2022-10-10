@@ -4,6 +4,7 @@ import bpy
 from enum import Enum
 
 from bpy.types import Operator
+from numpy import char
 from ..utility_functions.fdg_driver_utils import *
 from ..utility_functions import fdg_names
 
@@ -14,6 +15,13 @@ def create_collection_unique(name, parent):
         parent.children.link(collection)
 
     return collection
+
+def create_view_layer_unique(name):
+    layer = bpy.context.scene.view_layers.get(name)
+    if not layer:
+        layer = bpy.context.scene.view_layers.new(name)
+
+    return layer
 
 class subpass(Enum):
     L0 = 0
@@ -78,8 +86,8 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
             # These are the default Values of the Settings
             item.thick_dist_close = 0.65
             item.thick_dist_far = 2.3
-            item.thick_close = 18.0
-            item.thick_far = 28.0
+            item.thick_close = 9.0
+            item.thick_far = 14.0
 
             item.crv_max_dist = 0.0
             item.crv_off_dist = -1.0
@@ -92,8 +100,8 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
             # These are the default Values of the Settings
             item.thick_dist_close = 0.65
             item.thick_dist_far = 2.3
-            item.thick_close = 18.0
-            item.thick_far = 28.0
+            item.thick_close = 6
+            item.thick_far = 9
 
             item.crv_max_dist = 0.0
             item.crv_off_dist = -1.0
@@ -113,10 +121,11 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         gp_layer = gp.data.layers.new(name="pass_" + str(pass_nr) + "_" + pass_name, set_active = True)
         gp_layer.frames.new(0)
         gp_layer.pass_index = pass_nr
+        gp_layer.viewlayer_render = scene.gp_defaults.character_view_layer
         gp_layer.use_lights = False
         item.GP_layer = gp_layer.info
 
-        lineart = self.create_lineart(gp, pass_nr, pass_name, collection, gp_layer, mask_bit)
+        lineart = self.create_lineart(gp, pass_nr, pass_name, collection, gp_layer, mask_bit, True)
         item.lineart = lineart.name
 
         cam_empty = self.getCamEmpty()
@@ -148,11 +157,11 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         scene = context.scene
         if len(scene.gp_settings) > 0:
                         
-            for i in range(1, 101):
+            for i in range(2, 101):
                 if not self.is_pass_used(i, scene.gp_settings):
                     return i
             return -1
-        return 1
+        return 2
 
     def is_pass_used(self, pass_nr, gp_settings):
 
@@ -161,14 +170,16 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
                 return True
         return False
 
-    def create_lineart(self, gp, pass_nr, pass_name, source_collection, gp_layer, mask_bit):
-        lineart = gp.grease_pencil_modifiers.new(pass_name, 'GP_LINEART')
+    def create_lineart(self, gp, pass_nr, pass_name, source_collection, gp_layer, mask_bit, use_cache = False):
+        lineart = gp.grease_pencil_modifiers.new("pass_" + str(pass_nr) + "_" + pass_name, 'GP_LINEART')
         lineart.source_type = 'COLLECTION'
         lineart.source_collection = source_collection
         lineart.target_layer = gp_layer.info
         lineart.target_material = gp.data.materials[0]
         lineart.thickness = 1
         lineart.use_intersection_mask[mask_bit] = True
+        if use_cache:
+            lineart.use_cache = use_cache
         return lineart
 
     def getCamEmpty(self):
@@ -277,41 +288,58 @@ class FDG_OT_GenerateCollections_OP(Operator):
         scene = context.scene
         wm = context.window_manager
 
+        self.create_view_layers(context)
+
         outline_collection = create_collection_unique("OUTLINES", bpy.context.scene.collection)
 
         objects_collection = create_collection_unique("OUTLINE_groups", bpy.context.scene.collection)
+        objects_collection.lineart_usage = 'INCLUDE'
         environment_collection = create_collection_unique("ENVIRONMENTS", objects_collection)
+        environment_collection.lineart_usage = 'INCLUDE'
         character_collection = create_collection_unique("CHARACTERS", objects_collection)
+        character_collection.lineart_usage = 'INCLUDE'
         excluded_collection = create_collection_unique("OBJECTS_Excluded", objects_collection)
+        excluded_collection.lineart_usage = 'EXCLUDE'
         nointersection_collection = create_collection_unique("OBJECTS_NoIntersection", objects_collection)
+        nointersection_collection.lineart_usage = 'NO_INTERSECTION'
+        extraobjects_collection = create_collection_unique("EXTRA_CharacterObjects", objects_collection)
+        extraobjects_collection.lineart_usage = 'EXCLUDE'
+
+        self.set_collection_visibility(context)
 
         gp_data = bpy.data.grease_pencils.new("OUTLINES_scene")
         gp_ob = bpy.data.objects.new("OUTLINES_scene", gp_data)
         outline_collection.objects.link(gp_ob)
         gp_ob.show_in_front = True
 
-        gp_layer = gp_data.layers.new(name="ENVIRONMENTS", set_active=True)
+        gp_layer = gp_data.layers.new(name="pass_1_ENVIRONMENTS", set_active=True)
         gp_layer.frames.new(0)
+        gp_layer.pass_index = 1
+        gp_layer.viewlayer_render = scene.gp_defaults.environment_view_layer
 
-        gp_mat = bpy.data.materials.new("gp_mat")
+        gp_mat = bpy.data.materials.new("Black")
 
         bpy.data.materials.create_gpencil_data(gp_mat)
         gp_data.materials.append(gp_mat)
 
-        lineart = gp_ob.grease_pencil_modifiers.new("pass_0_ENVIRONMENTS", 'GP_LINEART')
+        lineart = gp_ob.grease_pencil_modifiers.new("pass_1_ENVIRONMENTS", 'GP_LINEART')
         lineart.source_collection = environment_collection
         lineart.target_layer = gp_layer.info
         lineart.target_material = gp_mat
-        lineart.smooth_tolerance = 0.0
+        lineart.smooth_tolerance = 0.1
+        lineart.split_angle = 0.523599
+        lineart.use_fuzzy_intersections = True
         lineart.thickness = 1
         lineart.use_intersection_mask[0] = True
 
-        curve_modifier = gp_ob.grease_pencil_modifiers.new("pass_0_ENVIRONMENTS_CURVE", 'GP_THICK')
+
+        curve_modifier = gp_ob.grease_pencil_modifiers.new("pass_1_ENVIRONMENTS_CURVE", 'GP_THICK')
         
+        curve_modifier.thickness_factor = 28.0
         curve_modifier.use_custom_curve = True
-        curve_modifier.layer_pass = 0
-        curve_modifier.curve.curves[0].points[0].location = (0.0, 0.625)
-        curve_modifier.curve.curves[0].points[1].location = (1.0, 0.625)
+        curve_modifier.layer_pass = 1
+        curve_modifier.curve.curves[0].points[0].location = (0.0, 0.5)
+        curve_modifier.curve.curves[0].points[1].location = (1.0, 0.5)
         curve_modifier.curve.curves[0].points.new(0.5, 1.0)
         for point in curve_modifier.curve.curves[0].points:
             point.handle_type = 'AUTO'
@@ -326,6 +354,7 @@ class FDG_OT_GenerateCollections_OP(Operator):
         scene.gp_defaults.character_collection = character_collection
         scene.gp_defaults.excluded_collection = excluded_collection
         scene.gp_defaults.nointersection_collection = nointersection_collection
+        scene.gp_defaults.extraobjects_collection = extraobjects_collection
         scene.gp_defaults.gp_material = gp_mat.name
         scene.gp_defaults.environment_layer = gp_layer.info
         scene.gp_defaults.environment_lineart = lineart.name
@@ -333,6 +362,46 @@ class FDG_OT_GenerateCollections_OP(Operator):
         scene.gp_defaults.mask_counter = 0
 
         return {'FINISHED'}
+
+    def create_view_layers(self, context):
+        scene = context.scene
+
+        bpy.context.window.view_layer.name = "3d"
+        scene.gp_defaults.default_view_layer = context.window.view_layer.name
+
+        layer = create_view_layer_unique("lines_environment")
+        scene.gp_defaults.environment_view_layer = layer.name
+
+        layer = create_view_layer_unique("lines_characters")
+        scene.gp_defaults.character_view_layer = layer.name
+
+        layer = create_view_layer_unique("lines_extra")
+        scene.gp_defaults.extra_view_layer = layer.name
+
+    def set_collection_visibility(self, context):
+        scene = context.scene
+
+        environment_view_layer_collections = scene.view_layers[scene.gp_defaults.environment_view_layer].layer_collection
+        self.set_layer_collections_visibility(context, environment_view_layer_collections, {"OUTLINES"})
+
+        character_view_layer_collections = scene.view_layers[scene.gp_defaults.character_view_layer].layer_collection
+        self.set_layer_collections_visibility(context, character_view_layer_collections, {"OUTLINES"})
+
+        extra_view_layer_collections = scene.view_layers[scene.gp_defaults.extra_view_layer].layer_collection
+        self.set_layer_collections_visibility(context, extra_view_layer_collections, {"OUTLINE_groups", "EXTRA_CharacterObjects"})
+        
+    
+    def set_layer_collections_visibility(self, context, collection, include_names):
+        for child in collection.children:
+            
+            
+            if child.name in include_names:
+                child.exclude = False
+                
+                self.set_layer_collections_visibility(context, child, include_names)
+            else:
+                child.exclude = True
+               
 
 def register():
     bpy.utils.register_class(FDG_OT_GenerateLineArtPass_OP)
