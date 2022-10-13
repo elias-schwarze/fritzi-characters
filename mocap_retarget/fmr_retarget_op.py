@@ -1,6 +1,6 @@
 import bpy
 import os
-from . import fmr_settings
+from .. import fchar_settings
 from . import fmr_scale_list_io
 from ..helper_functions import signal_last
 
@@ -20,7 +20,7 @@ class FMR_OT_MocapBatchRetarget_Op(Operator):
     def execute(self, context):
 
         wm = context.window_manager
-        settings = fmr_settings.Settings()
+        settings = fchar_settings.Settings()
         scales = fmr_scale_list_io.ScaleListDict()
         filepath = settings.get_setting("perforce_path")
 
@@ -187,7 +187,7 @@ def select_rest_bones(context):
 def retarget_mocap(context, do_auto_scale=True):
     """Auto executes all ARP steps to retarget bvh MoCap data to a Fritzi und Sophie Rig.
     Only uses the auto_scale operator if do_auto_scale is true, to accomodate prescaled bvhs"""
-    settings = fmr_settings.Settings()
+    settings = fchar_settings.Settings()
 
     wm = context.window_manager
 

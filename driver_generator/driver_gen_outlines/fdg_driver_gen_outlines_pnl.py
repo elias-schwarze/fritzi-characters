@@ -1,7 +1,9 @@
+from tokenize import String
 import bpy
 from bpy.types import PropertyGroup, UIList
 from bpy.props import PointerProperty, IntProperty, StringProperty, FloatProperty, CollectionProperty, BoolProperty, EnumProperty
 
+from ...fchar_settings import Settings
 def crv_mode_update(self, context):
     """Update Method which gets called, when the crv_mode property of a fritziGPPass PropertyGroup gets changed.
     It sets the crv_max_dist to 0.0 and the crv_off_dist to -1. This means, that the DriverExpression always takes
@@ -264,6 +266,18 @@ class FDG_PT_DriverGenOutlinesPassSettings_pnl(bpy.types.Panel):
                 column.prop(settings, "crv_max_dist")
                 column.prop(settings, "crv_off_dist")
 
+class FDG_PT_DriverGenOutlinesDefaults_pnl(bpy.types.Panel):
+    bl_label = "Defaults"
+    bl_category = "FCHAR"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_options = {"DEFAULT_CLOSED"}
+    bl_parent_id = "FDG_PT_DriverGenOutlinesSettings_pnl"
+
+    def draw(self, context):
+        wm = context.window
+        layout = self.layout
+
 class FDG_PT_DriverGenOutlinesDebug_pnl(bpy.types.Panel):
     bl_label = "Debug"
     bl_category = "FCHAR"
@@ -353,7 +367,64 @@ def draw_fritzi_outliner_menu(self, context):
     layout.separator()
     layout.operator("fdg.add_collections", text="Add Selected Collections to Preview Outlines")
 
+
+def load_defaults():
+    settings = Settings()
+    line_settings = settings.get_setting("line_settings")
+    settings_prop = bpy.types.WindowManager.gp_pass_defaults.add()
+    for setting in line_settings:
+        
+        item = settings_prop
+        item["line_key"] = setting["line_key"]
+        item["thick_dist_close"] = setting["dist_close"]
+        item["thick_dist_far"] = setting["dist_far"]
+        item["thick_close"] = setting["thick_close"]
+        item["thick_far"] = setting["thick_far"]
+
+        item["crv_max_dist"] = setting["crv_max_dist"]
+        item["crv_off_dist"] = setting["crv_off_dist"]
+        item["crv_mode"] = setting["crv_mode"]
+        item["crv_amount"] = setting["crv_amount"]
+            
+        
+    print(line_settings)
+    
+
+    
+    
+class fritziGPPassDefaults(PropertyGroup):
+    """A Property Group which stores the setup of one GP Pass"""
+    """ gp_object : PointerProperty(name="Grease Pencil", type = bpy.types.Object, poll=poll_gp_object)
+    GP_layer : StringProperty(name= "GP_Layer")
+    view_layer : StringProperty(name="View_Layer")
+    pass_name : StringProperty(name="Pass Name")
+    pass_nr : IntProperty(name="Pass Nr.") """
+
+    """ collection : PointerProperty(name="Collection", type=bpy.types.Collection)
+    lineart : StringProperty(name="Line Art Modifier")
+    thick_modifier : StringProperty(name="Thickness Modifier")
+    crv_modifier : StringProperty(name="Curve Modifier") """
+    
+    line_key : StringProperty(name="Pass")
+    thick_dist_close : FloatProperty(name="Distance Close")
+    thick_dist_far : FloatProperty(name="Distance Far")
+    thick_close : FloatProperty(name="Thickness Close")
+    thick_far : FloatProperty(name="Thickness Far")
+    clamp_close : BoolProperty(name="Clamp Close", default=False, update=clamp_mode_update)
+    clamp_far : BoolProperty(name="Clamp Far", default=True, update=clamp_mode_update)
+    crv_mode : BoolProperty(name="Always Dynamic Line", default=True, update=crv_mode_update)
+    crv_max_dist : FloatProperty(name="Curve Max Distance", description="The Distance at which the Dynamic Line is in full effect")
+    crv_off_dist : FloatProperty(name="Curve Off Distance", description="The distance at which the Dynamic Line gets turned off")
+    crv_amount : FloatProperty(name="Dynamic Line Amount", description="The amount of the Dynamic Line", min=0.0)
+
+
+
+    
+
 def register():
+    bpy.utils.register_class(fritziGPPassDefaults)
+    bpy.types.WindowManager.gp_pass_defaults = CollectionProperty(type=fritziGPPassDefaults)
+    load_defaults()
     bpy.utils.register_class(fritziGPPass)
     bpy.types.Scene.gp_settings = CollectionProperty(type=fritziGPPass)
     bpy.utils.register_class(fritziGPSettings)
@@ -393,3 +464,5 @@ def unregister():
     bpy.utils.unregister_class(fritziGPSettings)
     
     bpy.utils.unregister_class(fritziGPPass)
+
+    bpy.utils.unregister_class(fritziGPPassDefaults)

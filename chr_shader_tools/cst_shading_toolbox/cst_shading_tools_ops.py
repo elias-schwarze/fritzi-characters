@@ -2,7 +2,7 @@ import bpy
 
 from bpy.types import Operator
 from bpy_extras.io_utils import ImportHelper
-from ...mocap_retarget.fmr_settings import Settings
+from ...fchar_settings import Settings
 
 class CST_OT_ChooseShaderPath_OP(Operator, ImportHelper):
     bl_idname = "settings.choose_shader_path"
