@@ -79,7 +79,7 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
 
         
 
-        if transmission:
+        """ if transmission:
             transmission_lineart = gp_ob.grease_pencil_modifiers.new("Transmission Line Art", 'GP_LINEART')
             transmission_lineart.source_collection = collection
             transmission_lineart.target_layer = gp_layer.info
@@ -89,7 +89,7 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
             transmission_lineart.use_material_mask = True
             transmission_lineart.use_material_mask_bits[0] = True
             transmission_lineart.smooth_tolerance = 0.0
-            transmission_lineart.use_intersection = False
+            transmission_lineart.use_intersection = False """
 
         thickness = gp_ob.grease_pencil_modifiers.new("Thickness", 'GP_THICK')
         thickness.use_normalized_thickness = True
@@ -105,11 +105,11 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
         thickness.curve.update()
 
     def check_for_glasses(self, collection):
-        for obj in collection.all_objects:
+        """ for obj in collection.all_objects:
             for mat_slot in obj.material_slots:
                 mat_line_art = mat_slot.material.lineart
                 if mat_line_art.use_material_mask:
-                    return True
+                    return True """
 
         return False
 
