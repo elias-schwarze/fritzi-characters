@@ -371,10 +371,10 @@ def draw_fritzi_outliner_menu(self, context):
 def load_defaults():
     settings = Settings()
     line_settings = settings.get_setting("line_settings")
-    settings_prop = bpy.types.WindowManager.gp_pass_defaults.add()
+    settings_prop = bpy.types.WindowManager.gp_pass_defaults
     for setting in line_settings:
         
-        item = settings_prop
+        item = settings_prop.add()
         item["line_key"] = setting["line_key"]
         item["thick_dist_close"] = setting["dist_close"]
         item["thick_dist_far"] = setting["dist_far"]
