@@ -18,7 +18,7 @@ class Settings(object):
                 "dist_close" : 0.65, "thick_close" : 10.0, "clamp_close" : False,
                 "dist_far" : 4.6, "thick_far" : 28.0, "clamp_far" : True,
                 "crv_amount" : 15.0, "crv_mode" : True,
-                "crv_max_dist" : 0.0, "curve_off_dist" : -1.0
+                "crv_max_dist" : 0.0, "crv_off_dist" : -1.0
                 },
             
             "L1" :
@@ -26,7 +26,7 @@ class Settings(object):
                 "dist_close" : 0.65, "thick_close" : 5.0, "clamp_close" : False,
                 "dist_far" : 4.6, "thick_far" : 14.0, "clamp_far" : True,
                 "crv_amount" : 1.0, "crv_mode" : True,
-                "crv_max_dist" : 0.0, "curve_off_dist" : -1.0
+                "crv_max_dist" : 0.0, "crv_off_dist" : -1.0
                 },
             
             "L2" : 
@@ -34,7 +34,7 @@ class Settings(object):
                 "dist_close" : 0.65, "thick_close" : 6.0, "clamp_close" : False,
                 "dist_far" : 4.6, "thick_far" : 9.0, "clamp_far" : True,
                 "crv_amount" : 15.0, "crv_mode" : True,
-                "crv_max_dist" : 0.0, "curve_off_dist" : -1.0
+                "crv_max_dist" : 0.0, "crv_off_dist" : -1.0
                 }
             }    
         

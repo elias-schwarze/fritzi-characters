@@ -371,23 +371,25 @@ def draw_fritzi_outliner_menu(self, context):
 def load_defaults():
     settings = Settings()
     line_settings = settings.get_setting("line_settings")
-    settings_prop = bpy.types.WindowManager.gp_pass_defaults
-    for setting in line_settings:
+    settings_prop = bpy.context.window_manager.gp_pass_defaults
+    
+    for key in line_settings:
         
         item = settings_prop.add()
-        item["line_key"] = setting["line_key"]
-        item["thick_dist_close"] = setting["dist_close"]
-        item["thick_dist_far"] = setting["dist_far"]
-        item["thick_close"] = setting["thick_close"]
-        item["thick_far"] = setting["thick_far"]
+        
+        item["line_key"] = line_settings[key]["line_key"]
+        item["thick_dist_close"] = line_settings[key]["dist_close"]
+        item["thick_dist_far"] = line_settings[key]["dist_far"]
+        item["thick_close"] = line_settings[key]["thick_close"]
+        item["thick_far"] = line_settings[key]["thick_far"]
 
-        item["crv_max_dist"] = setting["crv_max_dist"]
-        item["crv_off_dist"] = setting["crv_off_dist"]
-        item["crv_mode"] = setting["crv_mode"]
-        item["crv_amount"] = setting["crv_amount"]
+        item["crv_max_dist"] = line_settings[key]["crv_max_dist"]
+        item["crv_off_dist"] = line_settings[key]["crv_off_dist"]
+        item["crv_mode"] = line_settings[key]["crv_mode"]
+        item["crv_amount"] = line_settings[key]["crv_amount"]
             
         
-    print(line_settings)
+    
     
 
     
