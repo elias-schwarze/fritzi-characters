@@ -309,8 +309,6 @@ class FDG_OT_GenerateCollections_OP(Operator):
         scene = context.scene
         wm = context.window_manager
 
-        self.create_view_layers(context)
-
         outline_collection = create_collection_unique("OUTLINES", bpy.context.scene.collection)
 
         objects_collection = create_collection_unique("OUTLINE_groups", bpy.context.scene.collection)
@@ -386,21 +384,6 @@ class FDG_OT_GenerateCollections_OP(Operator):
 
         return {'FINISHED'}
 
-    def create_view_layers(self, context):
-        scene = context.scene
-
-        bpy.context.window.view_layer.name = "3d"
-        scene.gp_defaults.default_view_layer = context.window.view_layer.name
-
-        layer = create_view_layer_unique("lines_environment")
-        scene.gp_defaults.environment_view_layer = layer.name
-
-        layer = create_view_layer_unique("lines_characters")
-        scene.gp_defaults.character_view_layer = layer.name
-
-        layer = create_view_layer_unique("lines_extra")
-        scene.gp_defaults.extra_view_layer = layer.name
-
     def set_collection_visibility(self, context):
         scene = context.scene
 
@@ -441,15 +424,31 @@ class FDG_OT_GenerateViewLayers_OP(Operator):
         scene = context.scene
 
         bpy.context.window.view_layer.name = "3d"
+        layer = context.scene.view_layers.get("3d")
+        layer.use_pass_combined = True
+        layer.use_pass_z = True
+        layer.eevee.use_pass_volume_direct = True
+        layer.use_pass_environment = True
+        layer.use_pass_ambient_occlusion = True
+        layer.use_pass_cryptomatte_object = True
+        layer.use_pass_cryptomatte_asset = True
+        layer.pass_cryptomatte_depth = 2
+        layer.use_pass_cryptomatte_accurate = True
         scene.gp_defaults.default_view_layer = context.window.view_layer.name
 
         layer = create_view_layer_unique("lines_environment")
+        layer.use_pass_combined = True
+        layer.use_pass_z = True
         scene.gp_defaults.environment_view_layer = layer.name
 
         layer = create_view_layer_unique("lines_characters")
+        layer.use_pass_combined = True
+        layer.use_pass_z = True
         scene.gp_defaults.character_view_layer = layer.name
 
         layer = create_view_layer_unique("lines_extra")
+        layer.use_pass_combined = True
+        layer.use_pass_z = True
         scene.gp_defaults.extra_view_layer = layer.name
 
 def register():
