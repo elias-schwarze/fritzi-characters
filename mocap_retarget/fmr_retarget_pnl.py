@@ -1,7 +1,7 @@
 import bpy
 from bpy.props import FloatProperty, StringProperty, PointerProperty
 from bpy.types import PropertyGroup, UIList
-from . import fmr_settings
+from .. import fchar_settings
 from . import fmr_scale_list_io
 import os
 
@@ -30,7 +30,7 @@ class FMR_PT_SingleRetarget_pnl(bpy.types.Panel):
 
     def draw(self, context):
         
-        settings = fmr_settings.Settings()
+        settings = fchar_settings.Settings()
 
         perforce_path = settings.get_setting("perforce_path")
         
@@ -64,7 +64,7 @@ class FMR_PT_BatchRetarget_pnl(bpy.types.Panel):
         wm = context.window_manager
         scene = context.scene
         layout = self.layout
-        settings = fmr_settings.Settings()
+        settings = fchar_settings.Settings()
 
         perforce_path = settings.get_setting("perforce_path")
 

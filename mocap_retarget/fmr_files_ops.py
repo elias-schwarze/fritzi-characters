@@ -4,7 +4,7 @@ import os
 from bpy.types import Operator, OperatorFileListElement, PropertyGroup
 from bpy.props import CollectionProperty, StringProperty
 
-from .fmr_settings import Settings
+from ..fchar_settings import Settings
 
 from bpy_extras.io_utils import ImportHelper
 

@@ -65,48 +65,52 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
     def create_gp_pass(self, context, subpass : subpass, gp, character_collection, mask_bit):
         wm = context.window_manager
         scene = context.scene
+        default_settings = wm.gp_pass_defaults
         item = scene.gp_settings.add()
         if subpass == subpass.L0:
             pass_name = wm.Pass_Name + "_L0"
             
+            L0_settings = default_settings["L0"]
             # These are the default Values of the Settings
-            item.thick_dist_close = 0.65
-            item.thick_dist_far = 2.3
-            item.thick_close = 18.0
-            item.thick_far = 28.0
+            item.thick_dist_close = L0_settings["thick_dist_close"]
+            item.thick_dist_far = L0_settings["thick_dist_far"]
+            item.thick_close = L0_settings["thick_close"]
+            item.thick_far = L0_settings["thick_far"]
 
-            item.crv_max_dist = 0.0
-            item.crv_off_dist = -1.0
-            item.crv_mode = True
-            item.crv_amount = 1.0
+            item.crv_max_dist = L0_settings["crv_max_dist"]
+            item.crv_off_dist = L0_settings["crv_off_dist"]
+            item.crv_mode = L0_settings["crv_mode"]
+            item.crv_amount = L0_settings["crv_amount"]
 
         if subpass == subpass.L1:
             pass_name = wm.Pass_Name + "_L1"
             
+            L1_settings = default_settings["L1"]
             # These are the default Values of the Settings
-            item.thick_dist_close = 0.65
-            item.thick_dist_far = 2.3
-            item.thick_close = 9.0
-            item.thick_far = 14.0
+            item.thick_dist_close = L1_settings["thick_dist_close"]
+            item.thick_dist_far = L1_settings["thick_dist_far"]
+            item.thick_close = L1_settings["thick_close"]
+            item.thick_far = L1_settings["thick_far"]
 
-            item.crv_max_dist = 0.0
-            item.crv_off_dist = -1.0
-            item.crv_mode = True
-            item.crv_amount = 1.0
+            item.crv_max_dist = L1_settings["crv_max_dist"]
+            item.crv_off_dist = L1_settings["crv_off_dist"]
+            item.crv_mode = L1_settings["crv_mode"]
+            item.crv_amount = L1_settings["crv_amount"]
 
         if subpass == subpass.L2:
             pass_name = wm.Pass_Name + "_L2"
             
+            L2_settings = default_settings["L2"]
             # These are the default Values of the Settings
-            item.thick_dist_close = 0.65
-            item.thick_dist_far = 2.3
-            item.thick_close = 6
-            item.thick_far = 9
+            item.thick_dist_close = L2_settings["thick_dist_close"]
+            item.thick_dist_far = L2_settings["thick_dist_far"]
+            item.thick_close = L2_settings["thick_close"]
+            item.thick_far = L2_settings["thick_far"]
 
-            item.crv_max_dist = 0.0
-            item.crv_off_dist = -1.0
-            item.crv_mode = True
-            item.crv_amount = 1.0
+            item.crv_max_dist = L2_settings["crv_max_dist"]
+            item.crv_off_dist = L2_settings["crv_off_dist"]
+            item.crv_mode = L2_settings["crv_mode"]
+            item.crv_amount = L2_settings["crv_amount"]
 
         item.name = pass_name
         item.pass_name = pass_name
@@ -178,6 +182,8 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         lineart.target_material = gp.data.materials[0]
         lineart.thickness = 1
         lineart.use_intersection_mask[mask_bit] = True
+        lineart.use_geometry_space_chain = True
+        lineart.use_intersection_match = True
         if use_cache:
             lineart.use_cache = use_cache
         return lineart
@@ -284,6 +290,21 @@ class FDG_OT_GenerateCollections_OP(Operator):
     bl_description = "Generates all the needed Collections for the Lineart Setup"
     bl_options = {"REGISTER", "UNDO"}
 
+    @classmethod
+    def poll(cls, context):
+        scene = context.scene
+        gp_defaults = scene.gp_defaults
+        if not gp_defaults.default_view_layer:
+            return False
+        if not gp_defaults.environment_view_layer:
+            return False
+        if not gp_defaults.character_view_layer:
+            return False
+        if not gp_defaults.extra_view_layer:
+            return False
+
+        return True
+        
     def execute(self, context):
         scene = context.scene
         wm = context.window_manager
@@ -331,6 +352,8 @@ class FDG_OT_GenerateCollections_OP(Operator):
         lineart.use_fuzzy_intersections = True
         lineart.thickness = 1
         lineart.use_intersection_mask[0] = True
+        lineart.use_geometry_space_chain = True
+        lineart.use_intersection_match = True
 
 
         curve_modifier = gp_ob.grease_pencil_modifiers.new("pass_1_ENVIRONMENTS_CURVE", 'GP_THICK')
@@ -402,11 +425,39 @@ class FDG_OT_GenerateCollections_OP(Operator):
             else:
                 child.exclude = True
                
+class FDG_OT_GenerateViewLayers_OP(Operator):
+    bl_idname = "fdg.gen_view_layers"
+    bl_label = "Generate Standard View Layers"
+    bl_description = "Generates all the needed View Layers for the Lineart Setup"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+
+        self.create_view_layers(context)
+        
+        return {'FINISHED'}
+    
+    def create_view_layers(self, context):
+        scene = context.scene
+
+        bpy.context.window.view_layer.name = "3d"
+        scene.gp_defaults.default_view_layer = context.window.view_layer.name
+
+        layer = create_view_layer_unique("lines_environment")
+        scene.gp_defaults.environment_view_layer = layer.name
+
+        layer = create_view_layer_unique("lines_characters")
+        scene.gp_defaults.character_view_layer = layer.name
+
+        layer = create_view_layer_unique("lines_extra")
+        scene.gp_defaults.extra_view_layer = layer.name
 
 def register():
     bpy.utils.register_class(FDG_OT_GenerateLineArtPass_OP)
     bpy.utils.register_class(FDG_OT_GenerateCollections_OP)
+    bpy.utils.register_class(FDG_OT_GenerateViewLayers_OP)
 
 def unregister():
+    bpy.utils.unregister_class(FDG_OT_GenerateViewLayers_OP)
     bpy.utils.unregister_class(FDG_OT_GenerateCollections_OP)
     bpy.utils.unregister_class(FDG_OT_GenerateLineArtPass_OP)

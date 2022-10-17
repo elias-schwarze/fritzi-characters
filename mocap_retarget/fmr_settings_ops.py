@@ -1,7 +1,7 @@
 import bpy
 from bpy.types import Operator
 from bpy_extras.io_utils import ImportHelper
-from .fmr_settings import Settings
+from ..fchar_settings import Settings
 import os
 
 
