@@ -97,6 +97,18 @@ def gp_enum_callback(scene, context):
     
     return items
 
+def gp_default_enum_callback(scene, context):
+    """Callback Method which returns a dynamic Enum filled with the modifier names of all individual PropertyGroups
+    stored in the gp_pass_defaults CollectionProperty in the windowmanager."""
+    items = []
+    if context.window_manager.gp_pass_defaults:
+        for setting in context.window_manager.gp_pass_defaults:
+            if(setting.line_key):
+                items.append((setting.line_key, setting.line_key, ""))
+                
+    
+    return items
+
 class FDG_PT_Outlines_pnl(bpy.types.Panel):
     bl_label = "Outlines"
     bl_category = "FCHAR"
@@ -130,13 +142,20 @@ class FDG_PT_DriverGenOutlines_pnl(bpy.types.Panel):
     bpy.types.WindowManager.gp_auto_enum = EnumProperty(name = "",items=gp_enum_callback)
     bpy.types.WindowManager.gp_auto_advanced_toggle = BoolProperty(name = "Advanced", default=False)
     bpy.types.WindowManager.lineart_collection = PointerProperty(name="Line Art Collection", type=bpy.types.Collection)
-    
+    bpy.types.WindowManager.gp_defaults_enum = EnumProperty(name = "", items=gp_default_enum_callback)
 
     def draw(self, context):
         wm = context.window_manager
+        scene = context.scene
+        settings = scene.gp_defaults
         layout = self.layout
 
-        
+        layout.operator("fdg.gen_view_layers")
+
+        layout.prop_search(settings, "default_view_layer", scene, "view_layers")
+        layout.prop_search(settings, "environment_view_layer", scene, "view_layers")
+        layout.prop_search(settings, "character_view_layer", scene, "view_layers")
+        layout.prop_search(settings, "extra_view_layer", scene, "view_layers")
         
         layout.operator("fdg.gen_lineart_collections")
         
@@ -266,6 +285,8 @@ class FDG_PT_DriverGenOutlinesPassSettings_pnl(bpy.types.Panel):
                 column.prop(settings, "crv_max_dist")
                 column.prop(settings, "crv_off_dist")
 
+
+
 class FDG_PT_DriverGenOutlinesDefaults_pnl(bpy.types.Panel):
     bl_label = "Defaults"
     bl_category = "FCHAR"
@@ -275,8 +296,33 @@ class FDG_PT_DriverGenOutlinesDefaults_pnl(bpy.types.Panel):
     bl_parent_id = "FDG_PT_DriverGenOutlinesSettings_pnl"
 
     def draw(self, context):
-        wm = context.window
+        wm = context.window_manager
         layout = self.layout
+
+        layout.prop(wm, "gp_defaults_enum")
+
+        if wm.gp_pass_defaults:
+            settings = wm.gp_pass_defaults.get(wm.gp_defaults_enum)
+
+            column = layout.column(align=True)
+            column.prop(settings, "thick_dist_close")
+            column.prop(settings, "thick_close")
+            layout.prop(settings, "clamp_close")
+            layout.separator()
+            column = layout.column(align=True)
+            column.prop(settings, "thick_dist_far")
+            column.prop(settings, "thick_far")
+            layout.prop(settings, "clamp_far")
+
+            layout.separator()
+
+            layout.prop(settings, "crv_amount")
+            layout.prop(settings, "crv_mode")
+           
+            column = layout.column(align=True)
+            column.prop(settings, "crv_max_dist")
+            column.prop(settings, "crv_off_dist")
+
 
 class FDG_PT_DriverGenOutlinesDebug_pnl(bpy.types.Panel):
     bl_label = "Debug"
@@ -301,7 +347,8 @@ class FDG_PT_DriverGenOutlinesDebug_pnl(bpy.types.Panel):
         layout.prop_search(settings, "nointersection_collection", bpy.data, "collections")
         layout.prop_search(settings, "extraobjects_collection", bpy.data, "collections")
         layout.prop_search(settings, "gp_material", bpy.data, "materials")
-        layout.prop_search(settings, "environment_layer", settings.gp_object.data, "layers", text="Environment Layer", icon='GREASEPENCIL')
+        if settings.gp_object:
+            layout.prop_search(settings, "environment_layer", settings.gp_object.data, "layers", text="Environment Layer", icon='GREASEPENCIL')
         layout.prop_search(settings, "environment_lineart", settings.gp_object, "grease_pencil_modifiers", text="Environment Line Art", icon='MOD_LINEART')
         layout.prop_search(settings, "environment_thickness", settings.gp_object, "grease_pencil_modifiers", text="Environment Thickness Modifier", icon='MOD_THICKNESS')
         layout.prop_search(settings, "default_view_layer", scene, "view_layers")
@@ -374,9 +421,11 @@ def load_defaults():
     settings_prop = bpy.context.window_manager.gp_pass_defaults
     
     for key in line_settings:
+        item = settings_prop.get(key)
+        if not item:
+            item = settings_prop.add()
         
-        item = settings_prop.add()
-        
+        item["name"] = line_settings[key]["line_key"]
         item["line_key"] = line_settings[key]["line_key"]
         item["thick_dist_close"] = line_settings[key]["dist_close"]
         item["thick_dist_far"] = line_settings[key]["dist_far"]
@@ -390,9 +439,31 @@ def load_defaults():
             
         
     
-    
 
-    
+def default_value_update(self, context):
+    """Update method which gets called if the user updates the default value of a gp_setting"""
+    settings = Settings()
+    wm = context.window_manager
+    line_settings = {}
+    for item in wm.gp_pass_defaults:
+        setting = {}
+
+        setting["line_key"] = item["line_key"]
+        setting["dist_close"] = item["thick_dist_close"]
+        setting["dist_far"] = item["thick_dist_far"]
+        setting["thick_close"] = item["thick_close"]
+        setting["thick_far"] = item["thick_far"]
+
+        setting["crv_max_dist"] = item["crv_max_dist"]
+        setting["crv_off_dist"] = item["crv_off_dist"]
+        setting["crv_mode"] = item["crv_mode"]
+        setting["crv_amount"] = item["crv_amount"]
+
+
+
+        line_settings[item.name] = setting
+
+    settings.set_setting("line_settings", line_settings)
     
 class fritziGPPassDefaults(PropertyGroup):
     """A Property Group which stores the setup of one GP Pass"""
@@ -407,17 +478,17 @@ class fritziGPPassDefaults(PropertyGroup):
     thick_modifier : StringProperty(name="Thickness Modifier")
     crv_modifier : StringProperty(name="Curve Modifier") """
     
-    line_key : StringProperty(name="Pass")
-    thick_dist_close : FloatProperty(name="Distance Close")
-    thick_dist_far : FloatProperty(name="Distance Far")
-    thick_close : FloatProperty(name="Thickness Close")
-    thick_far : FloatProperty(name="Thickness Far")
-    clamp_close : BoolProperty(name="Clamp Close", default=False, update=clamp_mode_update)
-    clamp_far : BoolProperty(name="Clamp Far", default=True, update=clamp_mode_update)
-    crv_mode : BoolProperty(name="Always Dynamic Line", default=True, update=crv_mode_update)
-    crv_max_dist : FloatProperty(name="Curve Max Distance", description="The Distance at which the Dynamic Line is in full effect")
-    crv_off_dist : FloatProperty(name="Curve Off Distance", description="The distance at which the Dynamic Line gets turned off")
-    crv_amount : FloatProperty(name="Dynamic Line Amount", description="The amount of the Dynamic Line", min=0.0)
+    line_key : StringProperty(name="Pass", update=default_value_update)
+    thick_dist_close : FloatProperty(name="Distance Close", update=default_value_update)
+    thick_dist_far : FloatProperty(name="Distance Far", update=default_value_update)
+    thick_close : FloatProperty(name="Thickness Close", update=default_value_update)
+    thick_far : FloatProperty(name="Thickness Far", update=default_value_update)
+    clamp_close : BoolProperty(name="Clamp Close", default=False, update=default_value_update)
+    clamp_far : BoolProperty(name="Clamp Far", default=True, update=default_value_update)
+    crv_mode : BoolProperty(name="Always Dynamic Line", default=True, update=default_value_update)
+    crv_max_dist : FloatProperty(name="Curve Max Distance", description="The Distance at which the Dynamic Line is in full effect", update=default_value_update)
+    crv_off_dist : FloatProperty(name="Curve Off Distance", description="The distance at which the Dynamic Line gets turned off", update=default_value_update)
+    crv_amount : FloatProperty(name="Dynamic Line Amount", description="The amount of the Dynamic Line", min=0.0, update=default_value_update)
 
 
 
@@ -440,6 +511,7 @@ def register():
     bpy.utils.register_class(FDG_PT_DriverGenOutlinesSettings_pnl)
     bpy.utils.register_class(FDG_PT_DriverGenOutlinesGeneralSettings_pnl)
     bpy.utils.register_class(FDG_PT_DriverGenOutlinesPassSettings_pnl)
+    bpy.utils.register_class(FDG_PT_DriverGenOutlinesDefaults_pnl)
     bpy.utils.register_class(FDG_PT_DriverGenOutlinesDebug_pnl)
     
     bpy.utils.register_class(FDG_UL_CollectionList_items)
@@ -453,6 +525,7 @@ def unregister():
     bpy.utils.unregister_class(FDG_UL_CollectionList_items)
     
     bpy.utils.unregister_class(FDG_PT_DriverGenOutlinesDebug_pnl)
+    bpy.utils.unregister_class(FDG_PT_DriverGenOutlinesDefaults_pnl)
     bpy.utils.unregister_class(FDG_PT_DriverGenOutlinesPassSettings_pnl)
     bpy.utils.unregister_class(FDG_PT_DriverGenOutlinesGeneralSettings_pnl)
     bpy.utils.unregister_class(FDG_PT_DriverGenOutlinesSettings_pnl)
