@@ -16,7 +16,7 @@ import shutil
 destination_path = 'C:/Users/FilmBIlder/Desktop/Fritzi_Modells/Add_on_workspace/Releases/Release/'
 
 # Version number of addon. NO trailing dot at the end. Should match bl_info in __init__.py
-version_number = '1.6.11'
+version_number = '1.6.12'
 
 # Automatically pack into .zip archive. Needed for installing the addon in Blender.
 pack_to_zip = True
