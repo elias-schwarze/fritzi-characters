@@ -30,11 +30,12 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
             self.prepare_collection_for_render(collection, item)
         self.prepare_scene_for_render(context)
         filepath = bpy.data.filepath
-        filepath = filepath[:-6] + "_line" + filepath[-6:]
-        #bpy.ops.wm.save_as_mainfile(filepath=filepath)
+        if "_line.blend" in filepath:
+            bpy.ops.wm.save_mainfile(filepath=filepath)
+        else:
+            filepath = filepath[:-6] + "_line" + filepath[-6:]
+            bpy.ops.wm.save_as_mainfile(filepath=filepath)
         
-        print("a")
-
 
         return {'FINISHED'}
 
@@ -132,6 +133,9 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
         wm = context.window_manager
         context.space_data.overlay.show_overlays = False
         context.space_data.show_gizmo = False
+        context.scene.render.resolution_x = 1920
+        context.scene.render.resolution_y = 1080
+        context.scene.render.resolution_percentage = 100
         context.scene.render.image_settings.file_format = 'JPEG'
         context.scene.render.image_settings.color_mode = 'RGB'
         context.scene.render.image_settings.compression = 90
