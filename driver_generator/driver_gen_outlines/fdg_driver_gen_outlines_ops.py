@@ -7,6 +7,7 @@ from bpy.types import Operator
 from numpy import char
 from ..utility_functions.fdg_driver_utils import *
 from ..utility_functions import fdg_names
+from .fdg_driver_gen_outlines_pnl import load_defaults
 
 def create_collection_unique(name, parent):
     collection = bpy.data.collections.get(name)
@@ -63,6 +64,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         return {'FINISHED'}
 
     def create_gp_pass(self, context, subpass : subpass, gp, character_collection, mask_bit):
+        load_defaults()
         wm = context.window_manager
         scene = context.scene
         default_settings = wm.gp_pass_defaults

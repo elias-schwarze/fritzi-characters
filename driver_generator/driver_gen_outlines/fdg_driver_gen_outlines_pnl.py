@@ -343,7 +343,7 @@ class FDG_PT_DriverGenOutlinesDefaults_pnl(bpy.types.Panel):
     def draw(self, context):
         wm = context.window_manager
         layout = self.layout
-
+        load_defaults()
         layout.prop(wm, "gp_defaults_enum")
 
         if wm.gp_pass_defaults:

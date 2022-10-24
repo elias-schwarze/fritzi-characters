@@ -132,3 +132,4 @@ dmypy.json
 fritzi-toolbox_updater/
 fritzi-characters_updater/fritzi-characters_updater_status.json
 .VSCodeCounter/
+*.json
