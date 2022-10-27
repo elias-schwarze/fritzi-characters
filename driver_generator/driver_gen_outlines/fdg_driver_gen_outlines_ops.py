@@ -119,6 +119,8 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         item.gp_object=gp
 
         collection = create_collection_unique(pass_name, character_collection)
+        collection.lineart_use_intersection_mask = True
+        collection.lineart_intersection_mask[mask_bit] = True
         item.collection = collection
 
         pass_nr = self.find_free_pass(context)
