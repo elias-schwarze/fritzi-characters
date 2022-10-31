@@ -1,7 +1,7 @@
 import bpy
 
 
-def add_var(driver, source, name, transform_type='', type='TRANSFORMS', source_bone="", rna_data_path="", id_type=""):
+def add_var(driver, source, name, transform_type='', transform_space = 'WORLD_SPACE', type='TRANSFORMS', source_bone="", rna_data_path="", id_type=""):
     """Adds an input variable to a driver, types can be 'TRANSFORMS' or 'SINGLE_PROP'"""
     if source is not None:
         var = driver.variables.new()
@@ -19,7 +19,7 @@ def add_var(driver, source, name, transform_type='', type='TRANSFORMS', source_b
             if source.type == 'ARMATURE':
                 target.bone_target = source_bone
             target.transform_type = transform_type
-            target.transform_space = 'WORLD_SPACE'
+            target.transform_space = transform_space
 
 
 def add_custom_property(prop_holder, name, default=0.0, prop_min=0.0, prop_max=1.0, description=''):

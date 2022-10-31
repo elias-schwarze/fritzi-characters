@@ -65,6 +65,32 @@ class CST_PT_ShaderControllerAdvanced_PNL(bpy.types.Panel):
         layout.separator()
         layout.operator("object.update_shader_controller")
 
+def poll_armature(self, object):
+        if object.type == 'ARMATURE':
+            return True
+
+        return False
+
+class cst_PT_ShaderControllerEyes_pnl(bpy.types.Panel):
+    bl_label = "Eyes"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "FCHAR"
+    bl_parent_id = "CST_PT_ShaderController_pnl"
+    bl_options = {"DEFAULT_CLOSED"}
+
+    bpy.types.WindowManager.eye_left = PointerProperty(name = "Left Eye", type=bpy.types.Object)
+    bpy.types.WindowManager.eye_right = PointerProperty(name = "Right Eye", type=bpy.types.Object)
+
+    def draw(self, context):
+        wm = context.window_manager
+        layout = self.layout
+
+        layout.prop_search(wm, "character_rig", bpy.data, "objects", text="Character Rig", poll=poll_armature)
+        layout.prop_search(wm, "eye_left", bpy.data, "objects")
+        layout.prop_search(wm, "eye_right", bpy.data, "objects")
+
+        layout.operator()
         
 
 
