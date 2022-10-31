@@ -17,7 +17,9 @@ class CST_PT_ShadingTools_pnl(bpy.types.Panel):
 
         
         layout.operator("settings.choose_shader_path")
+        layout.operator("settings.choose_eye_shader_path")
         layout.operator("cst.link_character_shader")
+        layout.operator("cst.link_eye_shader")
         layout.separator()
         layout.label(text="Skin Shaders")
         layout.operator("cst.create_h1_shader")

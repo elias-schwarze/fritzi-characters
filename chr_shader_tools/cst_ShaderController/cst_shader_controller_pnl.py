@@ -71,7 +71,7 @@ def poll_armature(self, object):
 
         return False
 
-class cst_PT_ShaderControllerEyes_pnl(bpy.types.Panel):
+class CST_PT_ShaderControllerEyes_pnl(bpy.types.Panel):
     bl_label = "Eyes"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
@@ -86,18 +86,20 @@ class cst_PT_ShaderControllerEyes_pnl(bpy.types.Panel):
         wm = context.window_manager
         layout = self.layout
 
-        layout.prop_search(wm, "character_rig", bpy.data, "objects", text="Character Rig", poll=poll_armature)
+        layout.prop_search(wm, "character_rig", bpy.data, "objects", text="Character Rig")
         layout.prop_search(wm, "eye_left", bpy.data, "objects")
         layout.prop_search(wm, "eye_right", bpy.data, "objects")
 
-        layout.operator()
+        layout.operator("object.add_eye_drivers")
         
 
 
 def register():
     bpy.utils.register_class(CST_PT_ShaderController_pnl)
     bpy.utils.register_class(CST_PT_ShaderControllerAdvanced_PNL)
+    bpy.utils.register_class(CST_PT_ShaderControllerEyes_pnl)
 
 def unregister():
+    bpy.utils.unregister_class(CST_PT_ShaderControllerEyes_pnl)
     bpy.utils.unregister_class(CST_PT_ShaderControllerAdvanced_PNL)
     bpy.utils.unregister_class(CST_PT_ShaderController_pnl)

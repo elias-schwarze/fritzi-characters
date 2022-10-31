@@ -17,6 +17,19 @@ class CST_OT_ChooseShaderPath_OP(Operator, ImportHelper):
 
         return {'FINISHED'}
 
+class CST_OT_ChooseEyeShaderPath_OP(Operator, ImportHelper):
+    bl_idname = "settings.choose_eye_shader_path"
+    bl_label = "Select Character Eye Shader"
+    bl_description = "Select the .blend file with the Fritzi Character Eye Shaders"
+    
+    def execute(self, context):
+        settings = Settings()
+        settings.set_setting("eye_shader_path", self.filepath)
+
+        self.report({'INFO'}, "Path set!")
+
+        return {'FINISHED'}
+
 class CST_OT_LinkCharacterShader_OP(Operator):
     bl_idname = "cst.link_character_shader"
     bl_label = "Link Character Shader"
@@ -28,6 +41,22 @@ class CST_OT_LinkCharacterShader_OP(Operator):
 
         with bpy.data.libraries.load(filepath, link = True, relative = True) as (data_from, data_to):
             data_to.node_groups = ["shader-Fritzi_Characters"]
+
+        return {'FINISHED'}
+
+class CST_OT_LinkEyeShader_OP(Operator):
+    bl_idname = "cst.link_eye_shader"
+    bl_label = "Link Character Eye Shader"
+    bl_description = "Links the Character Eye Shader into the file."
+
+    def execute(self, context):
+        settings = Settings()
+        filepath = settings.get_setting("eye_shader_path")
+
+        with bpy.data.libraries.load(filepath, link = True, relative = True) as (data_from, data_to):
+            
+            data_to.node_groups = ["shader-Fritzi_Characters-eye_LEFT_simple", "shader-Fritzi_Characters-eye_RIGHT_simple"]
+            
 
         return {'FINISHED'}
 
@@ -122,7 +151,9 @@ class CST_OT_CreateMouthInsideShader_Op(Operator):
 
 def register():
     bpy.utils.register_class(CST_OT_ChooseShaderPath_OP)
+    bpy.utils.register_class(CST_OT_ChooseEyeShaderPath_OP)
     bpy.utils.register_class(CST_OT_LinkCharacterShader_OP)
+    bpy.utils.register_class(CST_OT_LinkEyeShader_OP)
     bpy.utils.register_class(CST_OT_CreateH1Shader_OP)
     bpy.utils.register_class(CST_OT_CreateH2Shader_OP)
     bpy.utils.register_class(CST_OT_CreateH3Shader_OP)
@@ -137,5 +168,7 @@ def unregister():
     bpy.utils.unregister_class(CST_OT_CreateH3Shader_OP)
     bpy.utils.unregister_class(CST_OT_CreateH2Shader_OP)
     bpy.utils.unregister_class(CST_OT_CreateH1Shader_OP)
+    bpy.utils.unregister_class(CST_OT_LinkEyeShader_OP)
     bpy.utils.unregister_class(CST_OT_LinkCharacterShader_OP)
+    bpy.utils.unregister_class(CST_OT_ChooseEyeShaderPath_OP)
     bpy.utils.unregister_class(CST_OT_ChooseShaderPath_OP)
