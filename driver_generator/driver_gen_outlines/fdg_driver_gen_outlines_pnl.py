@@ -455,6 +455,13 @@ class FDG_PT_PreviewOutlines_pnl(bpy.types.Panel):
         layout.prop(wm, "file_name", text="")  
         layout.operator("fdg.gen_preview_outlines")
         layout.separator()
+
+        layout.operator("fdg.create_preview_lines")
+        layout.operator("fdg.activate_booleans")
+        layout.operator("fdg.deactivate_booleans")
+        layout.operator("fdg.prepare_scene")
+        layout.operator("fdg.save_line_file")
+        layout.separator()
         
 
         row = layout.row()
