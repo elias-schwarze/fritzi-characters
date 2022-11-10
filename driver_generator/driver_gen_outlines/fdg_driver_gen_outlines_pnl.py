@@ -116,8 +116,8 @@ class fritziGPPass(PropertyGroup):
     """A Property Group which stores the setup of one GP Pass"""
 
     gp_object : PointerProperty(name="Grease Pencil", type = bpy.types.Object, poll=poll_gp_object)
-    GP_layer : StringProperty(name= "GP_Layer")
     view_layer : StringProperty(name="View_Layer")
+
     pass_name : StringProperty(name="Pass Name")
     pass_nr : IntProperty(name="Pass Nr.")
 
@@ -125,6 +125,7 @@ class fritziGPPass(PropertyGroup):
     lineart : StringProperty(name="Line Art Modifier")
     thick_modifier : StringProperty(name="Thickness Modifier")
     crv_modifier : StringProperty(name="Curve Modifier")
+    GP_layer : StringProperty(name= "GP_Layer")
     
     thick_dist_close : FloatProperty(name="Distance Close")
     thick_dist_far : FloatProperty(name="Distance Far")
@@ -306,7 +307,8 @@ class FDG_PT_DriverGenOutlinesPassSettings_pnl(bpy.types.Panel):
             layout.separator()
 
             layout.prop_search(settings, "collection", bpy.data, "collections", text="Collection")
-            layout.prop_search(settings, "lineart", settings.gp_object, "grease_pencil_modifiers", text="Line Art")
+            layout.prop_search(settings, "GP_layer", settings.gp_object.data, "layers", text="Grease Pencil Layer")
+            layout.prop_search(settings, "lineart", settings.gp_object, "grease_pencil_modifiers", text="Line Art Modifier")
             layout.prop_search(settings, "thick_modifier", settings.gp_object, "grease_pencil_modifiers", text="Thickness Modifier")
             layout.prop_search(settings, "crv_modifier", settings.gp_object, "grease_pencil_modifiers", text="Curve Modifier")
 
@@ -330,6 +332,10 @@ class FDG_PT_DriverGenOutlinesPassSettings_pnl(bpy.types.Panel):
                 column = layout.column(align=True)
                 column.prop(settings, "crv_max_dist")
                 column.prop(settings, "crv_off_dist")
+            
+            layout.separator()
+
+            layout.operator("fdg.remove_lineart_pass")
 
 
 class FDG_PT_DriverGenOutlinesDefaults_pnl(bpy.types.Panel):

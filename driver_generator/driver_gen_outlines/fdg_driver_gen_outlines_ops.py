@@ -288,6 +288,57 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
 
         return curve_modifier, thickness_modifier
 
+class FDG_OT_RemoveLineArtPass_OP(Operator):
+    bl_idname = "fdg.remove_lineart_pass"
+    bl_label = "Remove Lineart Pass"
+    bl_description = "Removes the currently in the Add-On selected Lineart pass from the file. This includes gp_layer and Modifiers on the gp_object."
+    bl_options = {"REGISTER", "UNDO"}
+
+    @classmethod
+    def poll(cls, context):
+        return True
+
+    def execute(self, context):
+        scene = context.scene
+        wm = context.window_manager
+
+        settings = scene.gp_settings.get(wm.gp_auto_enum)
+
+        if settings.collection:
+            settings.collection.name = settings.collection.name + "_old"
+
+        gp_object = settings.gp_object
+        if gp_object:
+
+            # Remove the modifiers if they are in the settings
+            if settings.lineart:
+                lineart = gp_object.grease_pencil_modifiers.get(settings.lineart)
+                if lineart:
+                    gp_object.grease_pencil_modifiers.remove(lineart)
+            
+            if settings.thick_modifier:
+                thick_modifier = gp_object.grease_pencil_modifiers.get(settings.thick_modifier)
+                if thick_modifier:
+                    thick_modifier.driver_remove('thickness_factor')
+                    gp_object.grease_pencil_modifiers.remove(thick_modifier)
+            
+            if settings.crv_modifier:
+                crv_modifier = gp_object.grease_pencil_modifiers.get(settings.crv_modifier)
+                if crv_modifier:
+                    crv_modifier.driver_remove('thickness_factor')
+                    gp_object.grease_pencil_modifiers.remove(crv_modifier)
+
+            # Remove the Grease Pencil layer if it is in the settings
+            if settings.GP_layer:
+                layer = gp_object.data.layers.get(settings.GP_layer)
+                if layer:
+                    gp_object.data.layers.remove(layer)
+
+        key = scene.gp_settings.find(settings.name)
+        scene.gp_settings.remove(key)
+
+        return {'FINISHED'}
+
 class FDG_OT_GenerateCollections_OP(Operator):
     bl_idname = "fdg.gen_lineart_collections"
     bl_label = "Generate Standard Collections"
@@ -457,10 +508,12 @@ class FDG_OT_GenerateViewLayers_OP(Operator):
 
 def register():
     bpy.utils.register_class(FDG_OT_GenerateLineArtPass_OP)
+    bpy.utils.register_class(FDG_OT_RemoveLineArtPass_OP)
     bpy.utils.register_class(FDG_OT_GenerateCollections_OP)
     bpy.utils.register_class(FDG_OT_GenerateViewLayers_OP)
 
 def unregister():
     bpy.utils.unregister_class(FDG_OT_GenerateViewLayers_OP)
     bpy.utils.unregister_class(FDG_OT_GenerateCollections_OP)
+    bpy.utils.unregister_class(FDG_OT_RemoveLineArtPass_OP)
     bpy.utils.unregister_class(FDG_OT_GenerateLineArtPass_OP)
