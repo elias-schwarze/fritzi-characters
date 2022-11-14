@@ -1,5 +1,5 @@
 import bpy
-from bpy.props import BoolProperty
+from bpy.props import BoolProperty, IntProperty
 
 
 class FDG_PT_CameraUtilities_pnl(bpy.types.Panel):
@@ -8,9 +8,10 @@ class FDG_PT_CameraUtilities_pnl(bpy.types.Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_options = {"DEFAULT_CLOSED"}
-    bl_parent_id = "FDG_PT_DriverGenerator_pnl"
+    bl_parent_id = "FDG_PT_DriverGenOutlines_pnl"
 
     bpy.types.Scene.auto_link_toggle = BoolProperty(default=False)
+    bpy.types.Scene.auto_link_version = IntProperty(default=-1)
 
     def draw(self, context):
         wm = context.window_manager

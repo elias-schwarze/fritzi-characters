@@ -389,6 +389,10 @@ class FDG_PT_DriverGenOutlinesDebug_pnl(bpy.types.Panel):
 
         layout = self.layout
         settings = scene.gp_defaults
+        layout.operator("fdg.update_cam_empties")
+
+        layout.separator()
+        
         layout.prop_search(settings, "gp_object", bpy.data, "objects", text="Grease Pencil")
         layout.prop_search(settings, "outline_collection", bpy.data, "collections")
         layout.prop_search(settings, "objects_collection", bpy.data, "collections")

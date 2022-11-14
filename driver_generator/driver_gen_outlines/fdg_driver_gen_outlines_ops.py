@@ -60,6 +60,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         self.create_gp_pass(context, subpass.L1, gp, character_collection, mask_bit)
         self.create_gp_pass(context, subpass.L2, gp, character_collection, mask_bit)
 
+        add_auto_link_handler()
 
         return {'FINISHED'}
 
@@ -136,7 +137,8 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         lineart = self.create_lineart(gp, pass_nr, pass_name, collection, gp_layer, mask_bit, True)
         item.lineart = lineart.name
 
-        cam_empty = self.getCamEmpty()
+        camera = bpy.context.scene.camera
+        cam_empty = link_camera(camera)
 
         crv_mod, thick_mod = self.createThicknessModifiers(pass_nr, pass_name, gp, context, cam_empty, context.scene.gp_settings.find(item.name))
         item.thick_modifier = thick_mod.name
@@ -506,13 +508,36 @@ class FDG_OT_GenerateViewLayers_OP(Operator):
         layer.use_pass_z = True
         scene.gp_defaults.extra_view_layer = layer.name
 
+class FDG_OT_UpdateCamEmpties_OP(Operator):
+    bl_idname = "fdg.update_cam_empties"
+    bl_label = "Update Cam References"
+    bl_description = "Updates the cam empties on the grease_pencil_thickness_modifiers"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        scene = context.scene
+        for driver in scene.gp_settings[0].gp_object.animation_data.drivers:
+            print(driver.data_path)
+            for var in driver.driver.variables:
+                print(var.name)
+                if var.name == "dist":
+                    var.targets[0].id = link_camera(bpy.context.scene.camera)
+                    for target in var.targets:
+                        
+                        print(target.data_path)
+                        print(target.id_type)
+                        print(target.id)
+        return {'FINISHED'}
+
 def register():
     bpy.utils.register_class(FDG_OT_GenerateLineArtPass_OP)
     bpy.utils.register_class(FDG_OT_RemoveLineArtPass_OP)
     bpy.utils.register_class(FDG_OT_GenerateCollections_OP)
     bpy.utils.register_class(FDG_OT_GenerateViewLayers_OP)
+    bpy.utils.register_class(FDG_OT_UpdateCamEmpties_OP)
 
 def unregister():
+    bpy.utils.unregister_class(FDG_OT_UpdateCamEmpties_OP)
     bpy.utils.unregister_class(FDG_OT_GenerateViewLayers_OP)
     bpy.utils.unregister_class(FDG_OT_GenerateCollections_OP)
     bpy.utils.unregister_class(FDG_OT_RemoveLineArtPass_OP)

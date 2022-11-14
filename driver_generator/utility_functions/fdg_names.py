@@ -1,4 +1,4 @@
-empty_cam = "Empty.cam"
+empty_cam = "outlines_cam_empty"
 empty_head = "Empty.head"
 
 hidden_controller_bone = "Driven_Props"

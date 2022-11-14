@@ -1,5 +1,6 @@
 import bpy
-
+from . import fdg_names
+from bpy.app.handlers import persistent
 
 def add_var(driver, source, name, transform_type='', transform_space = 'WORLD_SPACE', type='TRANSFORMS', source_bone="", rna_data_path="", id_type=""):
     """Adds an input variable to a driver, types can be 'TRANSFORMS' or 'SINGLE_PROP'"""
@@ -116,3 +117,72 @@ def remove_property(object, prop_name):
     prop_value = object.get(prop_name)
     if prop_value is not None:
         del object[prop_name]
+
+def link_camera(camera):
+    if camera is None:
+        return
+
+    cam_empties = [value for key, value in bpy.context.scene.objects.items() if fdg_names.empty_cam.lower() in key.lower()]
+    
+    if len(cam_empties) == 0 or len(cam_empties) > 1:
+        
+        for cam_empty in cam_empties:
+            bpy.data.objects.remove(cam_empty, do_unlink=True)
+        collection = bpy.context.scene.gp_defaults.outline_collection
+        cam_empty = bpy.data.objects.new(fdg_names.empty_cam, None)
+        collection.objects.link(cam_empty)
+
+        loc, rot, scale = camera.matrix_world.decompose()
+        cam_empty.location = loc
+        cam_empty.rotation_euler = rot.to_euler()
+        
+
+        bpy.context.collection.objects.link(cam_empty)
+
+        parent_objects(camera, cam_empty)
+        cam_empty.hide_viewport = True
+        cam_empty.hide_render = True
+    else:
+        cam_empty = cam_empties[0]
+        if cam_empty.parent is camera:
+            return cam_empty
+
+        cam_empty.hide_viewport = False
+        cam_empty.parent = None
+        loc, rot, scale = camera.matrix_world.decompose()
+        cam_empty.location = loc
+        cam_empty.rotation_euler = rot.to_euler()
+        
+
+        parent_objects(camera, cam_empty)
+        cam_empty.hide_viewport = True
+        cam_empty.hide_render = True
+
+    return cam_empty
+
+current_handler_version = 1
+
+def add_auto_link_handler():
+    bpy.context.scene.auto_link_toggle = True
+    bpy.context.scene.auto_link_version = current_handler_version
+    append_function_unique(bpy.app.handlers.frame_change_pre, frame_change_handler_link_camera)
+
+def remove_auto_link_handler():
+    bpy.context.scene.auto_link_toggle = False
+    bpy.context.scene.auto_link_version = -1
+    remove_function(bpy.app.handlers.frame_change_pre, frame_change_handler_link_camera)
+    
+    fn_name = "frame_change_handler"
+    fn_module = "Fritzi-Characters.driver_generator.driver_gen_camera.fdg_driver_gen_camera_op"
+    function_list = bpy.app.handlers.frame_change_pre
+    for i in range(len(function_list) - 1, -1, -1):
+        if function_list[i].__name__ == fn_name and function_list[i].__module__ == fn_module:
+            del function_list[i]
+
+@persistent
+def frame_change_handler_link_camera(dummy):
+    """Handler which gathers the active camera and links the camera empty to it"""
+    camera = bpy.context.scene.camera
+    link_camera(camera)
+
+
