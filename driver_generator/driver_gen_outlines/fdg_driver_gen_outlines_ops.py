@@ -387,10 +387,12 @@ class FDG_OT_GenerateCollections_OP(Operator):
         gp_ob = bpy.data.objects.new("OUTLINES_scene", gp_data)
         outline_collection.objects.link(gp_ob)
         gp_ob.show_in_front = True
+        gp_data.pixel_factor = 0.1
 
         gp_layer = gp_data.layers.new(name="pass_1_ENVIRONMENTS", set_active=True)
         gp_layer.frames.new(0)
         gp_layer.pass_index = 1
+        gp_layer.use_lights = False
         gp_layer.viewlayer_render = scene.gp_defaults.environment_view_layer
 
         gp_mat = bpy.data.materials.new("Black")
@@ -409,6 +411,7 @@ class FDG_OT_GenerateCollections_OP(Operator):
         lineart.use_intersection_mask[0] = True
         lineart.use_geometry_space_chain = True
         lineart.use_intersection_match = True
+        
 
 
         curve_modifier = gp_ob.grease_pencil_modifiers.new("pass_1_ENVIRONMENTS_CURVE", 'GP_THICK')
