@@ -15,24 +15,24 @@ class Settings(object):
         "shader_path" : "",
         "line_settings" : 
             {"L0" : {"line_key" : "L0", 
-                "dist_close" : 0.65, "thick_close" : 10.0, "clamp_close" : False,
-                "dist_far" : 4.6, "thick_far" : 28.0, "clamp_far" : True,
+                "dist_close" : 0.75, "thick_close" : 24.0, "clamp_close" : False,
+                "dist_far" : 2.3, "thick_far" : 32.0, "clamp_far" : True,
                 "crv_amount" : 15.0, "crv_mode" : True,
                 "crv_max_dist" : 0.0, "crv_off_dist" : -1.0
                 },
             
             "L1" :
                 {"line_key" : "L1", 
-                "dist_close" : 0.65, "thick_close" : 5.0, "clamp_close" : False,
-                "dist_far" : 4.6, "thick_far" : 14.0, "clamp_far" : True,
+                "dist_close" : 0.75, "thick_close" : 16.0, "clamp_close" : False,
+                "dist_far" : 2.3, "thick_far" : 18.0, "clamp_far" : True,
                 "crv_amount" : 1.0, "crv_mode" : True,
                 "crv_max_dist" : 0.0, "crv_off_dist" : -1.0
                 },
             
             "L2" : 
                 {"line_key" : "L2", 
-                "dist_close" : 0.65, "thick_close" : 6.0, "clamp_close" : False,
-                "dist_far" : 4.6, "thick_far" : 9.0, "clamp_far" : True,
+                "dist_close" : 0.75, "thick_close" : 7.0, "clamp_close" : False,
+                "dist_far" : 2.3, "thick_far" : 10.0, "clamp_far" : True,
                 "crv_amount" : 1.0, "crv_mode" : True,
                 "crv_max_dist" : 0.0, "crv_off_dist" : -1.0
                 }
