@@ -167,11 +167,11 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         scene = context.scene
         if len(scene.gp_settings) > 0:
                         
-            for i in range(2, 101):
+            for i in range(4, 101):
                 if not self.is_pass_used(i, scene.gp_settings):
                     return i
             return -1
-        return 2
+        return 4
 
     def is_pass_used(self, pass_nr, gp_settings):
 
@@ -372,6 +372,12 @@ class FDG_OT_GenerateCollections_OP(Operator):
         objects_collection.lineart_usage = 'INCLUDE'
         environment_collection = create_collection_unique("ENVIRONMENTS", objects_collection)
         environment_collection.lineart_usage = 'INCLUDE'
+        environment_L0_collection = create_collection_unique("ENVIRONMENTS_L0", environment_collection)
+        environment_L0_collection.lineart_usage = 'INCLUDE'
+        environment_L1_collection = create_collection_unique("ENVIRONMENTS_L1", environment_collection)
+        environment_L1_collection.lineart_usage = 'INCLUDE'
+        environment_L2_collection = create_collection_unique("ENVIRONMENTS_L2", environment_collection)
+        environment_L2_collection.lineart_usage = 'INCLUDE'
         character_collection = create_collection_unique("CHARACTERS", objects_collection)
         character_collection.lineart_usage = 'INCLUDE'
         excluded_collection = create_collection_unique("OBJECTS_Excluded", objects_collection)
@@ -389,42 +395,101 @@ class FDG_OT_GenerateCollections_OP(Operator):
         gp_ob.show_in_front = True
         gp_data.pixel_factor = 0.1
 
-        gp_layer = gp_data.layers.new(name="pass_1_ENVIRONMENTS", set_active=True)
-        gp_layer.frames.new(0)
-        gp_layer.pass_index = 1
-        gp_layer.use_lights = False
-        gp_layer.viewlayer_render = scene.gp_defaults.environment_view_layer
+        gp_layer_L0 = gp_data.layers.new(name="pass_1_ENVIRONMENTS_L0", set_active=True)
+        gp_layer_L0.frames.new(0)
+        gp_layer_L0.pass_index = 1
+        gp_layer_L0.use_lights = False
+        gp_layer_L0.viewlayer_render = scene.gp_defaults.environment_view_layer
+
+        gp_layer_L1 = gp_data.layers.new(name="pass_2_ENVIRONMENTS_L1", set_active=True)
+        gp_layer_L1.frames.new(0)
+        gp_layer_L1.pass_index = 2
+        gp_layer_L1.use_lights = False
+        gp_layer_L1.viewlayer_render = scene.gp_defaults.environment_view_layer
+
+        gp_layer_L2 = gp_data.layers.new(name="pass_3_ENVIRONMENTS_L2", set_active=True)
+        gp_layer_L2.frames.new(0)
+        gp_layer_L2.pass_index = 3
+        gp_layer_L2.use_lights = False
+        gp_layer_L2.viewlayer_render = scene.gp_defaults.environment_view_layer
 
         gp_mat = bpy.data.materials.new("Black")
 
         bpy.data.materials.create_gpencil_data(gp_mat)
         gp_data.materials.append(gp_mat)
 
-        lineart = gp_ob.grease_pencil_modifiers.new("pass_1_ENVIRONMENTS", 'GP_LINEART')
-        lineart.source_collection = environment_collection
-        lineart.target_layer = gp_layer.info
-        lineart.target_material = gp_mat
-        lineart.smooth_tolerance = 0.1
-        lineart.split_angle = 0.523599
-        lineart.use_fuzzy_intersections = True
-        lineart.thickness = 1
-        lineart.use_intersection_mask[0] = True
-        lineart.use_geometry_space_chain = True
-        lineart.use_intersection_match = True
-        
+        lineart_L0 = gp_ob.grease_pencil_modifiers.new("pass_1_ENVIRONMENTS_L0", 'GP_LINEART')
+        lineart_L0.source_collection = environment_L0_collection
+        lineart_L0.target_layer = gp_layer_L0.info
+        lineart_L0.target_material = gp_mat
+        lineart_L0.smooth_tolerance = 0.1
+        lineart_L0.split_angle = 0.523599
+        lineart_L0.use_fuzzy_intersections = True
+        lineart_L0.thickness = 1
+        lineart_L0.use_intersection_mask[0] = True
+        lineart_L0.use_geometry_space_chain = True
+        lineart_L0.use_intersection_match = True
+
+        lineart_L1 = gp_ob.grease_pencil_modifiers.new("pass_2_ENVIRONMENTS_L1", 'GP_LINEART')
+        lineart_L1.source_type = 'COLLECTION'
+        lineart_L1.source_collection = environment_L1_collection
+        lineart_L1.target_layer = gp_layer_L1.info
+        lineart_L1.target_material = gp_mat
+        lineart_L1.thickness = 1
+        lineart_L1.use_intersection_mask[0] = True
+        lineart_L1.use_geometry_space_chain = True
+        lineart_L1.use_intersection_match = True
+        lineart_L1.use_cache = True
+
+        lineart_L2 = gp_ob.grease_pencil_modifiers.new("pass_3_ENVIRONMENTS_L2", 'GP_LINEART')
+        lineart_L2.source_type = 'COLLECTION'
+        lineart_L2.source_collection = environment_L1_collection
+        lineart_L2.target_layer = gp_layer_L2.info
+        lineart_L2.target_material = gp_mat
+        lineart_L2.thickness = 1
+        lineart_L2.use_intersection_mask[0] = True
+        lineart_L2.use_geometry_space_chain = True
+        lineart_L2.use_intersection_match = True
+        lineart_L2.use_cache = True        
 
 
-        curve_modifier = gp_ob.grease_pencil_modifiers.new("pass_1_ENVIRONMENTS_CURVE", 'GP_THICK')
+        curve_modifier_L0 = gp_ob.grease_pencil_modifiers.new("pass_1_ENVIRONMENTS_CURVE_L0", 'GP_THICK')
         
-        curve_modifier.thickness_factor = 28.0
-        curve_modifier.use_custom_curve = True
-        curve_modifier.layer_pass = 1
-        curve_modifier.curve.curves[0].points[0].location = (0.0, 0.5)
-        curve_modifier.curve.curves[0].points[1].location = (1.0, 0.5)
-        curve_modifier.curve.curves[0].points.new(0.5, 1.0)
-        for point in curve_modifier.curve.curves[0].points:
+        curve_modifier_L0.thickness_factor = 18.0
+        curve_modifier_L0.use_custom_curve = True
+        curve_modifier_L0.layer_pass = 1
+        curve_modifier_L0.curve.curves[0].points[0].location = (0.0, 0.5)
+        curve_modifier_L0.curve.curves[0].points[1].location = (1.0, 0.5)
+        curve_modifier_L0.curve.curves[0].points.new(0.5, 1.0)
+        for point in curve_modifier_L0.curve.curves[0].points:
             point.handle_type = 'AUTO'
-        curve_modifier.curve.update()
+        curve_modifier_L0.curve.update()
+
+
+        curve_modifier_L1 = gp_ob.grease_pencil_modifiers.new("pass_2_ENVIRONMENTS_CURVE_L1", 'GP_THICK')
+        
+        curve_modifier_L1.thickness_factor = 12.0
+        curve_modifier_L1.use_custom_curve = True
+        curve_modifier_L1.layer_pass = 2
+        curve_modifier_L1.curve.curves[0].points[0].location = (0.0, 0.5)
+        curve_modifier_L1.curve.curves[0].points[1].location = (1.0, 0.5)
+        curve_modifier_L1.curve.curves[0].points.new(0.5, 1.0)
+        for point in curve_modifier_L1.curve.curves[0].points:
+            point.handle_type = 'AUTO'
+        curve_modifier_L1.curve.update()
+
+
+        curve_modifier_L2 = gp_ob.grease_pencil_modifiers.new("pass_3_ENVIRONMENTS_CURVE_L2", 'GP_THICK')
+        
+        curve_modifier_L2.thickness_factor = 6.0
+        curve_modifier_L2.use_custom_curve = True
+        curve_modifier_L2.layer_pass = 3
+        curve_modifier_L2.curve.curves[0].points[0].location = (0.0, 0.5)
+        curve_modifier_L2.curve.curves[0].points[1].location = (1.0, 0.5)
+        curve_modifier_L2.curve.curves[0].points.new(0.5, 1.0)
+        for point in curve_modifier_L2.curve.curves[0].points:
+            point.handle_type = 'AUTO'
+        curve_modifier_L2.curve.update()
             
         # Here be Curve Settings
         
@@ -432,14 +497,23 @@ class FDG_OT_GenerateCollections_OP(Operator):
         scene.gp_defaults.outline_collection = outline_collection
         scene.gp_defaults.objects_collection = objects_collection
         scene.gp_defaults.environment_collection = environment_collection
+        scene.gp_defaults.environment_L0_collection = environment_L0_collection
+        scene.gp_defaults.environment_L1_collection = environment_L1_collection
+        scene.gp_defaults.environment_L2_collection = environment_L2_collection
         scene.gp_defaults.character_collection = character_collection
         scene.gp_defaults.excluded_collection = excluded_collection
         scene.gp_defaults.nointersection_collection = nointersection_collection
         scene.gp_defaults.extraobjects_collection = extraobjects_collection
         scene.gp_defaults.gp_material = gp_mat.name
-        scene.gp_defaults.environment_layer = gp_layer.info
-        scene.gp_defaults.environment_lineart = lineart.name
-        scene.gp_defaults.environment_thickness = curve_modifier.name
+        scene.gp_defaults.environment_layer_L0 = gp_layer_L0.info
+        scene.gp_defaults.environment_layer_L1 = gp_layer_L1.info
+        scene.gp_defaults.environment_layer_L2 = gp_layer_L2.info
+        scene.gp_defaults.environment_L0_lineart = lineart_L0.name
+        scene.gp_defaults.environment_L0_thickness = curve_modifier_L0.name
+        scene.gp_defaults.environment_L1_lineart = lineart_L1.name
+        scene.gp_defaults.environment_L1_thickness = curve_modifier_L1.name
+        scene.gp_defaults.environment_L2_lineart = lineart_L2.name
+        scene.gp_defaults.environment_L2_thickness = curve_modifier_L2.name
         scene.gp_defaults.mask_counter = 0
 
         return {'FINISHED'}
