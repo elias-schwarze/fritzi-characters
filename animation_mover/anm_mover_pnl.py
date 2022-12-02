@@ -107,9 +107,14 @@ class ANM_PT_SyncLength_pnl(bpy.types.Panel):
         row.operator("object.sync_length_on")
         row.operator("object.sync_length_off")
 
-        
+def draw_copy_animation_menu(self, context):
+
+    layout = self.layout
+    layout.separator()
+    layout.operator("anm.copy_anim_data") 
 
 def register():
+    bpy.types.VIEW3D_MT_make_links.append(draw_copy_animation_menu)
     bpy.utils.register_class(ANM_PT_KeyframeMover_pnl)
     bpy.utils.register_class(ANM_PT_MoveOptions_pnl)
     bpy.utils.register_class(ANM_PT_SyncLength_pnl)
@@ -118,3 +123,4 @@ def unregister():
     bpy.utils.unregister_class(ANM_PT_SyncLength_pnl)
     bpy.utils.unregister_class(ANM_PT_MoveOptions_pnl)
     bpy.utils.unregister_class(ANM_PT_KeyframeMover_pnl)
+    bpy.types.VIEW3D_MT_make_links.remove(draw_copy_animation_menu)
