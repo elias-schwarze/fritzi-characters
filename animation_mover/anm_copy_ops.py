@@ -1,4 +1,5 @@
 import bpy
+import copy
 
 class ANM_OT_CopyAnimData_OP(bpy.types.Operator):
     bl_idname = "anm.copy_anim_data"
@@ -17,14 +18,71 @@ class ANM_OT_CopyAnimData_OP(bpy.types.Operator):
 
         from_anim_data = activeObject.animation_data
 
-        for obj in selectedObjects:
-            if obj is activeObject:
+#        for obj in selectedObjects:
+#            if obj is activeObject:
+#                continue
+#            if not obj.animation_data:
+#                obj.animation_data_create()
+#            copy_anim_data(from_anim_data, obj.animation_data)
+        driver_data = {}
+        for object in selectedObjects:
+            if object.animation_data:
+                driver_list = []
+                for driver in object.animation_data.drivers:
+                    print(driver.data_path)
+                    print(driver.array_index)
+                    driver_list.append(copy.deepcopy(driver))
+                driver_data[object.name] = driver_list
+                for driver in driver_data[object.name]:
+                    print(driver.data_path)
+                    print(driver.array_index)
+        bpy.ops.object.make_links_data(type='ANIMATION')
+
+        for object in selectedObjects:
+            
+            if object == activeObject:
                 continue
-            if not obj.animation_data:
-                obj.animation_data_create()
-            copy_anim_data(from_anim_data, obj.animation_data)
+
+            if object.animation_data:
+                if object.animation_data.drivers:
+                    for driver in object.animation_data.drivers:
+                        object.animation_data.drivers.remove(driver)
+            print(driver_data[object.name])
+            if driver_data[object.name]:
+                for driver in driver_data[object.name]:
+                    copy_driver(driver, object)
 
         return {'FINISHED'}
+    
+def copy_driver(old_driver, target_obj):
+    
+    if not target_obj.animation_data:
+        target_obj.animation_data_create()
+
+    # This might not work if the driver is on a non array (mayber catch with try catch and try to use the non array version if it fails)
+    print(old_driver.data_path)
+    print(old_driver.array_index)
+    new_driver = target_obj.driver_add(old_driver.data_path, old_driver.array_index)
+
+    new_driver.driver.expression = old_driver.driver.expression
+
+    for var in old_driver.driver.variables:
+        copy_variable(var, new_driver.driver)
+
+def copy_variable(old_var, target_driver):
+    new_var = target_driver.variables.new()
+    new_var.type = old_var.type
+    new_var.name = old_var.name
+
+    index = 0
+    for target in old_var.targets:
+        copy_target(target, new_var, index)
+        index = index + 1
+
+def copy_target(old_target, target_variable, index):
+    target_variable.targets[index].data_path = old_target.data_path
+    target_variable.targets[index].id = old_target.id
+    
 
 def copy_anim_data(from_anim_data, to_anim_data):
     to_anim_data.action = from_anim_data.action
@@ -83,6 +141,8 @@ def copy_nla_strip_to_track(strip, track):
     new_strip.use_auto_blend = strip.use_auto_blend
     new_strip.use_reverse = strip.use_reverse
     new_strip.use_sync_length = strip.use_sync_length
+
+
 
 def copy_fcurve_to_strip(fcurve, strip):
     strip.fcurves.append(fcurve)
