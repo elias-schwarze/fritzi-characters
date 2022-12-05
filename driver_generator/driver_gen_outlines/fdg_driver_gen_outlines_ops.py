@@ -165,18 +165,24 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
 
     def find_free_pass(self, context):
         scene = context.scene
-        if len(scene.gp_settings) > 0:
-                        
-            for i in range(4, 101):
-                if not self.is_pass_used(i, scene.gp_settings):
-                    return i
-            return -1
-        return 4
+        used_passes = self.get_used_passes(scene.gp_defaults.gp_object)
+                       
+        for i in range(1, 32767):
+            if i not in used_passes:
+                return i
+        return -1
+        
+
+    def get_used_passes(self, gp_object):
+        used_passes = []
+        for layer in gp_object.data.layers:
+            used_passes.append(layer.pass_index)
+        return used_passes
 
     def is_pass_used(self, pass_nr, gp_settings):
 
-        for item in gp_settings:
-            if item.pass_nr == pass_nr:
+        for layer in gp_settings.gp_object.layers:
+            if layer.pass_index == pass_nr:
                 return True
         return False
 
@@ -374,10 +380,19 @@ class FDG_OT_GenerateCollections_OP(Operator):
         environment_collection.lineart_usage = 'INCLUDE'
         environment_L0_collection = create_collection_unique("ENVIRONMENTS_L0", environment_collection)
         environment_L0_collection.lineart_usage = 'INCLUDE'
+        environment_L0_collection.lineart_use_intersection_mask = True
+        environment_L0_collection.lineart_intersection_mask[0] = True
+        
         environment_L1_collection = create_collection_unique("ENVIRONMENTS_L1", environment_collection)
         environment_L1_collection.lineart_usage = 'INCLUDE'
+        environment_L1_collection.lineart_use_intersection_mask = True
+        environment_L1_collection.lineart_intersection_mask[0] = True
+        
         environment_L2_collection = create_collection_unique("ENVIRONMENTS_L2", environment_collection)
         environment_L2_collection.lineart_usage = 'INCLUDE'
+        environment_L2_collection.lineart_use_intersection_mask = True
+        environment_L2_collection.lineart_intersection_mask[0] = True
+        
         character_collection = create_collection_unique("CHARACTERS", objects_collection)
         character_collection.lineart_usage = 'INCLUDE'
         excluded_collection = create_collection_unique("OBJECTS_Excluded", objects_collection)
