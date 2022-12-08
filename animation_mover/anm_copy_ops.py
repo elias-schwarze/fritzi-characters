@@ -17,50 +17,66 @@ class ANM_OT_CopyAnimData_OP(bpy.types.Operator):
         activeObject = context.active_object
        
         # Copy Active object to temporarily store drivers from objects to copy animation to
-        active_object_copy = activeObject.copy()
-        context.scene.collection.objects.link(active_object_copy)
-        
+        #active_object_copy = activeObject.copy()
+        #context.scene.collection.objects.link(active_object_copy)
+        #
+        #print("From / Before" + str(len(activeObject.animation_data.drivers)))    
+        #for object in selectedObjects:
+        #    if object == activeObject:
+        #        continue
+        #    print("To / Before" + str(len(object.animation_data.drivers)))
+        #    # Remove all drivers from active object copy
+        #    if active_object_copy.animation_data and active_object_copy.animation_data.drivers:
+        #        for driver in active_object_copy.animation_data.drivers:
+        #            active_object_copy.animation_data.drivers.remove(driver)
+        #    # Copy all Drivers from the Target Object on the copy object
+        #    if object.animation_data and object.animation_data.drivers:
+        #        for driver in object.animation_data.drivers:
+        #            if not active_object_copy.animation_data:
+        #                active_object_copy.animation_data.create()
+        #            
+        #            try:
+        #                new_driver = active_object_copy.driver_add(driver.data_path, driver.array_index)
+        #            except:
+        #                new_driver = active_object_copy.driver_add(driver.data_path)
+        #            copy_driver(driver, new_driver)
+#
+        #    # Select the target and copy object for the animation link operator
+        #    for obj in context.selected_objects:
+        #        obj.select_set(False)
+        #    object.select_set(True)
+        #    bpy.context.view_layer.objects.active = active_object_copy  
+        #    bpy.ops.object.make_links_data(type='ANIMATION')
+#
+        #    print("To / After" + str(len(object.animation_data.drivers)))
+        ## Remove the temporary copy object from the file after all Objects have the copied animation
+        #bpy.data.objects.remove(active_object_copy, do_unlink=True)
+#
+        ## Reset the selection to the original state (Before the Operator was started)
+        #
+        #for object in selectedObjects:
+        #    object.select_set(True)
+#
+        #    # Reset the use_nla flag so the animation gets re-evaluated (Otherwise Animation does not update on Linked Objects)
+        #    object.animation_data.use_nla = False
+        #    object.animation_data.use_nla = True
+#
+        #context.view_layer.objects.active = activeObject
+
+        bpy.ops.object.make_links_data(type='ANIMATION')
 
         for object in selectedObjects:
             if object == activeObject:
                 continue
-              
-            # Remove all drivers form active object copy
-            if active_object_copy.animation_data and active_object_copy.animation_data.drivers:
-                for driver in active_object_copy.animation_data.drivers:
-                    active_object_copy.animation_data.drivers.remove(driver)
-            # Copy all Drivers from the Target Object on the copy object
-            if object.animation_data and object.animation_data.drivers:
-                for driver in object.animation_data.drivers:
-                    if not active_object_copy.animation_data:
-                        active_object_copy.animation_data.create()
-                    
-                    try:
-                        new_driver = active_object_copy.driver_add(driver.data_path, driver.array_index)
-                    except:
-                        new_driver = active_object_copy.driver_add(driver.data_path)
-                    copy_driver(driver, new_driver)
 
-            # Select the target and copy object for the animation link operator
-            for obj in context.selected_objects:
-                obj.select_set(False)
-            object.select_set(True)
-            bpy.context.view_layer.objects.active = active_object_copy  
-            bpy.ops.object.make_links_data(type='ANIMATION')
-
-        # Remove the temporary copy object from the file after all Objects have the copied animation
-        bpy.data.objects.remove(active_object_copy, do_unlink=True)
-
-        # Reset the selection to the original state (Before the Operator was started)
-        
-        for object in selectedObjects:
-            object.select_set(True)
-
-            # Reset the use_nla flag so the animation gets re-evaluated (Otherwise Animation does not update on Linked Objects)
+            for driver in object.animation_data.drivers:
+                for var in driver.driver.variables:
+                    for target in var.targets:
+                        if target.id.name == activeObject.name:
+                            target.id = object
+            
             object.animation_data.use_nla = False
             object.animation_data.use_nla = True
-
-        context.view_layer.objects.active = activeObject
 
         return {'FINISHED'}
 
