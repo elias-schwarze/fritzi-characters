@@ -29,6 +29,41 @@ class subpass(Enum):
     L1 = 1
     L2 = 2
 
+def sort_lineart_modifiers(line_art_object):
+    bpy.context.view_layer.objects.active = line_art_object
+    
+    while True:
+        print("---------------------------------------------")
+        for mod in line_art_object.grease_pencil_modifiers:
+            print(mod.type + ": " + mod.name)
+        print(line_art_object.grease_pencil_modifiers)
+        first_thickness_index = get_first_thickness_pos(line_art_object)
+        first_out_of_place_index = get_first_out_of_place(line_art_object, first_thickness_index)
+        
+        if first_out_of_place_index == -1:
+            
+            return
+
+        bpy.ops.object.gpencil_modifier_move_to_index(modifier=line_art_object.grease_pencil_modifiers[first_out_of_place_index].name, index=first_thickness_index)
+        
+    
+
+
+def get_first_thickness_pos(line_art_object):
+    for modifier in line_art_object.grease_pencil_modifiers:
+        if modifier.type == 'GP_THICK':
+            return line_art_object.grease_pencil_modifiers.find(modifier.name)
+
+def get_first_out_of_place(line_art_object, first_thickness_index):
+    for modifier in line_art_object.grease_pencil_modifiers:
+        if modifier.type == 'GP_LINEART':
+            index = line_art_object.grease_pencil_modifiers.find(modifier.name)
+            if index > first_thickness_index:
+                return index
+
+    return -1
+            
+
 class FDG_OT_GenerateLineArtPass_OP(Operator):
     bl_idname = "fdg.gen_lineart_pass"
     bl_label = "Generate Lineart Pass"
@@ -61,6 +96,8 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         self.create_gp_pass(context, subpass.L2, gp, character_collection, mask_bit)
 
         add_auto_link_handler()
+
+        sort_lineart_modifiers(gp)
 
         return {'FINISHED'}
 
@@ -458,7 +495,7 @@ class FDG_OT_GenerateCollections_OP(Operator):
 
         lineart_L2 = gp_ob.grease_pencil_modifiers.new("pass_3_ENVIRONMENTS_L2", 'GP_LINEART')
         lineart_L2.source_type = 'COLLECTION'
-        lineart_L2.source_collection = environment_L1_collection
+        lineart_L2.source_collection = environment_L2_collection
         lineart_L2.target_layer = gp_layer_L2.info
         lineart_L2.target_material = gp_mat
         lineart_L2.thickness = 1
