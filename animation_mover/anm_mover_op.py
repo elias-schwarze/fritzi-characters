@@ -1,5 +1,3 @@
-from multiprocessing.sharedctypes import Value
-import operator
 import bpy
 from bpy.types import PropertyGroup, UIList
 from bpy.props import StringProperty, CollectionProperty, IntProperty, BoolProperty
