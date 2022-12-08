@@ -3,7 +3,7 @@ import copy
 
 class ANM_OT_CopyAnimData_OP(bpy.types.Operator):
     bl_idname = "anm.copy_anim_data"
-    bl_label = "Copy Animation Data (keep Drivers)"
+    bl_label = "Copy Animation Data (Keep Drivers)"
     bl_description = "Copies Animation Data from the active to all selected objects, with the exception of drivers"
     bl_options = {"REGISTER", "UNDO"}
 
