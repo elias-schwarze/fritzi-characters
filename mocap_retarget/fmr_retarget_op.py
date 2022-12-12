@@ -213,7 +213,7 @@ def retarget_mocap(context, do_auto_scale=True):
     
     # Retarget
     start, end = context.window_manager.source_rig_pointer.animation_data.action.frame_range
-    bpy.ops.arp.retarget(frame_start=start, frame_end=end, interpolation_type='BEZIER', handle_type='AUTO_CLAMPED')
+    bpy.ops.arp.retarget(frame_start=int(start), frame_end=int(end), interpolation_type='BEZIER', handle_type='AUTO_CLAMPED')
     return True
 
 
