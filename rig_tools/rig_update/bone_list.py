@@ -447,6 +447,529 @@ bone_list = {
             "old_parent_name": "c_spine_02.x",
             "do_mirror": False
         }
+
         
+    ],
+    "constraint_update_list":
+    [
+        {
+            "bone_name": "Bone Name",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Type",
+                    "constraint_name": "Constraint Name",
+                    "target_bone_name": "Target Bone Name",
+                    "do_mirror": bool
+            
+                },
+                {
+                    "constaint_type": "Type",
+                    "constraint_name": "Constraint Name",
+                    "target_bone_name": "Target Bone Name",
+                    "do_mirror": bool
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "fix_leg_rm.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Arm",
+                    "target_bone_name": "leg.l",
+                    "do_mirror": True
+            
+                },
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Root",
+                    "target_bone_name": "root",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "c_leg_rm.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Arm",
+                    "target_bone_name": "leg.l",
+                    "do_mirror": True
+            
+                },
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Root",
+                    "target_bone_name": "root",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "c_arm_rm.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Arm",
+                    "target_bone_name": "forearm.l",
+                    "do_mirror": True
+            
+                },
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Root",
+                    "target_bone_name": "root",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "fix_arm_rm.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Arm",
+                    "target_bone_name": "forearm.l",
+                    "do_mirror": True
+            
+                },
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Root",
+                    "target_bone_name": "root",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "c_foot_ik_2.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Constraining Overwrite",
+                    "target_bone_name": "c_foot_ik.l",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "fix_foot_ik.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Copy Transforms (Old Connection)",
+                    "target_bone_name": "c_foot_ik.l",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "fix_toes_ik.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Copy Transforms (Old Connection)",
+                    "target_bone_name": "c_toes_ik.l",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "leg_pole_root.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of_local",
+                    "target_bone_name": "c_foot_ik.l",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "fix_leg_pole.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Copy Transforms (Old Connection)",
+                    "target_bone_name": "c_leg_pole.l",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "c_forearm_fk_2P.l",
+            "constraints": "ALL_INVERSE",
+            "do_mirror": True          
+        },
+        {
+            "bone_name": "c_arm_fk_2P.l",
+            "constraints": "ALL_INVERSE",
+            "do_mirror": True
+        },
+        {
+            "bone_name": "eyes",
+            "constraints":
+            [
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of",
+                    "target_bone_name": "head.x",
+                    "do_mirror": False
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "c_root_settings",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Location",
+                    "constraint_name": "Copy Location",
+                    "target_bone_name": "root",
+                    "do_mirror": False
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "c_root_rm",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation.002",
+                    "target_bone_name": "c_pos",
+                    "do_mirror": False
+            
+                },
+                {
+                    "constaint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation.001",
+                    "target_bone_name": "c_traj",
+                    "do_mirror": False
+            
+                },
+                {
+                    "constaint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation",
+                    "target_bone_name": "root",
+                    "do_mirror": False
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "hand.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Rotation",
+                    "constraint_name": "rotFK",
+                    "target_bone_name": "hand_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "root",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                    "target_bone_name": "c_root_master.x",
+                    "do_mirror": False
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "c_spine_rm",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation.002",
+                    "target_bone_name": "c_pos",
+                    "do_mirror": False
+                },
+                {
+                    "constaint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation.001",
+                    "target_bone_name": "c_traj",
+                    "do_mirror": False
+                },
+                {
+                    "constaint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation",
+                    "target_bone_name": "root",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "fix_shoulder.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                    "target_bone_name": "c_shoulder.l",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "fix_leg_rm.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Arm",
+                    "target_bone_name": "leg.l",
+                    "do_mirror": True
+            
+                },
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Root",
+                    "target_bone_name": "root",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "c_leg_rm.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Arm",
+                    "target_bone_name": "leg.l",
+                    "do_mirror": True
+            
+                },
+                {
+                    "constaint_type": "ChildOf",
+                    "constraint_name": "Child Of Root",
+                    "target_bone_name": "root",
+                    "do_mirror": True
+            
+                }
+            ]
+        },
+        {
+            "bone_name": "fix_leg_fk.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Copy Transforms (Old Connection)",
+                    "target_bone_name": "c_leg_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "toes_01.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Rotation",
+                    "constraint_name": "ik_rot",
+                    "target_bone_name": "fix_toes_ik.l",
+                    "do_mirror": True
+            
+                },
+                {
+                    "constaint_type": "Copy scale",
+                    "constraint_name": "ik_scale",
+                    "target_bone_name": "fix_toes_ik.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "fix_leg_fk.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Copy Transforms (Old Connection)",
+                    "target_bone_name": "c_leg_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "fix_thigh_fk.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Copy Transforms (Old Connection)",
+                    "target_bone_name": "c_thigh_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "c_arm_fk_2R.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Rotation",
+                    "constraint_name": "Influence Off",
+                    "target_bone_name": "arm_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "hand_fk.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                    "target_bone_name": "c_hand_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "forearm_fk.overwrite.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                    "target_bone_name": "c_forearm_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "fix_forearm_fk_connector.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Location",
+                    "constraint_name": "Copy Location",
+                    "target_bone_name": "arm_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "c_forearm_fk_2R.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Rotation",
+                    "constraint_name": "Influence Off",
+                    "target_bone_name": "forearm_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "fix_forearm_fk_2R.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Location",
+                    "constraint_name": "Copy Location",
+                    "target_bone_name": "arm_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "v_forearm_fk_2R.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Location",
+                    "constraint_name": "Copy Location <- Vererbung vom Oberarm <- bei FK Test",
+                    "target_bone_name": "arm_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "arm_fk.overwrite.l",
+            "constraints":
+            [
+                {
+                    "constaint_type": "Copy Transform",
+                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                    "target_bone_name": "c_arm_fk.l",
+                    "do_mirror": True
+            
+                }
+            ]
+            
+        },
+        {
+            "bone_name": "leg_ik_nostr.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Inverse Kinematic",
+                    "constraint_name": "IK",
+                    "target_bone_name": "fix_leg_pole.l",
+                    "do_mirror": True
+                }
+            ]
+        }
+    
     ]
 }
