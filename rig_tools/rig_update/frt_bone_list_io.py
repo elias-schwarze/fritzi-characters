@@ -52,3 +52,21 @@ class BoneList(object):
             self._bone_list["bone_list"] = self._default_bone_list["bone_list"]
             self.write_list(self._bone_list_path)
             return self._bone_list["bone_list"]
+
+    def get_constraint_update_list(self):
+        if "constraint_update_list" in self._bone_list:
+            return self._bone_list["constraint_update_list"]
+        
+        else:
+            self._bone_list["constraint_update_list"] = self._default_bone_list["constraint_update_list"]
+            self.write_list(self._bone_list_path)
+            return self._bone_list["constraint_update_list"]
+
+    def get_constraint_add_list(self):
+        if "constraint_add_list" in self._bone_list:
+            return self._bone_list["constraint_add_list"]
+        
+        else:
+            self._bone_list["constraint_add_list"] = self._default_bone_list["constraint_add_list"]
+            self.write_list(self._bone_list_path)
+            return self._bone_list["constraint_add_list"]

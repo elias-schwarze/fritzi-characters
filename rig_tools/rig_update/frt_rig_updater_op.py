@@ -18,7 +18,10 @@ class FRT_OT_RigUpdater_OP(bpy.types.Operator):
 
     def execute(self, context):
         wm = context.window_manager
-        bone_list = frt_bone_list_io.BoneList().get_bone_list()
+        bone_list_io = frt_bone_list_io.BoneList()
+        bone_list = bone_list_io.get_bone_list()
+        constraint_update_list = bone_list_io.get_constraint_update_list()
+        constraint_add_list = bone_list_io.get_constraint_add_list()
 
         bpy.ops.object.mode_set(mode='OBJECT')
         bpy.ops.object.select_all(action='DESELECT')
@@ -29,9 +32,11 @@ class FRT_OT_RigUpdater_OP(bpy.types.Operator):
         bpy.ops.object.mode_set(mode='EDIT')
 
         self.reparent_bones(wm.update_rig, bone_list)
+        
 
         bpy.ops.object.mode_set(mode='OBJECT')
         
+        self.update_constraints(constraint_update_list, wm.update_rig)
         return {'FINISHED'}
 
     def reparent_bones(self, armature, bone_list):
@@ -80,6 +85,66 @@ class FRT_OT_RigUpdater_OP(bpy.types.Operator):
         bone = armature.data.edit_bones[bone_name]
         bone.use_connect = False
         bone.parent = armature.data.edit_bones[parent_name]
+
+    def update_constraints(self, constraint_list, armature):
+        for entry in constraint_list:
+            #print("-----------------------------")
+            bone_name = entry["bone_name"]
+            #print("Bone: " + bone_name)
+            pose_bone = armature.pose.bones[bone_name]
+
+            if entry["constraints"] == "ALL_INVERSE":
+                for constraint in pose_bone.constraints:
+                    if constraint.type == 'CHILD_OF':
+                        constraint.set_inverse_pending = True
+                continue
+
+            for constraint_data in entry["constraints"]:
+                name = constraint_data["constraint_name"]
+                constraint = pose_bone.constraints[name]
+                type = constraint_data["constraint_type"]
+                
+                self.update_constraint(constraint, type, armature, constraint_data["target_bone_name"])
+
+                if constraint_data["do_mirror"]:
+                    mirror_bone = armature.pose.bones[bone_name.replace(".l", ".r")]
+                    constraint = mirror_bone.constraints[name]
+                    mirror_target = constraint_data["target_bone_name"].replace(".l", ".r")
+                    self.update_constraint(constraint, type, armature, mirror_target)
+
+    def update_constraint(self, constraint, type, armature, target_bone):
+        #print("Constraint: " + constraint.name)
+        #print("Type: " + type)
+        #print("Target: " + target_bone)
+        if type == 'IK':
+            constraint.pole_target = armature
+            constraint.pole_subtarget = target_bone
+        else:
+            constraint.target = armature
+            constraint.subtarget = target_bone
+        if type == 'CHILD_OF':
+            constraint.set_inverse_pending = True
+
+    def add_constraints(self, armature, constraint_list):
+        for entry in constraint_list:
+            bone_name = entry["bone_name"]
+            mirror_bone_name = bone_name.replace(".l", ".r")
+            pose_bone = armature.pose.bones[bone_name]
+            mirror_bone = armature.pose.bones[mirror_bone_name]
+
+            for constraint_data in entry["constraints"]:
+                self.add_constraint(armature, constraint_data, pose_bone, mirror_bone)
+
+    def add_constraint(self, armature, constraint_data, pose_bone, mirror_bone):
+        type = constraint_data["constraint_type"]
+        constraint = pose_bone.constraints.new(type)
+        if type in ['COPY_TRANSFORMS']:
+            target = armature
+            subtarget = constraint_data["bone"]
+            mix = constraint_data["mix"]
+            target_space = constraint_data["target_space"]
+            owner_space = constraint_data["owner_space"]
+            do_mirror = constraint_data["do_mirror"]
 
 def register():
     bpy.utils.register_class(FRT_OT_RigUpdater_OP)

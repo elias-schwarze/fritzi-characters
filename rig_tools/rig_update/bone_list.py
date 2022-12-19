@@ -399,7 +399,7 @@ bone_list = {
             "do_mirror": False
         },
         {
-            "new_parent_name": "spine_03",
+            "new_parent_name": "spine_03.x",
             "children_list": [
                 "fix_spine_04.x"
             ],
@@ -432,7 +432,7 @@ bone_list = {
             "do_mirror": False
         },
         {
-            "new_parent_name": "spine_02",
+            "new_parent_name": "spine_02.x",
             "children_list": [
                 "fix_spine_03.x"
             ],
@@ -453,39 +453,18 @@ bone_list = {
     "constraint_update_list":
     [
         {
-            "bone_name": "Bone Name",
-            "constraints":
-            [
-                {
-                    "constaint_type": "Type",
-                    "constraint_name": "Constraint Name",
-                    "target_bone_name": "Target Bone Name",
-                    "do_mirror": bool
-            
-                },
-                {
-                    "constaint_type": "Type",
-                    "constraint_name": "Constraint Name",
-                    "target_bone_name": "Target Bone Name",
-                    "do_mirror": bool
-            
-                }
-            ]
-            
-        },
-        {
             "bone_name": "fix_leg_rm.l",
             "constraints":
             [
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Arm",
                     "target_bone_name": "leg.l",
                     "do_mirror": True
             
                 },
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Root",
                     "target_bone_name": "root",
                     "do_mirror": True
@@ -498,14 +477,14 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Arm",
                     "target_bone_name": "leg.l",
                     "do_mirror": True
             
                 },
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Root",
                     "target_bone_name": "root",
                     "do_mirror": True
@@ -518,14 +497,14 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Arm",
                     "target_bone_name": "forearm.l",
                     "do_mirror": True
             
                 },
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Root",
                     "target_bone_name": "root",
                     "do_mirror": True
@@ -538,14 +517,14 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Arm",
                     "target_bone_name": "forearm.l",
                     "do_mirror": True
             
                 },
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Root",
                     "target_bone_name": "root",
                     "do_mirror": True
@@ -558,7 +537,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Constraining Overwrite",
                     "target_bone_name": "c_foot_ik.l",
                     "do_mirror": True
@@ -571,7 +550,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms (Old Connection)",
                     "target_bone_name": "c_foot_ik.l",
                     "do_mirror": True
@@ -584,7 +563,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms (Old Connection)",
                     "target_bone_name": "c_toes_ik.l",
                     "do_mirror": True
@@ -597,7 +576,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of_local",
                     "target_bone_name": "c_foot_ik.l",
                     "do_mirror": True
@@ -610,7 +589,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms (Old Connection)",
                     "target_bone_name": "c_leg_pole.l",
                     "do_mirror": True
@@ -633,7 +612,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of",
                     "target_bone_name": "head.x",
                     "do_mirror": False
@@ -646,7 +625,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Location",
+                    "constraint_type": "COPY_LOCATION",
                     "constraint_name": "Copy Location",
                     "target_bone_name": "root",
                     "do_mirror": False
@@ -659,21 +638,21 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation.002",
                     "target_bone_name": "c_pos",
                     "do_mirror": False
             
                 },
                 {
-                    "constaint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation.001",
                     "target_bone_name": "c_traj",
                     "do_mirror": False
             
                 },
                 {
-                    "constaint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation",
                     "target_bone_name": "root",
                     "do_mirror": False
@@ -686,7 +665,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "rotFK",
                     "target_bone_name": "hand_fk.l",
                     "do_mirror": True
@@ -699,7 +678,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms Overwrite (Old Connection)",
                     "target_bone_name": "c_root_master.x",
                     "do_mirror": False
@@ -712,19 +691,19 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation.002",
                     "target_bone_name": "c_pos",
                     "do_mirror": False
                 },
                 {
-                    "constaint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation.001",
                     "target_bone_name": "c_traj",
                     "do_mirror": False
                 },
                 {
-                    "constaint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation",
                     "target_bone_name": "root",
                     "do_mirror": False
@@ -736,7 +715,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms Overwrite (Old Connection)",
                     "target_bone_name": "c_shoulder.l",
                     "do_mirror": True
@@ -748,14 +727,14 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Arm",
                     "target_bone_name": "leg.l",
                     "do_mirror": True
             
                 },
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Root",
                     "target_bone_name": "root",
                     "do_mirror": True
@@ -768,14 +747,14 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Arm",
                     "target_bone_name": "leg.l",
                     "do_mirror": True
             
                 },
                 {
-                    "constaint_type": "ChildOf",
+                    "constraint_type": "CHILD_OF",
                     "constraint_name": "Child Of Root",
                     "target_bone_name": "root",
                     "do_mirror": True
@@ -788,7 +767,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms (Old Connection)",
                     "target_bone_name": "c_leg_fk.l",
                     "do_mirror": True
@@ -802,14 +781,14 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "ik_rot",
                     "target_bone_name": "fix_toes_ik.l",
                     "do_mirror": True
             
                 },
                 {
-                    "constaint_type": "Copy scale",
+                    "constraint_type": "COPY_SCALE",
                     "constraint_name": "ik_scale",
                     "target_bone_name": "fix_toes_ik.l",
                     "do_mirror": True
@@ -823,7 +802,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms (Old Connection)",
                     "target_bone_name": "c_leg_fk.l",
                     "do_mirror": True
@@ -837,7 +816,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms (Old Connection)",
                     "target_bone_name": "c_thigh_fk.l",
                     "do_mirror": True
@@ -851,7 +830,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Influence Off",
                     "target_bone_name": "arm_fk.l",
                     "do_mirror": True
@@ -865,7 +844,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms Overwrite (Old Connection)",
                     "target_bone_name": "c_hand_fk.l",
                     "do_mirror": True
@@ -879,7 +858,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms Overwrite (Old Connection)",
                     "target_bone_name": "c_forearm_fk.l",
                     "do_mirror": True
@@ -893,7 +872,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Location",
+                    "constraint_type": "COPY_LOCATION",
                     "constraint_name": "Copy Location",
                     "target_bone_name": "arm_fk.l",
                     "do_mirror": True
@@ -907,7 +886,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Influence Off",
                     "target_bone_name": "forearm_fk.l",
                     "do_mirror": True
@@ -921,7 +900,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Location",
+                    "constraint_type": "COPY_LOCATION",
                     "constraint_name": "Copy Location",
                     "target_bone_name": "arm_fk.l",
                     "do_mirror": True
@@ -935,7 +914,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Location",
+                    "constraint_type": "COPY_LOCATION",
                     "constraint_name": "Copy Location <- Vererbung vom Oberarm <- bei FK Test",
                     "target_bone_name": "arm_fk.l",
                     "do_mirror": True
@@ -949,7 +928,7 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constaint_type": "Copy Transform",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms Overwrite (Old Connection)",
                     "target_bone_name": "c_arm_fk.l",
                     "do_mirror": True
@@ -963,9 +942,902 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Inverse Kinematic",
+                    "constraint_type": "IK",
                     "constraint_name": "IK",
                     "target_bone_name": "fix_leg_pole.l",
+                    "do_mirror": True
+                }
+            ]
+        }
+    
+    ],
+    "constraint_add_list":
+    [
+        {
+            "bone_name": "c_head.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "COPY_TRANSFORMS",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_head_2.x",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "COPY_TRANSFORMS",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_head_2.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "c_head.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_head_2.x",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_head_2.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "c_head_2.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_head.x",
+                    "mix": "After Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_head.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "head.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms B (Correction)",
+                    "target": "xxx_rig",
+                    "bone": "v_head_2.x",
+                    "mix": "Before (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms A (Mocap)",
+                    "target": "xxx_rig",
+                    "bone": "v_head.x",
+                    "mix": "After Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                    "target": "xxx_rig",
+                    "bone": "c_head.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "c_neck.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_neck_2.x",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_neck.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "c_neck_2.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_neck.x",
+                    "mix": "Mix: After (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "NAME",
+                    # Name des Constraints fehlt
+                    "target": "xxx_rig",
+                    "bone": "v_neck_2.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "neck.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms B (Correction)",
+                    "target": "xxx_rig",
+                    "bone": "v_neck_2.x",
+                    "mix": "Before (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms A (Mocap)",
+                    "target": "xxx_rig",
+                    "bone": "v_neck.x",
+                    "mix": "After Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                    "target": "xxx_rig",
+                    "bone": "c_neck.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "spine_01.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms B (Correction)",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_01_2.x",
+                    "mix": "Before (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms A (Mocap)",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_01.x",
+                    "mix": "After Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                    "target": "xxx_rig",
+                    "bone": "c_spine_01.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "spine_02.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms B (Correction)",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_02_2.x",
+                    "mix": "Before (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms A (Mocap)",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_02.x",
+                    "mix": "After Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                    "target": "xxx_rig",
+                    "bone": "c_spine_02.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "spine_03.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms B (Correction)",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_03_2.x",
+                    "mix": "Before (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms A (Mocap)",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_03.x",
+                    "mix": "After Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                    "target": "xxx_rig",
+                    "bone": "c_spine_03.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "spine_04.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms B (Correction)",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_04_2.x",
+                    "mix": "Before (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms A (Mocap)",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_04.x",
+                    "mix": "After Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                    "target": "xxx_rig",
+                    "bone": "c_spine_04.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "c_arm_fk.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Location",
+                    "constraint_name": "Copy Location from Correction if \"Locking_M\" ≥ 0",
+                    "target": "xxx_rig",
+                    "bone": "arm_fk.l",
+                    "mix": None,
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation from Correction if \"Locking_M\" ≥ 0",
+                    "target": "xxx_rig",
+                    "bone": "arm_fk.l",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Rotation",
+                    "constraint_name": "Copy Location from Mocap if \"Locking_M\" < 0",
+                    "target": "xxx_rig",
+                    "bone": "fix_shoulder.l",
+                    "mix": None,
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation from Mocap if \"Locking_M\" < 0",
+                    "target": "xxx_rig",
+                    "bone": "fix_shoulder.l",
+                    "mix": "Before Original",
+                    "target_space": "Local Space with Parent",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "arm_fk.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation O1",
+                    "target": "xxx_rig",
+                    "bone": "v_arm_fk_2R.l",
+                    "mix": "After Original",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation O2",
+                    "target": "xxx_rig",
+                    "bone": "v_arm_fk_2P.l",
+                    "mix": "After Original",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation O2 (Fake-IK) muss noch",
+                    "target": "xxx_rig",
+                    "bone": "v_arm_fk_2P.limited.l",
+                    "mix": "After Original",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "c_forearm_fk.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Location",
+                    "constraint_name": "Copy Location from Correction if \"Locking_M\" ≥ 0",
+                    "target": "xxx_rig",
+                    "bone": "forearm_fk.l",
+                    "mix": None,
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation from Correction if \"Locking_M\" ≥ 0",
+                    "target": "xxx_rig",
+                    "bone": "forearm_fk.l",
+                    "mix": "Replace",
+                    "target_space": "Local with Parent",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Rotation",
+                    "constraint_name": "Copy Location from Mocap if \"Locking_M\" < 0",
+                    "target": "xxx_rig",
+                    "bone": "fix_arm_fk.l",
+                    "mix": None,
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation from Mocap if \"Locking_M\" < 0",
+                    "target": "xxx_rig",
+                    "bone": "fix_arm_fk.l",
+                    "mix": "Before Original",
+                    "target_space": "Local with Parent",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "forearm_fk.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Location",
+                    "constraint_name": "Copy Location <- Vererbung vom Oberarm",
+                    "target": "xxx_rig",
+                    "bone": "arm_fk.l",
+                    "head_tail": "1.000",
+                    # head_tail ist neu dazugekommen
+                    "mix": None,
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation U_R",
+                    "target": "xxx_rig",
+                    "bone": "v_forearm_fk_2R.l",
+                    "mix": "After Original",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Rotation",
+                    "constraint_name": "Copy Rotation U_R",
+                    "target": "xxx_rig",
+                    "bone": "v_forearm_fk_2R.l",
+                    "mix": "After Original",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Damped Track",
+                    "constraint_name": "Damped Track <- bei Free Hand-Pole only!",
+                    "target": "xxx_rig",
+                    "bone": "c_forearm_fk_2P.l",
+                    "mix": None,
+                    "track_axis": "Y",
+                    # track_axis ist neu dazu gekommen
+                    "target_space": None,
+                    "owner_space": None,
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "c_hand_fk.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_hand_fk_2.l",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_hand_fk_2.l",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "c_hand_fk_2.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_hand_fk.l",
+                    "mix": "After Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_hand_fk.l",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "c_shoulder.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_shoulder-2.l",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_shoulder-2.l",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "c_spine_04.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_04_2.x",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_04_2.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "c_spine_03.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_03_2.x",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_03_2.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "c_spine_02.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_02_2.x",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_02_2.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "c_spine_01.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_01_2.x",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_spine_01_2.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "c_root_master.x",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Copy Transforms",
+                    "target": "xxx_rig",
+                    "bone": "v_root_master_2.x",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": False
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_root_master_2.x",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": False
+                }
+            ]
+        },
+        {
+            "bone_name": "c_leg_pole.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Value (CleanUp)",
+                    "target": "xxx_rig",
+                    "bone": "v_leg_pole_2.l",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_leg_pole_2.l",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "c_foot_ik.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Value (CleanUp)",
+                    "target": "xxx_rig",
+                    "bone": "v_foot_ik_2.l",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_foot_ik_2.l",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "c_toes_ik.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Value (CleanUp)",
+                    "target": "xxx_rig",
+                    "bone": "v_toes_ik_2.l",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_toes_ik_2.l",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "c_thigh_fk.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Value (CleanUp)",
+                    "target": "xxx_rig",
+                    "bone": "v_thigh_fk_2.l",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_thigh_fk_2.l",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "c_leg_fk.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Value (CleanUp)",
+                    "target": "xxx_rig",
+                    "bone": "v_leg_fk_2.l",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_leg_fk_2.l",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
+                    "do_mirror": True
+                }
+            ]
+        },
+        {
+            "bone_name": "c_foot_fk.l",
+            "constraints":
+            [
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Value (CleanUp)",
+                    "target": "xxx_rig",
+                    "bone": "v_foot_fk_2.l",
+                    "mix": "Before Original (Split Channels)",
+                    "target_space": "Local Space",
+                    "owner_space": "Local Space",
+                    "do_mirror": True
+                },
+                {
+                    "constraint_type": "Copy Transforms",
+                    "constraint_name": "Influence Off",
+                    "target": "xxx_rig",
+                    "bone": "v_foot_fk_2.l",
+                    "mix": "Replace",
+                    "target_space": "World Space",
+                    "owner_space": "World Space",
                     "do_mirror": True
                 }
             ]
