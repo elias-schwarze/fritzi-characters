@@ -962,9 +962,9 @@ bone_list = {
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_head_2.x",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
@@ -972,9 +972,9 @@ bone_list = {
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_head_2.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -984,23 +984,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_head_2.x",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_head_2.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1010,23 +1010,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_head.x",
-                    "mix": "After Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_head.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1036,33 +1036,33 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms B (Correction)",
                     "target": "xxx_rig",
                     "bone": "v_head_2.x",
-                    "mix": "Before (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms A (Mocap)",
                     "target": "xxx_rig",
                     "bone": "v_head.x",
-                    "mix": "After Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms Overwrite (Old Connection)",
                     "target": "xxx_rig",
                     "bone": "c_head.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1072,23 +1072,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_neck_2.x",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_neck.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1098,24 +1098,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_neck.x",
-                    "mix": "Mix: After (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
-                    "constraint_name": "NAME",
-                    # Name des Constraints fehlt
+                    "constraint_type": "COPY_TRANSFORMS",
+                    "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_neck_2.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1125,33 +1124,33 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms B (Correction)",
                     "target": "xxx_rig",
                     "bone": "v_neck_2.x",
-                    "mix": "Before (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms A (Mocap)",
                     "target": "xxx_rig",
                     "bone": "v_neck.x",
-                    "mix": "After Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms Overwrite (Old Connection)",
                     "target": "xxx_rig",
                     "bone": "c_neck.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1161,33 +1160,33 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms B (Correction)",
                     "target": "xxx_rig",
                     "bone": "v_spine_01_2.x",
-                    "mix": "Before (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms A (Mocap)",
                     "target": "xxx_rig",
                     "bone": "v_spine_01.x",
-                    "mix": "After Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms Overwrite (Old Connection)",
                     "target": "xxx_rig",
                     "bone": "c_spine_01.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1197,33 +1196,33 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms B (Correction)",
                     "target": "xxx_rig",
                     "bone": "v_spine_02_2.x",
-                    "mix": "Before (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms A (Mocap)",
                     "target": "xxx_rig",
                     "bone": "v_spine_02.x",
-                    "mix": "After Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms Overwrite (Old Connection)",
                     "target": "xxx_rig",
                     "bone": "c_spine_02.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1233,33 +1232,33 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms B (Correction)",
                     "target": "xxx_rig",
                     "bone": "v_spine_03_2.x",
-                    "mix": "Before (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms A (Mocap)",
                     "target": "xxx_rig",
                     "bone": "v_spine_03.x",
-                    "mix": "After Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms Overwrite (Old Connection)",
                     "target": "xxx_rig",
                     "bone": "c_spine_03.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1269,33 +1268,33 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms B (Correction)",
                     "target": "xxx_rig",
                     "bone": "v_spine_04_2.x",
-                    "mix": "Before (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms A (Mocap)",
                     "target": "xxx_rig",
                     "bone": "v_spine_04.x",
-                    "mix": "After Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms Overwrite (Old Connection)",
                     "target": "xxx_rig",
                     "bone": "c_spine_04.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1305,43 +1304,43 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Location",
+                    "constraint_type": "COPY_LOCATION",
                     "constraint_name": "Copy Location from Correction if \"Locking_M\" ≥ 0",
                     "target": "xxx_rig",
                     "bone": "arm_fk.l",
                     "mix": None,
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation from Correction if \"Locking_M\" ≥ 0",
                     "target": "xxx_rig",
                     "bone": "arm_fk.l",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Rotation",
+                    "constraint_type": "COPY_LOCATION",
                     "constraint_name": "Copy Location from Mocap if \"Locking_M\" < 0",
                     "target": "xxx_rig",
                     "bone": "fix_shoulder.l",
                     "mix": None,
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation from Mocap if \"Locking_M\" < 0",
                     "target": "xxx_rig",
                     "bone": "fix_shoulder.l",
-                    "mix": "Before Original",
-                    "target_space": "Local Space with Parent",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE",
+                    "target_space": "LOCAL_WITH_PARENT",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 }
             ]
@@ -1351,33 +1350,33 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation O1",
                     "target": "xxx_rig",
                     "bone": "v_arm_fk_2R.l",
-                    "mix": "After Original",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation O2",
                     "target": "xxx_rig",
                     "bone": "v_arm_fk_2P.l",
-                    "mix": "After Original",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation O2 (Fake-IK) muss noch",
                     "target": "xxx_rig",
                     "bone": "v_arm_fk_2P.limited.l",
-                    "mix": "After Original",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 }
             ]
@@ -1387,43 +1386,43 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Location",
+                    "constraint_type": "COPY_LOCATION",
                     "constraint_name": "Copy Location from Correction if \"Locking_M\" ≥ 0",
                     "target": "xxx_rig",
                     "bone": "forearm_fk.l",
                     "mix": None,
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation from Correction if \"Locking_M\" ≥ 0",
                     "target": "xxx_rig",
                     "bone": "forearm_fk.l",
-                    "mix": "Replace",
-                    "target_space": "Local with Parent",
-                    "owner_space": "Local Space",
+                    "mix": "REPLACE",
+                    "target_space": "LOCAL_WITH_PARENT",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Rotation",
+                    "constraint_type": "COPY_LOCATION",
                     "constraint_name": "Copy Location from Mocap if \"Locking_M\" < 0",
                     "target": "xxx_rig",
                     "bone": "fix_arm_fk.l",
                     "mix": None,
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation from Mocap if \"Locking_M\" < 0",
                     "target": "xxx_rig",
                     "bone": "fix_arm_fk.l",
-                    "mix": "Before Original",
-                    "target_space": "Local with Parent",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE",
+                    "target_space": "LOCAL_WITH_PARENT",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 }
             ]
@@ -1433,44 +1432,44 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Location",
+                    "constraint_type": "COPY_LOCATION",
                     "constraint_name": "Copy Location <- Vererbung vom Oberarm",
                     "target": "xxx_rig",
                     "bone": "arm_fk.l",
-                    "head_tail": "1.000",
+                    "head_tail": 1.0,
                     # head_tail ist neu dazugekommen
                     "mix": None,
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Rotation",
+                    "constraint_type": "COPY_ROTATION",
                     "constraint_name": "Copy Rotation U_R",
                     "target": "xxx_rig",
                     "bone": "v_forearm_fk_2R.l",
-                    "mix": "After Original",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Rotation",
-                    "constraint_name": "Copy Rotation U_R",
+                    "constraint_type": "COPY_ROTATION",
+                    "constraint_name": "Copy Rotation U_P",
                     "target": "xxx_rig",
-                    "bone": "v_forearm_fk_2R.l",
-                    "mix": "After Original",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "bone": "v_forearm_fk_2P.l",
+                    "mix": "AFTER",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Damped Track",
+                    "constraint_type": "DAMPED_TRACK",
                     "constraint_name": "Damped Track <- bei Free Hand-Pole only!",
                     "target": "xxx_rig",
                     "bone": "c_forearm_fk_2P.l",
                     "mix": None,
-                    "track_axis": "Y",
+                    "track_axis": "TRACK_Y",
                     # track_axis ist neu dazu gekommen
                     "target_space": None,
                     "owner_space": None,
@@ -1483,23 +1482,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_hand_fk_2.l",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_hand_fk_2.l",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 }
             ]
@@ -1509,23 +1508,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_hand_fk.l",
-                    "mix": "After Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "AFTER_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_hand_fk.l",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 }
             ]
@@ -1535,23 +1534,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_shoulder-2.l",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_shoulder-2.l",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 }
             ]
@@ -1561,23 +1560,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_spine_04_2.x",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_spine_04_2.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1587,23 +1586,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_spine_03_2.x",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_spine_03_2.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1613,23 +1612,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_spine_02_2.x",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_spine_02_2.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1639,23 +1638,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_spine_01_2.x",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_spine_01_2.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1665,23 +1664,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Copy Transforms",
                     "target": "xxx_rig",
                     "bone": "v_root_master_2.x",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": False
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_root_master_2.x",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": False
                 }
             ]
@@ -1691,23 +1690,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Value (CleanUp)",
                     "target": "xxx_rig",
                     "bone": "v_leg_pole_2.l",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_leg_pole_2.l",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 }
             ]
@@ -1717,23 +1716,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Value (CleanUp)",
                     "target": "xxx_rig",
                     "bone": "v_foot_ik_2.l",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_foot_ik_2.l",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 }
             ]
@@ -1743,23 +1742,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Value (CleanUp)",
                     "target": "xxx_rig",
                     "bone": "v_toes_ik_2.l",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_toes_ik_2.l",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 }
             ]
@@ -1769,23 +1768,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Value (CleanUp)",
                     "target": "xxx_rig",
                     "bone": "v_thigh_fk_2.l",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_thigh_fk_2.l",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 }
             ]
@@ -1795,23 +1794,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Value (CleanUp)",
                     "target": "xxx_rig",
                     "bone": "v_leg_fk_2.l",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_leg_fk_2.l",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 }
             ]
@@ -1821,23 +1820,23 @@ bone_list = {
             "constraints":
             [
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Value (CleanUp)",
                     "target": "xxx_rig",
                     "bone": "v_foot_fk_2.l",
-                    "mix": "Before Original (Split Channels)",
-                    "target_space": "Local Space",
-                    "owner_space": "Local Space",
+                    "mix": "BEFORE_SPLIT",
+                    "target_space": "LOCAL",
+                    "owner_space": "LOCAL",
                     "do_mirror": True
                 },
                 {
-                    "constraint_type": "Copy Transforms",
+                    "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
                     "bone": "v_foot_fk_2.l",
-                    "mix": "Replace",
-                    "target_space": "World Space",
-                    "owner_space": "World Space",
+                    "mix": "REPLACE",
+                    "target_space": "WORLD",
+                    "owner_space": "WORLD",
                     "do_mirror": True
                 }
             ]

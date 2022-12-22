@@ -1,5 +1,6 @@
 import bpy
 from . import frt_bone_list_io
+from ...helper_functions import update_dependencies_all_drivers
 
 class FRT_OT_RigUpdater_OP(bpy.types.Operator):
     bl_idname = "object.update_fritzi_rig"
@@ -37,6 +38,10 @@ class FRT_OT_RigUpdater_OP(bpy.types.Operator):
         bpy.ops.object.mode_set(mode='OBJECT')
         
         self.update_constraints(constraint_update_list, wm.update_rig)
+
+        self.add_constraints(wm.update_rig, constraint_add_list)
+
+        update_dependencies_all_drivers()
         return {'FINISHED'}
 
     def reparent_bones(self, armature, bone_list):
@@ -138,13 +143,62 @@ class FRT_OT_RigUpdater_OP(bpy.types.Operator):
     def add_constraint(self, armature, constraint_data, pose_bone, mirror_bone):
         type = constraint_data["constraint_type"]
         constraint = pose_bone.constraints.new(type)
-        if type in ['COPY_TRANSFORMS']:
-            target = armature
-            subtarget = constraint_data["bone"]
+        
+        constraint_name = constraint_data["constraint_name"]
+        target = armature
+        subtarget = constraint_data["bone"]
+        do_mirror = constraint_data["do_mirror"]
+        target_space = constraint_data["target_space"]
+        owner_space = constraint_data["owner_space"]
+
+        constraint.name = constraint_name
+        constraint.target = target
+        constraint.subtarget = subtarget
+
+
+        if do_mirror:
+            mirror_constraint = mirror_bone.constraints.new(type)
+            mirror_name = constraint_name.replace(".l", ".r")
+            mirror_subtarget = subtarget.replace(".l", ".r")
+
+            mirror_constraint.name = mirror_name
+            mirror_constraint.target = target
+            mirror_constraint.subtarget = mirror_subtarget
+        
+        if type in ['COPY_TRANSFORMS', 'COPY_ROTATION']:
+            
             mix = constraint_data["mix"]
-            target_space = constraint_data["target_space"]
-            owner_space = constraint_data["owner_space"]
-            do_mirror = constraint_data["do_mirror"]
+            
+            
+            constraint.mix_mode = mix
+            constraint.target_space = target_space
+            constraint.owner_space = owner_space
+
+            if do_mirror:
+                
+                mirror_constraint.mix_mode = mix
+                mirror_constraint.target_space = target_space
+                mirror_constraint.owner_space = owner_space
+
+        if type == 'COPY_LOCATION':
+            if "head_tail" in constraint_data:
+                constraint.head_tail = constraint_data["head_tail"]
+            constraint.target_space = target_space
+            constraint.owner_space = owner_space
+
+            if do_mirror:
+                if "head_tail" in constraint_data:
+                    mirror_constraint.head_tail = constraint_data["head_tail"]
+                mirror_constraint.target_space = target_space
+                mirror_constraint.owner_space = owner_space
+
+        if type == 'DAMPED_TRACK':
+            track_axis = constraint_data["track_axis"]
+            constraint.track_axis = track_axis
+
+            if do_mirror:
+                mirror_constraint.track_axis = track_axis
+
 
 def register():
     bpy.utils.register_class(FRT_OT_RigUpdater_OP)
