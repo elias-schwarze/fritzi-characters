@@ -980,32 +980,6 @@ bone_list = {
             ]
         },
         {
-            "bone_name": "c_head.x",
-            "constraints":
-            [
-                {
-                    "constraint_type": "COPY_TRANSFORMS",
-                    "constraint_name": "Copy Transforms",
-                    "target": "xxx_rig",
-                    "bone": "v_head_2.x",
-                    "mix": "BEFORE_SPLIT",
-                    "target_space": "LOCAL",
-                    "owner_space": "LOCAL",
-                    "do_mirror": False
-                },
-                {
-                    "constraint_type": "COPY_TRANSFORMS",
-                    "constraint_name": "Influence Off",
-                    "target": "xxx_rig",
-                    "bone": "v_head_2.x",
-                    "mix": "REPLACE",
-                    "target_space": "WORLD",
-                    "owner_space": "WORLD",
-                    "do_mirror": False
-                }
-            ]
-        },
-        {
             "bone_name": "c_head_2.x",
             "constraints":
             [
@@ -1054,17 +1028,18 @@ bone_list = {
                     "target_space": "LOCAL",
                     "owner_space": "LOCAL",
                     "do_mirror": False
-                },
-                {
-                    "constraint_type": "COPY_TRANSFORMS",
-                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
-                    "target": "xxx_rig",
-                    "bone": "c_head.x",
-                    "mix": "REPLACE",
-                    "target_space": "WORLD",
-                    "owner_space": "WORLD",
-                    "do_mirror": False
                 }
+                #,
+                #{
+                #    "constraint_type": "COPY_TRANSFORMS",
+                #    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                #    "target": "xxx_rig",
+                #    "bone": "c_head.x",
+                #    "mix": "REPLACE",
+                #    "target_space": "WORLD",
+                #    "owner_space": "WORLD",
+                #    "do_mirror": False
+                #}
             ]
         },
         {
@@ -1085,7 +1060,7 @@ bone_list = {
                     "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
-                    "bone": "v_neck.x",
+                    "bone": "v_neck_2.x",
                     "mix": "REPLACE",
                     "target_space": "WORLD",
                     "owner_space": "WORLD",
@@ -1111,7 +1086,7 @@ bone_list = {
                     "constraint_type": "COPY_TRANSFORMS",
                     "constraint_name": "Influence Off",
                     "target": "xxx_rig",
-                    "bone": "v_neck_2.x",
+                    "bone": "v_neck.x",
                     "mix": "REPLACE",
                     "target_space": "WORLD",
                     "owner_space": "WORLD",
@@ -1142,17 +1117,18 @@ bone_list = {
                     "target_space": "LOCAL",
                     "owner_space": "LOCAL",
                     "do_mirror": False
-                },
-                {
-                    "constraint_type": "COPY_TRANSFORMS",
-                    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
-                    "target": "xxx_rig",
-                    "bone": "c_neck.x",
-                    "mix": "REPLACE",
-                    "target_space": "WORLD",
-                    "owner_space": "WORLD",
-                    "do_mirror": False
                 }
+                #,
+                #{
+                #    "constraint_type": "COPY_TRANSFORMS",
+                #    "constraint_name": "Copy Transforms Overwrite (Old Connection)",
+                #    "target": "xxx_rig",
+                #    "bone": "c_neck.x",
+                #    "mix": "REPLACE",
+                #    "target_space": "WORLD",
+                #    "owner_space": "WORLD",
+                #    "do_mirror": False
+                #}
             ]
         },
         {
