@@ -488,6 +488,7 @@ class FDG_PT_PreviewOutlines_pnl(bpy.types.Panel):
         layout.operator("fdg.activate_booleans")
         layout.operator("fdg.deactivate_booleans")
         layout.operator("fdg.prepare_scene")
+        layout.operator("fdg.conform_visibilities")
         layout.operator("fdg.save_line_file")
         layout.separator()
         

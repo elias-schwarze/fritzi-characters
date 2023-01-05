@@ -28,6 +28,7 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
             print(collection)
             print(item)
             self.prepare_collection_for_render(collection, item)
+        bpy.ops.fdg.conform_visibilities()
         self.prepare_scene_for_render(context)
         filepath = bpy.data.filepath
         if "_line.blend" in filepath:
@@ -56,6 +57,7 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
 
         gp_layer = gp_data.layers.new(name="gp_layer", set_active = True)
         gp_layer.frames.new(0)
+        gp_layer.use_lights = False
 
         if "gp_mat" in bpy.data.materials.keys():
             gp_mat = bpy.data.materials["gp_mat"]
@@ -259,6 +261,7 @@ class FDG_OT_CreatePreviewLines_OP(Operator):
 
         gp_layer = gp_data.layers.new(name="gp_layer", set_active = True)
         gp_layer.frames.new(0)
+        gp_layer.use_lights = False
 
         if "gp_mat" in bpy.data.materials.keys():
             gp_mat = bpy.data.materials["gp_mat"]
@@ -384,6 +387,35 @@ class FDG_OT_AddCollections_Op(Operator):
                     area.tag_redraw()
         return {'FINISHED'}
 
+class FDG_OT_ConformViewportRenderVisibilities_OP(Operator):
+    bl_idname = "fdg.conform_visibilities"
+    bl_label = "Conform Visibilities"
+    bl_description = "Objects that are Hidden or disabled in the Viewport will get disabled in the Render and Objects that are visible in the Viewport will be made visible in the Render"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        wm = context.window_manager
+        scene = context.scene
+        for obj in scene.objects:
+            if obj.hide_viewport or obj.hide_get():
+                obj.hide_render = True
+            else:
+                obj.hide_render = False
+
+        for collection in scene.collection.children_recursive:
+            layer_children_recursive = [col for col in self.traverse_tree(context.view_layer.layer_collection)]
+            view_layer_collection = next((col for col in layer_children_recursive if col.name == collection.name), None)
+            if collection.hide_viewport or view_layer_collection.hide_viewport:
+                collection.hide_render = True
+            else:
+                collection.hide_render = False
+
+        return {'FINISHED'}
+
+    def traverse_tree(self, t):
+        yield t
+        for child in t.children:
+            yield from self.traverse_tree(child)
 
 def register():
     bpy.utils.register_class(FDG_OT_GeneratePreviewOutlines_Op)
@@ -396,8 +428,10 @@ def register():
     bpy.utils.register_class(FDG_OT_DeactivateBooleans_OP)
     bpy.utils.register_class(FDG_OT_PrepareScene_OP)
     bpy.utils.register_class(FDG_OT_SaveLineFile_OP)
+    bpy.utils.register_class(FDG_OT_ConformViewportRenderVisibilities_OP)
 
 def unregister():
+    bpy.utils.unregister_class(FDG_OT_ConformViewportRenderVisibilities_OP)
     bpy.utils.unregister_class(FDG_OT_AddCollections_Op)
     bpy.utils.unregister_class(FDG_OT_RemoveCollection_Op)
     bpy.utils.unregister_class(FDG_OT_AddCollection_Op)
