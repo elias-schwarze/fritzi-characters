@@ -1,4 +1,5 @@
 import bpy
+import math
 from . import frt_bone_list_io
 from ...helper_functions import update_dependencies_all_drivers
 
@@ -23,6 +24,7 @@ class FRT_OT_RigUpdater_OP(bpy.types.Operator):
         bone_list = bone_list_io.get_bone_list()
         constraint_update_list = bone_list_io.get_constraint_update_list()
         constraint_add_list = bone_list_io.get_constraint_add_list()
+        bone_vis_list = bone_list_io.get_bone_visualization_list()
 
         bpy.ops.object.mode_set(mode='OBJECT')
         bpy.ops.object.select_all(action='DESELECT')
@@ -40,6 +42,8 @@ class FRT_OT_RigUpdater_OP(bpy.types.Operator):
         self.update_constraints(constraint_update_list, wm.update_rig)
 
         self.add_constraints(wm.update_rig, constraint_add_list)
+
+        self.update_bone_visualizations(wm.update_rig, bone_vis_list)
 
         update_dependencies_all_drivers()
         return {'FINISHED'}
@@ -198,6 +202,83 @@ class FRT_OT_RigUpdater_OP(bpy.types.Operator):
 
             if do_mirror:
                 mirror_constraint.track_axis = track_axis
+    
+    def update_bone_visualizations(self, armature, bone_visualization_list):
+
+        for entry in bone_visualization_list:
+            self.update_bone_vis(armature, entry)
+            if entry["do_mirror"]:
+                self.update_bone_vis(armature, self.mirror_entry(entry))
+
+    def update_bone_vis(self, armature, entry):
+        bone_name = entry["bone_name"]
+        bone = armature.pose.bones[bone_name]
+
+        if "custom_object" in entry:
+            bone.custom_shape = bpy.data.objects[entry["custom_object"]]
+
+        if "scale" in entry:
+            if "X" in entry["scale"]:
+                bone.custom_shape_scale_xyz[0] = entry["scale"]["X"]
+            if "Y" in entry["scale"]:
+                bone.custom_shape_scale_xyz[1] = entry["scale"]["Y"]
+            if "Z" in entry["scale"]:
+                bone.custom_shape_scale_xyz[2] = entry["scale"]["Z"]
+
+        if "loc" in entry:
+            if "X" in entry["loc"]:
+                bone.custom_shape_translation[0] = entry["loc"]["X"]
+            if "Y" in entry["loc"]:
+                bone.custom_shape_translation[1] = entry["loc"]["Y"]
+            if "Z" in entry["loc"]:
+                bone.custom_shape_translation[2] = entry["loc"]["Z"]
+
+        if "rot" in entry:
+            if "X" in entry["rot"]:
+                bone.custom_shape_rotation_euler[0] = math.radians(entry["rot"]["X"])
+            if "Y" in entry["rot"]:
+                bone.custom_shape_rotation_euler[1] = math.radians(entry["rot"]["Y"])
+            if "Z" in entry["rot"]:
+                bone.custom_shape_rotation_euler[2] = math.radians(entry["rot"]["Z"])
+
+        if "clear_overwrite_transform" in entry:
+            bone.custom_shape_transform = None
+
+        if "overwrite_transform" in entry:
+            bone.custom_shape_transform = armature.pose.bones[entry["overwrite_transform"]]
+
+        if "bone_grp" in entry:
+            bone.bone_group = armature.pose.bone_groups[entry["bone_grp"]]
+
+        if "scale_drv" in entry:
+            if "X" in entry["scale_drv"]:
+                driver = self.get_driver(armature, 'pose.bones["' + bone_name + '"].custom_shape_scale_xyz', 0)
+                driver.driver.expression = entry["scale_drv"]["X"]
+            if "Y" in entry["scale_drv"]:
+                driver = self.get_driver(armature, 'pose.bones["' + bone_name + '"].custom_shape_scale_xyz', 1)
+                driver.driver.expression = entry["scale_drv"]["Y"]
+            if "Z" in entry["scale_drv"]:
+                driver = self.get_driver(armature, 'pose.bones["' + bone_name + '"].custom_shape_scale_xyz', 2)
+                driver.driver.expression = entry["scale_drv"]["Z"]
+    
+    def mirror_entry(self, entry):
+        mirror_entry = {}
+        for key in entry:
+            print("Before: " + key + " " + str(entry[key]))
+            try:
+                value = entry[key].replace(".l", ".r")
+                
+            except:
+                value = entry[key]
+            mirror_entry[key] = value
+            print("After: " + key + " " + str(value))
+        return mirror_entry
+
+    def get_driver(self, armature, data_path, index):
+        for driver in armature.animation_data.drivers:
+            if driver.data_path == data_path and driver.array_index == index:
+                return driver
+        return None
 
 
 def register():

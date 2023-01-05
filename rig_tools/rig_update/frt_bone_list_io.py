@@ -70,3 +70,12 @@ class BoneList(object):
             self._bone_list["constraint_add_list"] = self._default_bone_list["constraint_add_list"]
             self.write_list(self._bone_list_path)
             return self._bone_list["constraint_add_list"]
+
+    def get_bone_visualization_list(self):
+        if "bone_visualization_list" in self._bone_list:
+            return self._bone_list["bone_visualization_list"]
+
+        else:
+            self._bone_list["bone_visualization_list"] = self._default_bone_list["bone_visualization_list"]
+            self.write_list(self._bone_list_path)
+            return self._bone_list["bone_visualization_list"]

@@ -1818,5 +1818,403 @@ bone_list = {
             ]
         }
     
+    ],
+    "bone_visualization_list":
+    [
+        {
+            "bone_name": "c_arm_twist_offset.l",
+            "custom_object" : "cs_arrow_twist.v2",
+            "scale":
+            {
+                "X": 4.0,
+                "Y": 4.0,
+                "Z": 4.0
+            },
+            "rot":
+            {
+                "Y": 180
+            },
+            "do_mirror": True
+        },
+        {
+            "bone_name": "c_arm_ik.l",
+            "custom_object": "cs_tube.arm",
+            "scale_drv":
+            {
+                "X": "(var*-1+1)*1.5",
+                "Y": "(var*-1+1)*0.5",
+                "Z": "(var*-1+1)*1.5"
+            },
+            "rot":
+            {
+                "X": 180
+            },
+            "do_mirror": True
+
+        },
+        {
+            "bone_name": "c_arm_fk.l",
+            "custom_object": "cs_circle_arm_double",
+            "scale_drv":
+            {
+                "X": "(var*-0.175)+1",
+                "Y": "(var*-0.175)+1",
+                "Z": "(var*-0.175)+1"
+            },
+            "rot":
+            {
+                "X": 180,
+                "Z": 90
+            },
+            "clear_overwrite_transform": True,
+            "do_mirror": True
+
+        },
+        {
+            "bone_name": "c_forearm_fk.l",
+            "custom_object": "cs_circle_arm_double",
+            "scale_drv":
+            {
+                "X": "(var*-0.175)+1",
+                "Y": "(var*-0.175)+1",
+                "Z": "(var*-0.175)+1"
+            },
+            "loc":
+            {
+                "Y": 0.018
+            },
+            "rot":
+            {
+                "X": 180,
+                "Z": 90
+            },
+            "clear_overwrite_transform": True,
+            "do_mirror": True
+
+        },
+        {
+            "bone_name": "c_hand_fk.l",
+            "scale_drv":
+            {
+                "X": "(var*-0.9)+1",
+                "Y": "(var*-0.9)+1",
+                "Z": "(var*-0.9)+1"
+            },
+            "do_mirror": True
+
+        },
+        {
+            "bone_name": "c_hand_fk_2.l",
+            "scale_drv":
+            {
+                "X": "ik_fk_switch*1.0",
+                "Y": "ik_fk_switch*0.75",
+                "Z": "ik_fk_switch*1.0"
+            },
+            "bone_grp": "correction.l",
+            "do_mirror": True
+
+        },
+        {
+            "bone_name": "c_hand_ik.l",
+            "scale_drv":
+            {
+                "X": "(var*-1+1)*0.9",
+                "Y": "(var*-1+1)*0.9",
+                "Z": "(var*-1+1)*0.9"
+            },
+            "do_mirror": True
+        },
+        {
+            "bone_name": "c_hand_ik_2.l",
+            "scale_drv":
+            {
+                "X": "(1-ik_fk_switch)*1.0",
+                "Y": "(1-ik_fk_switch)*0.3",
+                "Z": "(1-ik_fk_switch)*1.0"
+            },
+            "do_mirror": True
+        },
+        {
+            "bone_name": "c_root_master.x",
+            "scale":
+            {
+                "X": 0.550
+            },
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_spine_fk_bend",
+            "overwrite_transform": "spine_04.x",
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_root_master_2.x",
+            "overwrite_transform": "c_p_root_master.x",
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_root_bend.x",
+            "scale":
+            {
+                "X": 1.4,
+                "Y": 1.4,
+                "Z": 1.4
+            },
+            "loc":
+            {
+                "Y": -0.03
+            },
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_root.x",
+            "scale":
+            {
+                "X": 1.1,
+                "Y": 1.1,
+                "Z": 1.1
+            },
+            "loc":
+            {
+                "Y": -0.03
+            },
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_spine_01_2.x",
+            "overwrite_transform": "c_p_spine_01.x",
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_spine_02_2.x",
+            "overwrite_transform": "c_p_spine_02.x",
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_neck.x",
+            "loc":
+            {
+                "Y": 0.025
+            },
+            "clear_overwrite_transform": True,
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_neck_2.x",
+            "custom_object": "cs_arrow_cross.head",
+            "scale":
+            {
+                "X": 0.360,
+                "Y": 0.360,
+                "Z": 0.360
+            },
+            "loc":
+            {
+                "Y": 0.025
+            },
+            "rot":
+            {
+                "X": -90
+            },
+            "bone_grp": "correction.x",
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_head.x",
+            "scale":
+            {
+                "X": 0.150,
+                "Y": 0.150,
+                "Z": 0.150
+            },
+            "loc":
+            {
+                "Y": 0.07
+            },
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_head_2.x",
+            "custom_object": "cs_arrow_cross.head",
+            "scale":
+            {
+                "X": 0.250,
+                "Y": 0.250,
+                "Z": 0.250
+            },
+            "loc":
+            {
+                "Y": 0.025
+            },
+            "rot":
+            {
+                "X": -90
+            },
+            "bone_grp": "correction.x",
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_leg_pole.l",
+            "custom_object": "cs_sphere_2",
+            
+            "rot":
+            {
+                "X": 90,
+                "Y": 90
+            },
+            "do_mirror": True
+        },
+        {
+            "bone_name": "c_thigh_b.l",
+            "loc":
+            {
+                "Y": 0.03,
+                "Z": 0.05
+            },
+            "do_mirror": True
+        },
+        {
+            "bone_name": "c_thigh_ik.l",
+            "custom_object": "cs_tube.arm",
+            
+            "scale_drv":
+            {
+                "X": "(var*-1+1)*1.5",
+                "Y": "(var*-1+1)*1.5"
+            },
+            "rot":
+            {
+                "X": 180,
+                "Y": -90
+            },
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_thigh_ik.r",
+            "custom_object": "cs_tube.arm",
+            
+            "scale_drv":
+            {
+                "X": "(var*-1+1)*1.5",
+                "Y": "(var*-1+1)*1.5"
+            },
+            "rot":
+            {
+                "X": 180,
+                "Y": 90
+            },
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_thigh_fk.l",
+            "custom_object": "cs_circle_arm_double",
+            "scale_drv":
+            {
+                "X": "(var*-0.14)+1",
+                "Y": "(var*-0.14)+1",
+                "Z": "(var*-0.14)+1"
+            },
+            "loc":
+            {
+                "X": -0.007
+            },
+            "rot":
+            {
+                "X": 90,
+                "Y": 90
+            },
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_thigh_fk.r",
+            "custom_object": "cs_circle_arm_double",
+            "scale_drv":
+            {
+                "X": "(var*-0.14)+1",
+                "Y": "(var*-0.14)+1",
+                "Z": "(var*-0.14)+1"
+            },
+            "loc":
+            {
+                "X": 0.007
+            },
+            "rot":
+            {
+                "X": -90,
+                "Y": 90
+            },
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_leg_fk.l",
+            "custom_object": "cs_circle_arm_double",
+            "scale_drv":
+            {
+                "X": "(var*-0.1)+1",
+                "Y": "(var*-0.1)+1",
+                "Z": "(var*-0.1)+1"
+            },
+            "loc":
+            {
+                "X": -0.025,
+                "Y": 0.038
+            },
+            "rot":
+            {
+                "X": 90,
+                "Y": 90
+            },
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_leg_fk.r",
+            "custom_object": "cs_circle_arm_double",
+            
+            "scale_drv":
+            {
+                "X": "(var*-0.1)+1",
+                "Y": "(var*-0.1)+1",
+                "Z": "(var*-0.1)+1"
+            },
+            "loc":
+            {
+                "X": 0.025,
+                "Y": 0.038
+            },
+            "rot":
+            {
+                "X": -90,
+                "Y": 90
+            },
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_foot_ik_2.l",
+            "overwrite_transform": "c_p_foot_ik.l",
+            "do_mirror": True
+        },
+        {
+            "bone_name": "c_foot_fk_2.l",
+            "overwrite_transform": "c_p_foot_fk.l",
+            "do_mirror": True
+        },
+        {
+            "bone_name": "c_toes_ik.l",
+            "loc":
+            {
+                "X": 0.007,
+                "Y": 0.04
+            },
+            "do_mirror": False
+        },
+        {
+            "bone_name": "c_toes_ik.r",
+            "loc":
+            {
+                "Y": 0.04
+            },
+            "do_mirror": False
+        }      
     ]
 }
