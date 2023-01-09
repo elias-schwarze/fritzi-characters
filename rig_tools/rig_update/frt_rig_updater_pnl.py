@@ -21,6 +21,10 @@ class FRT_PT_RigUpdater_PNL(bpy.types.Panel):
         wm = context.window_manager
         layout.prop_search(wm, "update_rig", bpy.data, "objects")
         layout.operator("object.update_fritzi_rig")
+        layout.separator()
+        layout.label(text="Utils")
+        layout.operator("object.rig_inverse")
+        layout.operator("object.update_dependencies")
 
 def register():
     bpy.utils.register_class(FRT_PT_RigUpdater_PNL)

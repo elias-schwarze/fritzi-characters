@@ -280,9 +280,48 @@ class FRT_OT_RigUpdater_OP(bpy.types.Operator):
                 return driver
         return None
 
+class FRT_RigSetInverse_OP(bpy.types.Operator):
+    bl_idname = "object.rig_inverse"
+    bl_label = "Set All Inverse"
+    bl_description = "Sets the inverse Matrix on all Child Of Constraints on all Bones in the selected Rig"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+        wm = context.window_manager
+
+        if not wm.update_rig:
+            return False
+
+        return True
+
+    def execute(self, context):
+        wm = context.window_manager
+        rig = wm.update_rig
+
+        for bone in rig.pose.bones:
+            for constraint in bone.constraints:
+                if constraint.type =='CHILD_OF':
+                    constraint.set_inverse_pending = True
+
+        return {'FINISHED'}
+
+class FRT_UpdateDriverDependencies_OP(bpy.types.Operator):
+    bl_idname = "object.update_dependencies"
+    bl_label = "Update all Driver Dependencies"
+    bl_description = "Updates Driver Dependencies for all Drivers in File"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        update_dependencies_all_drivers()
+        return {'FINISHED'}
 
 def register():
     bpy.utils.register_class(FRT_OT_RigUpdater_OP)
+    bpy.utils.register_class(FRT_RigSetInverse_OP)
+    bpy.utils.register_class(FRT_UpdateDriverDependencies_OP)
 
 def unregister():
+    bpy.utils.unregister_class(FRT_UpdateDriverDependencies_OP)
+    bpy.utils.unregister_class(FRT_RigSetInverse_OP)
     bpy.utils.unregister_class(FRT_OT_RigUpdater_OP)
