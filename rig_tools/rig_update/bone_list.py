@@ -2122,7 +2122,7 @@ bone_list = {
             "rot":
             {
                 "X": 90,
-                "Y": 90
+                "Z": 90
             },
             "do_mirror": False
         },
@@ -2142,7 +2142,7 @@ bone_list = {
             "rot":
             {
                 "X": -90,
-                "Y": 90
+                "Z": 90
             },
             "do_mirror": False
         },
@@ -2163,7 +2163,7 @@ bone_list = {
             "rot":
             {
                 "X": 90,
-                "Y": 90
+                "Z": 90
             },
             "do_mirror": False
         },
@@ -2185,7 +2185,7 @@ bone_list = {
             "rot":
             {
                 "X": -90,
-                "Y": 90
+                "Z": 90
             },
             "do_mirror": False
         },
