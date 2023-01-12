@@ -1,7 +1,7 @@
 import bpy
 import math
 from . import frt_bone_list_io
-from ...helper_functions import update_dependencies_all_drivers
+from ...helper_functions import update_dependencies_all_drivers, remove_override
 
 class FRT_OT_RigUpdater_OP(bpy.types.Operator):
     bl_idname = "object.update_fritzi_rig"
@@ -316,12 +316,42 @@ class FRT_UpdateDriverDependencies_OP(bpy.types.Operator):
         update_dependencies_all_drivers()
         return {'FINISHED'}
 
+class FRT_RemoveBadOverrides_OP(bpy.types.Operator):
+    bl_idname = "object.remove_bad_overrides"
+    bl_label = "Remove Bad Overrides"
+    bl_description = "Removes bad Overrides from all bones of a rig"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, context):
+        wm = context.window_manager
+
+        if not wm.update_rig:
+            return False
+
+        return True
+
+
+    def execute(self, context):
+        wm = context.window_manager
+
+        rig = wm.update_rig
+
+        for prop in rig.override_library.properties:
+            if prop.rna_path.endswith('custom_shape') or prop.rna_path.endswith('custom_shape_transform') or prop.rna_path.endswith('rotation_mode'):
+                
+                remove_override(rig, prop)
+
+        return {'FINISHED'}
+
 def register():
     bpy.utils.register_class(FRT_OT_RigUpdater_OP)
     bpy.utils.register_class(FRT_RigSetInverse_OP)
     bpy.utils.register_class(FRT_UpdateDriverDependencies_OP)
+    bpy.utils.register_class(FRT_RemoveBadOverrides_OP)
 
 def unregister():
+    bpy.utils.unregister_class(FRT_RemoveBadOverrides_OP)
     bpy.utils.unregister_class(FRT_UpdateDriverDependencies_OP)
     bpy.utils.unregister_class(FRT_RigSetInverse_OP)
     bpy.utils.unregister_class(FRT_OT_RigUpdater_OP)

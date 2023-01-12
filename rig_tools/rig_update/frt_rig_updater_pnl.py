@@ -25,6 +25,7 @@ class FRT_PT_RigUpdater_PNL(bpy.types.Panel):
         layout.label(text="Utils")
         layout.operator("object.rig_inverse")
         layout.operator("object.update_dependencies")
+        layout.operator("object.remove_bad_overrides")
 
 def register():
     bpy.utils.register_class(FRT_PT_RigUpdater_PNL)
