@@ -8,7 +8,7 @@ import bpy
 import mathutils
 import math
 from bpy.app.handlers import persistent
-from ..utility_functions.fdg_driver_utils import append_function_unique
+from ..utility_functions.fdg_driver_utils import append_function_unique, remove_function
 
 
 # this function returns the vector between two points. The direction is from point1 to point2
@@ -88,9 +88,9 @@ def lerp_custom_curve(grease_pencil, distance, start, end):
         point = gp.grease_pencil_modifiers["Thickness"].curve.curves[0].points[i]
         #grease_pencil.grease_pencil_modifiers["Thickness"].curve.curves[0].points.new(0.25, 0.5)
         value = standard_values[i] * (1.0-factor) + 1.0 * factor
-        print(value)
+        #print(value)
         point.location[1] = value
-        print(point.location[1])
+        #print(point.location[1])
     gp.grease_pencil_modifiers["Thickness"].curve.update()
     
     #bpy.context.view_layer.update()
@@ -107,14 +107,37 @@ def load_handler(dummy):
 
 # Add functions defined in this script into the drivers namespace.
 def register():
-    append_function_unique(bpy.app.handlers.load_post, load_handler)
-    bpy.app.driver_namespace["angle_x_func"] = angle_x
-    bpy.app.driver_namespace["angle_z_func"] = angle_z
-    bpy.app.driver_namespace["lerp_custom_curve"] = lerp_custom_curve
+    #append_function_unique(bpy.app.handlers.load_post, load_handler)
+    #bpy.app.driver_namespace["angle_x_func"] = angle_x
+    #bpy.app.driver_namespace["angle_z_func"] = angle_z
+    #bpy.app.driver_namespace["lerp_custom_curve"] = lerp_custom_curve
+    remove_function(bpy.app.handlers.load_post, load_handler)
+
+    if "angle_x_func" in bpy.app.driver_namespace:
+        
+        del bpy.app.driver_namespace["angle_x_func"]
+    
+    if "angle_z_func" in bpy.app.driver_namespace:
+        del bpy.app.driver_namespace["angle_z_func"]
+    
+    if "angle_x" in bpy.app.driver_namespace:
+        del bpy.app.driver_namespace["angle_x"]
+    
+    if "angle_z" in bpy.app.driver_namespace:
+        del bpy.app.driver_namespace["angle_z"]
+
+    if "angle_vectors" in bpy.app.driver_namespace:
+        del bpy.app.driver_namespace["angle_vectors"]
+    
+    pass
 
 
 def unregister():
-    # remove_function(bpy.app.handlers.load_post, load_handler)
-    bpy.app.driver_namespace["angle_x_func"] = None
+    remove_function(bpy.app.handlers.load_post, load_handler)
+
+    if "angle_x_func" in bpy.app.driver_namespace:
+        print("it is")
+        del bpy.app.driver_namespace["angle_x_func"]
+    
     bpy.app.driver_namespace["angle_z_func"] = None
     bpy.app.driver_namespace["lerp_custom_curve"] = None

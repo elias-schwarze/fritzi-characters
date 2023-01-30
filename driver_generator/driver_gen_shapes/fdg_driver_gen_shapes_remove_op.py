@@ -41,7 +41,7 @@ class FDG_OT_RemoveShapeDrivers_Op(Operator):
                     continue
                 for key in obj.data.shape_keys.key_blocks:
                     
-                    print(key.name)
+                    #print(key.name)
 
                     if key.name.endswith(".L") or key.name.endswith(".R"):
                         key.driver_remove("value")

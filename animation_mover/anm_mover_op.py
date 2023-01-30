@@ -179,7 +179,7 @@ class ANM_UL_KeyList_Items(UIList):
         return True
 
     def draw_item(self, context, layout, data, item, icon, active_data, active_property, index, flt_flag):
-        print(item.object)
+        #print(item.object)
         row = layout.row()
         row = row.split(factor=0.2)
         row.label(text=item.object)

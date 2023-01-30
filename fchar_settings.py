@@ -43,7 +43,7 @@ class Settings(object):
     def __new__(cls):
         """Singleton initialization"""
         if cls._instance is None:
-            print('Creating the object')
+            #print('Creating the object')
             cls._instance = super(Settings, cls).__new__(cls)
             cls._instance._load_settings()
         return cls._instance

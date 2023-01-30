@@ -30,7 +30,7 @@ class FMR_OT_SelectBVHs_OP(Operator, ImportHelper):
             file.name = file_elem.name
             filepath = os.path.join(directory, file_elem.name)
             file.filepath = filepath
-            print(filepath)
+            #print(filepath)
         return {'FINISHED'}
 
 class FileList(PropertyGroup):
@@ -94,9 +94,9 @@ class FMR_OT_SelectCharacter_OP(Operator, ImportHelper):
         wm = context.window_manager
         
 
-        print(file)
-        print(path)
-        print(ext)
+        #print(file)
+        #print(path)
+        #print(ext)
 
         if file and ext == '.blend':
             wm.char_file_path = path

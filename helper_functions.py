@@ -13,7 +13,7 @@ def signal_last(it:Iterable[Any]) -> Iterable[Tuple[bool, Any]]:
 def update_dependencies_all_drivers():
     for obj in bpy.data.objects:
         if obj.animation_data:
-            print(obj.name)
+            #print(obj.name)
             for FCurve in obj.animation_data.drivers:
                 driver = FCurve.driver
                 driver.expression += " "

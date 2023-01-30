@@ -25,8 +25,8 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
     	
         for item in scene.collection_list:
             collection = item.character_collection
-            print(collection)
-            print(item)
+            #print(collection)
+            #print(item)
             self.prepare_collection_for_render(collection, item)
         bpy.ops.fdg.conform_visibilities()
         self.prepare_scene_for_render(context)
@@ -124,7 +124,7 @@ class FDG_OT_GeneratePreviewOutlines_Op(Operator):
                     mod.use_self = True
 
     def prepare_collection_for_render(self, collection, item):
-        print(not item)
+        #print(not item)
         if not item.outline_object:
             
             self.create_preview_line(collection, self.check_for_glasses(collection), item)

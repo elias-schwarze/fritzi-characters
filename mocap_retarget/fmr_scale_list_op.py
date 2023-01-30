@@ -26,7 +26,7 @@ class FMR_OT_ImportScaleList_OP(Operator, ImportHelper):
         for area in bpy.context.screen.areas:
             area.tag_redraw()
         
-        print(self.filepath)
+        #print(self.filepath)
 
         return {'FINISHED'}
 
@@ -45,7 +45,7 @@ class FMR_OT_ExportScaleList_OP(Operator, ExportHelper):
         scale_list_io = ScaleListDict()
 
         scale_list_io.write_scale_list(self.filepath)
-        print(self.filepath)
+        #print(self.filepath)
         return {'FINISHED'}
 
 class FMR_OT_AddCharacterScale_OP(Operator):

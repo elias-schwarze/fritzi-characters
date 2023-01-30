@@ -68,21 +68,21 @@ def clamp_mode_update(self, context):
     to either clamp or not clamp the Values at the min or max distance depending on which Booleans are toggled."""
     my_data_path = 'grease_pencil_modifiers["' + self.thick_modifier + '"].thickness_factor'
     for fcurve in self.gp_object.animation_data.drivers:
-        print(fcurve.data_path)
-        print(my_data_path)
+        #print(fcurve.data_path)
+        #print(my_data_path)
         if fcurve.data_path == my_data_path:
-            print("here")
+            #print("here")
             if self.clamp_close and self.clamp_far:
-                print("both")
+                #print("both")
                 fcurve.driver.expression = "max(close_thick, min(far_thick, ((close_thick * (1 - (dist - close_dist) / (far_dist - close_dist))) + (far_thick * (dist - close_dist) / (far_dist - close_dist)))))/crv_value"
             elif self.clamp_close and not self.clamp_far:
-                print("close")
+                #print("close")
                 fcurve.driver.expression = "max(close_thick, ((close_thick * (1 - (dist - close_dist) / (far_dist - close_dist))) + (far_thick * (dist - close_dist) / (far_dist - close_dist))))/crv_value"
             elif not self.clamp_close and self.clamp_far:
-                print("far")
+                #print("far")
                 fcurve.driver.expression = "min(far_thick, ((close_thick * (1 - (dist - close_dist) / (far_dist - close_dist))) + (far_thick * (dist - close_dist) / (far_dist - close_dist))))/crv_value"
             elif not self.clamp_close and not self.clamp_far:
-                print("none")
+                #print("none")
                 fcurve.driver.expression = "((close_thick * (1 - (dist - close_dist) / (far_dist - close_dist))) + (far_thick * (dist - close_dist) / (far_dist - close_dist)))/crv_value"
 
 def poll_gp_object(self, object):

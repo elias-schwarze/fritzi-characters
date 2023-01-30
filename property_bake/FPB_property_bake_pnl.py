@@ -12,7 +12,7 @@ class FPB_PT_PropertyBake_pnl(Panel):
 
         wm = context.window_manager
         layout = self.layout
-
+        layout.prop_search(wm, "character_rig", bpy.data, "objects", text="Character Rig")
         layout.operator("fpb.bake_properties")
 
 def register():

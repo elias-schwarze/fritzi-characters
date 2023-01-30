@@ -83,8 +83,8 @@ class ANM_OT_CopyAnimData_OP(bpy.types.Operator):
 def has_old_targets(driver, old_obj):
     for var in driver.driver.variables:
         for target in var.targets:
-            print(target.id.name)
-            print(old_obj.name)
+            #print(target.id.name)
+            #print(old_obj.name)
             if not target.id or target.id.name == old_obj.name:
                 return True
     return False

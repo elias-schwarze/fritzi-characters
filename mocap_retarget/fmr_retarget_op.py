@@ -220,7 +220,7 @@ def retarget_mocap(context, do_auto_scale=True):
 def get_layout_dir(perforce_path, bvh_file):
     """Returns the path to the layout directory in Perforce in which a given bvh file should be saved"""
     dir_path = perforce_path
-    print(dir_path)
+    #print(dir_path)
     dir_path = os.path.join(dir_path, "080_scenes")
     dir_path = os.path.join(dir_path, "010_layout")
     dir_path = os.path.join(dir_path, "s01_e0" + get_episode(bvh_file))

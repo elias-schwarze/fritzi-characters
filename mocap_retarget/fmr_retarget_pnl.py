@@ -184,9 +184,9 @@ def update_source_rig(self, context):
     """Updates the Source Rig Property of ARP if a new Source Rig is selected in FCHAR"""
     wm = context.window_manager
     scene = context.scene
-    print("update")
+    #print("update")
     if (wm.source_rig_pointer):
-        print("setRig")
+        #print("setRig")
         scene.source_rig = wm.source_rig_pointer.name
     else:
         scene.source_rig = ""
