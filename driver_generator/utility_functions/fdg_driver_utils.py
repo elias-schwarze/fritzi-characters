@@ -136,9 +136,6 @@ def link_camera(camera):
         cam_empty.location = loc
         cam_empty.rotation_euler = rot.to_euler()
         
-
-        bpy.context.collection.objects.link(cam_empty)
-
         parent_objects(camera, cam_empty)
         cam_empty.hide_viewport = True
         cam_empty.hide_render = True
