@@ -13,10 +13,10 @@ import shutil
 
 # Destination path of addon build. For Windows filesystems be sure to use forward slashes, as backslashes may break the file path.
 # Make sure the destination folder does NOT exist before running the script.
-destination_path = 'C:/Users/FilmBIlder/Desktop/Fritzi_Modells/Add_on_workspace/Releases/Release/'
-
+#destination_path = 'C:/Users/FilmBIlder/Desktop/Fritzi_Modells/Add_on_workspace/Releases/Release/'
+destination_path = 'G:/FilmBilder/FritziSophie/Code/fritzi-characters-releases/Release/'
 # Version number of addon. NO trailing dot at the end. Should match bl_info in __init__.py
-version_number = '1.6.27'
+version_number = '1.6.29'
 
 # Automatically pack into .zip archive. Needed for installing the addon in Blender.
 pack_to_zip = True

@@ -104,6 +104,7 @@ class fritziGPSettings(PropertyGroup):
     environment_L2_collection: PointerProperty(name="Environment L2 Collection", type=bpy.types.Collection)
     character_collection : PointerProperty(name="Character Collection", type=bpy.types.Collection)
     excluded_collection : PointerProperty(name="Excluded Collection", type=bpy.types.Collection)
+    forceintersection_collection : PointerProperty(name="ForceIntersection Collection", type=bpy.types.Collection)
     nointersection_collection : PointerProperty(name="NoIntersection Collection", type= bpy.types.Collection)
     extraobjects_collection : PointerProperty(name= "Extra Objects Collection", type=bpy.types.Collection)
     gp_material : StringProperty(name="GP Material") # Change all materials if changed!
@@ -412,6 +413,7 @@ class FDG_PT_DriverGenOutlinesDebug_pnl(bpy.types.Panel):
         layout.prop_search(settings, "character_collection", bpy.data, "collections")
         layout.prop_search(settings, "excluded_collection", bpy.data, "collections")
         layout.prop_search(settings, "nointersection_collection", bpy.data, "collections")
+        layout.prop_search(settings, "forceintersection_collection", bpy.data, "collections")
         layout.prop_search(settings, "extraobjects_collection", bpy.data, "collections")
         layout.prop_search(settings, "gp_material", bpy.data, "materials")
         if settings.gp_object:

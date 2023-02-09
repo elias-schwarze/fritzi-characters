@@ -410,6 +410,7 @@ class FDG_OT_GenerateCollections_OP(Operator):
         wm = context.window_manager
 
         outline_collection = create_collection_unique("OUTLINES", bpy.context.scene.collection)
+        outline_collection.hide_viewport = True
 
         objects_collection = create_collection_unique("OUTLINE_groups", bpy.context.scene.collection)
         objects_collection.lineart_usage = 'INCLUDE'
@@ -436,6 +437,8 @@ class FDG_OT_GenerateCollections_OP(Operator):
         excluded_collection.lineart_usage = 'EXCLUDE'
         nointersection_collection = create_collection_unique("OBJECTS_NoIntersection", objects_collection)
         nointersection_collection.lineart_usage = 'NO_INTERSECTION'
+        forceintersection_collection = create_collection_unique("OBJECTS_ForceIntersection", objects_collection)
+        forceintersection_collection.lineart_usage = 'FORCE_INTERSECTION'
         extraobjects_collection = create_collection_unique("EXTRA_CharacterObjects", objects_collection)
         extraobjects_collection.lineart_usage = 'EXCLUDE'
 
@@ -555,6 +558,7 @@ class FDG_OT_GenerateCollections_OP(Operator):
         scene.gp_defaults.character_collection = character_collection
         scene.gp_defaults.excluded_collection = excluded_collection
         scene.gp_defaults.nointersection_collection = nointersection_collection
+        scene.gp_defaults.forceintersection_collection = forceintersection_collection
         scene.gp_defaults.extraobjects_collection = extraobjects_collection
         scene.gp_defaults.gp_material = gp_mat.name
         scene.gp_defaults.environment_layer_L0 = gp_layer_L0.info
