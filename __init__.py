@@ -25,6 +25,7 @@ from .cam_rig_auto_visibility import cav_init
 from .animation_mover import anm_init
 from .rig_tools import frt_init
 from .property_bake import FPB_init
+from .tools import fct_init
 
 
 bl_info = {
@@ -60,11 +61,13 @@ def register():
     anm_init.register()
     frt_init.register()
     FPB_init.register()
+    fct_init.register()
 
 
 
 
 def unregister():
+    fct_init.unregister()
     FPB_init.unregister()
     frt_init.unregister()
     anm_init.unregister()

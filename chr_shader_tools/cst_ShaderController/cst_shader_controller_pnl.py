@@ -90,7 +90,21 @@ class CST_PT_ShaderControllerEyes_pnl(bpy.types.Panel):
         layout.prop_search(wm, "eye_left", bpy.data, "objects")
         layout.prop_search(wm, "eye_right", bpy.data, "objects")
 
+        if wm.character_rig:
+            
+            rig_bones = wm.character_rig.pose.bones
+                        
+            if ('eye_up.L' in rig_bones and
+                'eye_up.R' in rig_bones and
+                'eye_down.L' in rig_bones and
+                'eye_down.R' in rig_bones):
+                msg = "Rig should have eye up/down bones"
+            else:
+                msg = "Rig should NOT have eye up/down bones"
+            layout.label(text=msg)
+
         layout.operator("object.add_eye_drivers")
+        layout.operator("object.add_eye_drivers_no_up_down")
         
 
 
