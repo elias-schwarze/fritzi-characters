@@ -89,6 +89,11 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         gp = settings.gp_object
         character_collection = settings.character_collection
         
+        outlines_collection = scene.view_layers[scene.gp_defaults.default_view_layer].layer_collection.children["OUTLINES"]
+        excluded = outlines_collection.exclude
+
+        outlines_collection.exclude = False
+        
         mask_bit = self.find_free_mask(context)
 
         self.create_gp_pass(context, subpass.L0, gp, character_collection, mask_bit)
@@ -99,6 +104,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
 
         sort_lineart_modifiers(gp)
 
+        outlines_collection.exclude = excluded
         return {'FINISHED'}
 
     def create_gp_pass(self, context, subpass : subpass, gp, character_collection, mask_bit):
