@@ -58,6 +58,8 @@ class CST_PT_ShaderControllerAdvanced_PNL(bpy.types.Panel):
 
         wm = context.window_manager
         layout = self.layout
+        layout.operator("object.copy_controller_data")
+        layout.separator()
 
         layout.label(text = 'Cleanup')
         layout.operator("object.remove_props")

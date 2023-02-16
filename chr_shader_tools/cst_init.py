@@ -6,11 +6,13 @@ from .cst_ShaderController import cst_create_shader_controller_op
 from .cst_ShaderController import cst_select_shader_controller_op
 from .cst_ShaderController import cst_remove_props_op
 from .cst_ShaderController import cst_shader_controller_pnl
+from .cst_ShaderController import cst_copy_controller_data_op
 
 from .cst_shading_toolbox import cst_shading_tools_pnl
 from .cst_shading_toolbox import cst_shading_tools_ops
 
 def register():
+    cst_copy_controller_data_op.register()
     cst_add_eye_driver_op.register()
     cst_create_shader_controller_op.register()
     cst_select_shader_controller_op.register()
@@ -31,4 +33,5 @@ def unregister():
     cst_select_shader_controller_op.unregister()
     cst_create_shader_controller_op.unregister()
     cst_add_eye_driver_op.unregister()
+    cst_copy_controller_data_op.unregister()
     
