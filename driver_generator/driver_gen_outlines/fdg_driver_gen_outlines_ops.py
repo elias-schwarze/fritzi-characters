@@ -239,6 +239,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         lineart.use_intersection_mask[mask_bit] = True
         lineart.use_geometry_space_chain = True
         lineart.use_intersection_match = True
+        lineart.use_material = True
         if use_cache:
             lineart.use_cache = use_cache
         return lineart
@@ -489,7 +490,8 @@ class FDG_OT_GenerateCollections_OP(Operator):
         lineart_L0.thickness = 1
         lineart_L0.use_intersection_mask[0] = True
         lineart_L0.use_geometry_space_chain = True
-        lineart_L0.use_intersection_match = True
+        lineart_L0.use_material = True
+        # lineart_L0.use_intersection_match = True 
 
         lineart_L1 = gp_ob.grease_pencil_modifiers.new("pass_2_ENVIRONMENTS_L1", 'GP_LINEART')
         lineart_L1.source_type = 'COLLECTION'
@@ -499,8 +501,9 @@ class FDG_OT_GenerateCollections_OP(Operator):
         lineart_L1.thickness = 1
         lineart_L1.use_intersection_mask[0] = True
         lineart_L1.use_geometry_space_chain = True
-        lineart_L1.use_intersection_match = True
+        #lineart_L1.use_intersection_match = True
         lineart_L1.use_cache = True
+        lineart_L1.use_material = True
 
         lineart_L2 = gp_ob.grease_pencil_modifiers.new("pass_3_ENVIRONMENTS_L2", 'GP_LINEART')
         lineart_L2.source_type = 'COLLECTION'
@@ -510,8 +513,9 @@ class FDG_OT_GenerateCollections_OP(Operator):
         lineart_L2.thickness = 1
         lineart_L2.use_intersection_mask[0] = True
         lineart_L2.use_geometry_space_chain = True
-        lineart_L2.use_intersection_match = True
-        lineart_L2.use_cache = True        
+        #lineart_L2.use_intersection_match = True
+        lineart_L2.use_cache = True
+        lineart_L2.use_material = True   
 
 
         curve_modifier_L0 = gp_ob.grease_pencil_modifiers.new("pass_1_ENVIRONMENTS_CURVE_L0", 'GP_THICK')
