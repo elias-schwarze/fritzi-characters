@@ -73,7 +73,47 @@ class CST_OT_UpdateShaderController_OP(Operator):
 
         return {'FINISHED'}
 
+class CST_OT_CreateCrowdShaderController_OP(Operator):
+    bl_idname = "object.create_crowd_shader_controller"
+    bl_label = "Create Crowd Shader Controller"
+    bl_descritption = "Creates an Empty with controls for the shaders of one CROWD character"
+    bl_options = {"REGISTER", "UNDO"}
 
+    # should only work in object mode
+    @classmethod
+    def poll(cls, context):
+        obj = bpy.context.object
+
+        if obj:
+            if obj.mode == "OBJECT":
+                return True
+
+        return False
+
+
+    def execute(self, context):
+        
+        wm = bpy.context.window_manager
+
+        characterName = wm.character_name
+
+        if characterName is None or characterName == "":
+            self.report({'WARNING'}, "Please give a Character Name!")
+            return {'CANCELLED'}
+
+        emptyController = bpy.data.objects.new(characterName + "_CrowdShaderController", None)
+
+        bpy.context.scene.collection.objects.link(emptyController)
+
+        emptyController.empty_display_size = 2
+        emptyController.empty_display_type = 'PLAIN_AXES'
+
+        add_crowd_properties(emptyController)
+
+        wm.controller_empty = emptyController
+
+        self.report({'INFO'}, "Added Shader Controller!")
+        return {'FINISHED'}
 
 def add_properties(controller):
 
@@ -252,10 +292,70 @@ def add_properties(controller):
     emptyController.property_overridable_library_set('["shadow_color_tint"]', True)
     emptyController.property_overridable_library_set('["shadow_color_tint_amount"]', True)
 
+def add_crowd_properties(controller):
+
+    emptyController = controller
+
+        
+    if "main_color_tint" not in emptyController:
+        emptyController["main_color_tint"] = (1.0, 1.0, 1.0)
+
+    ui_data = emptyController.id_properties_ui("main_color_tint")
+    ui_data.update(min=0.0)
+    ui_data.update(max=2.0)
+    ui_data.update(soft_min=0.0)
+    ui_data.update(soft_max=2.0)
+    ui_data.update(description="Color to tint the main Color of a Character")
+    ui_data.update(default=(1.0, 1.0, 1.0))
+    ui_data.update(subtype='COLOR')
+
+    if "main_color_tint_amount" not in emptyController:
+        emptyController["main_color_tint_amount"] = (0.0)
+
+    ui_data = emptyController.id_properties_ui("main_color_tint_amount")
+    ui_data.update(min=0.0)
+    ui_data.update(max=1.0)
+    ui_data.update(soft_min=0.0)
+    ui_data.update(soft_max=1.0)
+    ui_data.update(description="Amount of tint being applied to the main Color")
+    ui_data.update(default=0.0)
+
+    if "shadow_color_tint" not in emptyController:
+        emptyController["shadow_color_tint"] = (1.0, 1.0, 1.0)
+
+    ui_data = emptyController.id_properties_ui("shadow_color_tint")
+    ui_data.update(min=0.0)
+    ui_data.update(max=2.0)
+    ui_data.update(soft_min=0.0)
+    ui_data.update(soft_max=2.0)
+    ui_data.update(description="Color ot tint the shadow color of a Character")
+    ui_data.update(default=(1.0, 1.0, 1.0))
+    ui_data.update(subtype='COLOR')
+
+    if "shadow_color_tint_amount" not in emptyController:
+        emptyController["shadow_color_tint_amount"] = (0.0)
+
+    ui_data = emptyController.id_properties_ui("shadow_color_tint_amount")
+    ui_data.update(min=0.0)
+    ui_data.update(max=1.0)
+    ui_data.update(soft_min=0.0)
+    ui_data.update(soft_max=1.0)
+    ui_data.update(description="Amount of tint being applied to the shadow Color")
+    ui_data.update(default=0.0)
+        
+
+    emptyController.property_overridable_library_set('["main_color_tint"]', True)
+    emptyController.property_overridable_library_set('["main_color_tint_amount"]', True)
+    emptyController.property_overridable_library_set('["shadow_color_tint"]', True)
+    emptyController.property_overridable_library_set('["shadow_color_tint_amount"]', True)
+
 def register():
+    
     bpy.utils.register_class(CST_OT_CreateShaderController_OP)
     bpy.utils.register_class(CST_OT_UpdateShaderController_OP)
+    bpy.utils.register_class(CST_OT_CreateCrowdShaderController_OP)
 
 def unregister():
+    bpy.utils.unregister_class(CST_OT_CreateCrowdShaderController_OP)
     bpy.utils.unregister_class(CST_OT_UpdateShaderController_OP)
     bpy.utils.unregister_class(CST_OT_CreateShaderController_OP)

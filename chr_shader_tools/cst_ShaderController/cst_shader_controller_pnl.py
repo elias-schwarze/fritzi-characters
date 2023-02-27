@@ -29,6 +29,10 @@ class CST_PT_ShaderController_pnl(bpy.types.Panel):
         layout.operator("object.create_shader_controller")
         layout.operator("object.create_light_empty")
 
+        layout.separator()
+
+        
+
         layout.prop_search(wm, "controller_empty",
                            context.scene, "objects", text="Shader Controller")
         layout.prop_search(wm, "light_empty",
@@ -59,6 +63,8 @@ class CST_PT_ShaderControllerAdvanced_PNL(bpy.types.Panel):
         wm = context.window_manager
         layout = self.layout
         layout.operator("object.copy_controller_data")
+        layout.operator("object.create_crowd_shader_controller")
+        layout.operator("object.select_crowd_shader_controller")
         layout.separator()
 
         layout.label(text = 'Cleanup')

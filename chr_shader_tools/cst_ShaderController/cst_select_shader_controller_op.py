@@ -106,6 +106,7 @@ class CST_OT_selectShaderController_OP(Operator):
 
         object["mix_values"] = (0.0, 0.0)
 
+        ui_data = object.id_properties_ui("mix_values")
         ui_data.update(
             description="Collection of mix values for advanced mixing and simple mixing",
             default=(0.0, 0.0)
@@ -114,6 +115,7 @@ class CST_OT_selectShaderController_OP(Operator):
 
         object["main_tint"] = (1.0, 1.0, 1.0, 0.0)
 
+        ui_data = object.id_properties_ui("main_tint")
         ui_data.update(
             description="Tint Main Color and Tint amount",
             default=(1.0, 1.0, 1.0, 0.0)
@@ -122,6 +124,7 @@ class CST_OT_selectShaderController_OP(Operator):
 
         object["shadow_tint"] = (1.0, 1.0, 1.0, 0.0)
 
+        ui_data = object.id_properties_ui("shadow_tint")
         ui_data.update(
             description="Tint Shadow Color and Tint amount",
             default=(1.0, 1.0, 1.0, 0.0)
@@ -152,11 +155,103 @@ class CST_OT_selectShaderController_OP(Operator):
         add_driver_color_simple(controller, '["shadow_color_tint"]', object, '["shadow_tint"]')
         add_driver_float_simple(controller, '["shadow_color_tint_amount"]', object, '["shadow_tint"]', 3)
 
+class CST_OT_selectCrowdShaderController_OP(Operator):
+    bl_idname = "object.select_crowd_shader_controller"
+    bl_label = "Link Crowd Controller to Character"
+    bl_description = "Adds drivers from the Crowd Controller Properties to all Meshes in the selected Character Collection, so that the shader can access them."
+    bl_options = {"REGISTER", "UNDO"}
+
+    # should only work in object mode
+    @classmethod
+    def poll(cls, context):
+        obj = bpy.context.object
+
+        if obj:
+            if obj.mode == "OBJECT":
+                return True
+
+        return False
+
+    def execute(self, context):
+
+        wm = bpy.context.window_manager
+
+        controllerEmpty = wm.controller_empty
+        characterCollection = wm.character_collection
+        characterRig = wm.character_rig
+        characterRigBone = wm.character_rig_bone
+
+        if controllerEmpty is None:
+            self.report({'WARNING'}, "Please select the Controller!")
+            return {'CANCELLED'}
+
+        if characterCollection is None:
+            self.report({'WARNING'}, "Please select a collection with the Character!")
+            return {'CANCELLED'}
+
+        if characterRig:
+            constraint = controllerEmpty.constraints.new(type='CHILD_OF')
+            constraint.target = characterRig
+            if characterRigBone:
+                constraint.subtarget = characterRigBone
+
+            constraint.use_rotation_x = False
+            constraint.use_rotation_y = False
+            constraint.use_rotation_z = False
+            constraint.use_scale_x = False
+            constraint.use_scale_y = False
+            constraint.use_scale_z = False
+            constraint.set_inverse_pending = True
+        
+
+        self.search_collection(characterCollection, controllerEmpty)
+
+
+        self.report({'INFO'}, "Added Controller Drivers!")
+        return {'FINISHED'}
+
+    def search_collection(self, collection, controller):
+        for child in collection.children:
+            self.search_collection(child, controller)
+
+        for object in collection.objects:
+            if object.type == 'MESH':
+                self.add_properties(object)
+                self.add_drivers(object, controller)
+
+    def add_properties(self, object):
+        
+
+        object["main_tint"] = (1.0, 1.0, 1.0, 0.0)
+        ui_data = object.id_properties_ui("main_tint")
+        ui_data.update(
+            description="Tint Main Color and Tint amount",
+            default=(1.0, 1.0, 1.0, 0.0)
+        )
+
+
+        object["shadow_tint"] = (1.0, 1.0, 1.0, 0.0)
+        ui_data = object.id_properties_ui("shadow_tint")
+        ui_data.update(
+            description="Tint Shadow Color and Tint amount",
+            default=(1.0, 1.0, 1.0, 0.0)
+        )
+
+    def add_drivers(self, object, controller):
+        """Adds the drivers from the custom props of the controller to the given objects custom props"""
+
+        add_driver_color_simple(controller, '["main_color_tint"]', object, '["main_tint"]')
+        add_driver_float_simple(controller, '["main_color_tint_amount"]', object, '["main_tint"]', 3)
+
+        add_driver_color_simple(controller, '["shadow_color_tint"]', object, '["shadow_tint"]')
+        add_driver_float_simple(controller, '["shadow_color_tint_amount"]', object, '["shadow_tint"]', 3)
 
 
 
 def register():
     bpy.utils.register_class(CST_OT_selectShaderController_OP)
+    bpy.utils.register_class(CST_OT_selectCrowdShaderController_OP)
 
 def unregister():
+    bpy.utils.unregister_class(CST_OT_selectCrowdShaderController_OP)
     bpy.utils.unregister_class(CST_OT_selectShaderController_OP)
