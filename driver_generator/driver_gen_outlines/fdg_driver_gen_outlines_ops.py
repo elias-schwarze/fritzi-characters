@@ -240,6 +240,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         lineart.use_geometry_space_chain = True
         lineart.use_intersection_match = True
         lineart.use_material = True
+        lineart.use_edge_overlap = True
         if use_cache:
             lineart.use_cache = use_cache
         return lineart
@@ -421,8 +422,10 @@ class FDG_OT_GenerateCollections_OP(Operator):
 
         objects_collection = create_collection_unique("OUTLINE_groups", bpy.context.scene.collection)
         objects_collection.lineart_usage = 'INCLUDE'
+        objects_collection.hide_viewport = True
         environment_collection = create_collection_unique("ENVIRONMENTS", objects_collection)
         environment_collection.lineart_usage = 'INCLUDE'
+        environment_collection.hide_render = True
         environment_L0_collection = create_collection_unique("ENVIRONMENTS_L0", environment_collection)
         environment_L0_collection.lineart_usage = 'INCLUDE'
         environment_L0_collection.lineart_use_intersection_mask = True
@@ -440,14 +443,19 @@ class FDG_OT_GenerateCollections_OP(Operator):
         
         character_collection = create_collection_unique("CHARACTERS", objects_collection)
         character_collection.lineart_usage = 'INCLUDE'
+        character_collection.hide_render = True
         excluded_collection = create_collection_unique("OBJECTS_Excluded", objects_collection)
         excluded_collection.lineart_usage = 'EXCLUDE'
+        excluded_collection.hide_render = True
         nointersection_collection = create_collection_unique("OBJECTS_NoIntersection", objects_collection)
         nointersection_collection.lineart_usage = 'NO_INTERSECTION'
+        nointersection_collection.hide_render = True
         forceintersection_collection = create_collection_unique("OBJECTS_ForceIntersection", objects_collection)
         forceintersection_collection.lineart_usage = 'FORCE_INTERSECTION'
+        forceintersection_collection.hide_render = True
         extraobjects_collection = create_collection_unique("EXTRA_CharacterObjects", objects_collection)
         extraobjects_collection.lineart_usage = 'EXCLUDE'
+        extraobjects_collection.hide_render = True
 
         self.set_collection_visibility(context)
 
@@ -491,6 +499,7 @@ class FDG_OT_GenerateCollections_OP(Operator):
         lineart_L0.use_intersection_mask[0] = True
         lineart_L0.use_geometry_space_chain = True
         lineart_L0.use_material = True
+        lineart_L0.use_edge_overlap = True
         # lineart_L0.use_intersection_match = True 
 
         lineart_L1 = gp_ob.grease_pencil_modifiers.new("pass_2_ENVIRONMENTS_L1", 'GP_LINEART')
@@ -504,6 +513,7 @@ class FDG_OT_GenerateCollections_OP(Operator):
         #lineart_L1.use_intersection_match = True
         lineart_L1.use_cache = True
         lineart_L1.use_material = True
+        lineart_L1.use_edge_overlap = True
 
         lineart_L2 = gp_ob.grease_pencil_modifiers.new("pass_3_ENVIRONMENTS_L2", 'GP_LINEART')
         lineart_L2.source_type = 'COLLECTION'
@@ -516,7 +526,7 @@ class FDG_OT_GenerateCollections_OP(Operator):
         #lineart_L2.use_intersection_match = True
         lineart_L2.use_cache = True
         lineart_L2.use_material = True   
-
+        lineart_L2.use_edge_overlap = True
 
         curve_modifier_L0 = gp_ob.grease_pencil_modifiers.new("pass_1_ENVIRONMENTS_CURVE_L0", 'GP_THICK')
         

@@ -146,7 +146,16 @@ class CST_OT_CreateMouthInsideShader_Op(Operator):
     bl_description = "Creates the Mouthinside Shader Nodes"
 
     def execute(self, context):
-        add_shader(context, (0.152272, 0.049334, 0.037427, 1.000000), (5.0, 1.0, 1.0), False)
+        add_shader(context, (0.09, 0.02, 0.02, 1.000000), (5.0, 1.0, 1.0), False)
+        return bpy.ops.transform.translate('INVOKE_DEFAULT')
+    
+class CST_OT_CreateTongueShader_Op(Operator):
+    bl_idname = "cst.create_tongue_shader"
+    bl_label = "Tongue Shader"
+    bl_description = "Creates the Tongue Shader Nodes"
+
+    def execute(self, context):
+        add_shader(context, (0.195647, 0.029978, 0.023284, 1.000000), (5.0, 1.0, 1.0), False)
         return bpy.ops.transform.translate('INVOKE_DEFAULT')
 
 def register():
@@ -160,8 +169,10 @@ def register():
     bpy.utils.register_class(CST_OT_CreateH4Shader_OP)
     bpy.utils.register_class(CST_OT_CreateClothShader_OP)
     bpy.utils.register_class(CST_OT_CreateMouthInsideShader_Op)
+    bpy.utils.register_class(CST_OT_CreateTongueShader_Op)
 
 def unregister():
+    bpy.utils.unregister_class(CST_OT_CreateTongueShader_Op)
     bpy.utils.unregister_class(CST_OT_CreateMouthInsideShader_Op)
     bpy.utils.unregister_class(CST_OT_CreateClothShader_OP)
     bpy.utils.unregister_class(CST_OT_CreateH4Shader_OP)
