@@ -400,6 +400,7 @@ class FDG_PT_DriverGenOutlinesDebug_pnl(bpy.types.Panel):
         layout = self.layout
         settings = scene.gp_defaults
         layout.operator("fdg.update_cam_empties")
+        layout.operator("fdg.fix_driver_targets")
 
         layout.separator()
         

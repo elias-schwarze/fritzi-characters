@@ -46,7 +46,30 @@ def sort_lineart_modifiers(line_art_object):
 
         bpy.ops.object.gpencil_modifier_move_to_index(modifier=line_art_object.grease_pencil_modifiers[first_out_of_place_index].name, index=first_thickness_index)
         
-    
+def fix_driver_targets():
+    scene = bpy.context.scene
+
+    for setting in scene.gp_settings:
+
+        gp_object = setting.gp_object
+
+        thick_mod = gp_object.grease_pencil_modifiers.get(setting.thick_modifier)
+        crv_mod = gp_object.grease_pencil_modifiers.get(setting.crv_modifier)
+
+        anim_data = gp_object.animation_data
+        key = scene.gp_settings.find(setting.name)
+
+        for driver in anim_data.drivers:
+
+            if thick_mod.name in driver.data_path or crv_mod.name in driver.data_path:
+
+                for var in driver.driver.variables:
+                    for target in var.targets:
+                        if target.data_path.startswith('["gp_settings"]'):
+
+                            parts = target.data_path.split("]")
+
+                            target.data_path = parts[0] + '][' + str(key) + ']' + parts[2] + ']'
 
 
 def get_first_thickness_pos(line_art_object):
@@ -390,6 +413,8 @@ class FDG_OT_RemoveLineArtPass_OP(Operator):
         key = scene.gp_settings.find(settings.name)
         scene.gp_settings.remove(key)
 
+        fix_driver_targets()
+
         return {'FINISHED'}
 
 class FDG_OT_GenerateCollections_OP(Operator):
@@ -681,15 +706,29 @@ class FDG_OT_UpdateCamEmpties_OP(Operator):
                         print(target.id_type)
                         print(target.id)
         return {'FINISHED'}
+    
+class FDG_OT_FixDriverTargets_OP(Operator):
+    bl_idname = "fdg.fix_driver_targets"
+    bl_label = "Fix Driver Targets"
+    bl_description = "Fixes the Driver Targets of gp_modifers with the correct settings indices."
+    bl_options = {"REGISTER", "UNDO"}
 
+    def execute(self, context):
+
+        fix_driver_targets()
+
+        return {'FINISHED'}
+    
 def register():
     bpy.utils.register_class(FDG_OT_GenerateLineArtPass_OP)
     bpy.utils.register_class(FDG_OT_RemoveLineArtPass_OP)
     bpy.utils.register_class(FDG_OT_GenerateCollections_OP)
     bpy.utils.register_class(FDG_OT_GenerateViewLayers_OP)
     bpy.utils.register_class(FDG_OT_UpdateCamEmpties_OP)
+    bpy.utils.register_class(FDG_OT_FixDriverTargets_OP)
 
 def unregister():
+    bpy.utils.unregister_class(FDG_OT_FixDriverTargets_OP)
     bpy.utils.unregister_class(FDG_OT_UpdateCamEmpties_OP)
     bpy.utils.unregister_class(FDG_OT_GenerateViewLayers_OP)
     bpy.utils.unregister_class(FDG_OT_GenerateCollections_OP)
