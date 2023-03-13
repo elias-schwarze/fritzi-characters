@@ -33,7 +33,7 @@ bl_info = {
     "author": "Michael Schieber, Sophie Fink, Elias Schwarze",
     "description": "A suite of tools for character rigging in production",
     "blender": (3, 0, 1),
-    "version": (1, 6, 34),
+    "version": (1, 6, 35),
     "location": "3D Viewport > Properties panel (N) > FCHAR Tabs",
     "category": "Rigging"
 }
