@@ -9,12 +9,17 @@ from ..utility_functions.fdg_driver_utils import *
 from ..utility_functions import fdg_names
 from .fdg_driver_gen_outlines_pnl import load_defaults
 
-def create_collection_unique(name, parent):
+def create_collection_unique(name, parent, check_old=False):
     collection = bpy.data.collections.get(name)
     if not collection:
-        collection = bpy.data.collections.new(name)
-        parent.children.link(collection)
-
+        
+        if check_old:
+            collection = bpy.data.collections.get(name + "_old")
+            
+        if not collection:
+            collection = bpy.data.collections.new(name)
+            parent.children.link(collection)
+    collection.name = name
     return collection
 
 def create_view_layer_unique(name):
@@ -33,10 +38,10 @@ def sort_lineart_modifiers(line_art_object):
     bpy.context.view_layer.objects.active = line_art_object
     
     while True:
-        print("---------------------------------------------")
-        for mod in line_art_object.grease_pencil_modifiers:
-            print(mod.type + ": " + mod.name)
-        print(line_art_object.grease_pencil_modifiers)
+        #print("---------------------------------------------")
+        #for mod in line_art_object.grease_pencil_modifiers:
+            #print(mod.type + ": " + mod.name)
+        #print(line_art_object.grease_pencil_modifiers)
         first_thickness_index = get_first_thickness_pos(line_art_object)
         first_out_of_place_index = get_first_out_of_place(line_art_object, first_thickness_index)
         
@@ -135,9 +140,21 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         wm = context.window_manager
         scene = context.scene
         default_settings = wm.gp_pass_defaults
-        item = scene.gp_settings.add()
+
         if subpass == subpass.L0:
             pass_name = wm.Pass_Name + "_L0"
+        if subpass == subpass.L1:
+            pass_name = wm.Pass_Name + "_L1"
+        if subpass == subpass.L2:
+            pass_name = wm.Pass_Name + "_L2"
+
+        item = scene.gp_settings.get(pass_name)
+        if item:
+           return
+         
+        item = scene.gp_settings.add()
+        if subpass == subpass.L0:
+            
             
             L0_settings = default_settings["L0"]
             # These are the default Values of the Settings
@@ -152,7 +169,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
             item.crv_amount = L0_settings["crv_amount"]
 
         if subpass == subpass.L1:
-            pass_name = wm.Pass_Name + "_L1"
+            
             
             L1_settings = default_settings["L1"]
             # These are the default Values of the Settings
@@ -167,7 +184,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
             item.crv_amount = L1_settings["crv_amount"]
 
         if subpass == subpass.L2:
-            pass_name = wm.Pass_Name + "_L2"
+            
             
             L2_settings = default_settings["L2"]
             # These are the default Values of the Settings
@@ -185,7 +202,7 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         item.pass_name = pass_name
         item.gp_object=gp
 
-        collection = create_collection_unique(pass_name, character_collection)
+        collection = create_collection_unique(pass_name, character_collection, wm.chk_old_collection)
         collection.lineart_use_intersection_mask = True
         collection.lineart_intersection_mask[mask_bit] = True
         item.collection = collection
@@ -695,16 +712,17 @@ class FDG_OT_UpdateCamEmpties_OP(Operator):
     def execute(self, context):
         scene = context.scene
         for driver in scene.gp_settings[0].gp_object.animation_data.drivers:
-            print(driver.data_path)
+            #print(driver.data_path)
             for var in driver.driver.variables:
-                print(var.name)
+                #print(var.name)
                 if var.name == "dist":
                     var.targets[0].id = link_camera(bpy.context.scene.camera)
                     for target in var.targets:
                         
-                        print(target.data_path)
-                        print(target.id_type)
-                        print(target.id)
+                        #print(target.data_path)
+                        #print(target.id_type)
+                        #print(target.id)
+                        pass
         return {'FINISHED'}
     
 class FDG_OT_FixDriverTargets_OP(Operator):

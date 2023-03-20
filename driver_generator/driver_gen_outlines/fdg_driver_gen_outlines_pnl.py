@@ -226,6 +226,7 @@ class FDG_PT_DriverGenOutlines_pnl(bpy.types.Panel):
     bpy.types.WindowManager.gp_auto_advanced_toggle = BoolProperty(name = "Advanced", default=False)
     bpy.types.WindowManager.lineart_collection = PointerProperty(name="Line Art Collection", type=bpy.types.Collection)
     bpy.types.WindowManager.gp_defaults_enum = EnumProperty(name = "", items=gp_default_enum_callback)
+    bpy.types.WindowManager.chk_old_collection = BoolProperty(name="Check for _old Collections", default=True)
 
     def draw(self, context):
         wm = context.window_manager
@@ -253,6 +254,8 @@ class FDG_PT_DriverGenOutlines_pnl(bpy.types.Panel):
                     wm.character_rig_bone = 'c_head.x'
        
         layout.prop_search(wm, "camera", bpy.data, "objects", text="Camera")
+
+        layout.prop(wm, "chk_old_collection")
 
         layout.operator("fdg.gen_lineart_pass")
 
