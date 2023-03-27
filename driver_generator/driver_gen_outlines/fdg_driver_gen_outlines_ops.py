@@ -497,7 +497,7 @@ class FDG_OT_GenerateCollections_OP(Operator):
         forceintersection_collection.hide_render = True
         extraobjects_collection = create_collection_unique("EXTRA_CharacterObjects", objects_collection)
         extraobjects_collection.lineart_usage = 'EXCLUDE'
-        extraobjects_collection.hide_render = True
+        extraobjects_collection.hide_render = False
 
         self.set_collection_visibility(context)
 
