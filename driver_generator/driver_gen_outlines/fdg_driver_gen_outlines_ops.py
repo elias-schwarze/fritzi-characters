@@ -737,6 +737,72 @@ class FDG_OT_FixDriverTargets_OP(Operator):
 
         return {'FINISHED'}
     
+class FDG_OT_UpdateCharacterRig_OP(Operator):
+    bl_idname = "fdg.update_character_rig"
+    bl_label = "Update Character Rig"
+    bl_description = "Updates the Character Rig in the distance calculations in the passes corresponding to the given pass name"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        wm = context.window_manager
+        scene = context.scene
+        
+        pass_name = wm.Pass_Name
+
+        pass_name_L0 = pass_name + "_L0"
+        pass_name_L1 = pass_name + "_L1"
+        pass_name_L2 = pass_name + "_L2"
+
+        pass_L0 = None
+        pass_L1 = None
+        pass_L2 = None
+
+        for setting in scene.gp_settings:
+            if setting.name == pass_name_L0:
+                pass_L0 = setting
+            if setting.name == pass_name_L1:
+                pass_L1 = setting
+            if setting.name == pass_name_L2:
+                pass_L2 = setting
+        
+        if not (pass_L0 or pass_L1 or pass_L2):
+            # ----------- Message here ------------
+            self.report({"ERROR_INVALID_INPUT"}, "No Passes with input Name found!")
+            return {'CANCELLED'}
+        
+        if pass_L0:
+            self.update_pass(pass_L0)
+
+        if pass_L1:
+            self.update_pass(pass_L1)
+        
+        if pass_L2:
+            self.update_pass(pass_L2)
+
+        self.report({"INFO"}, "Updated with rigs!")
+        return {'FINISHED'}
+
+    def update_pass(self, lineart_pass):
+        wm = bpy.context.window_manager
+
+        gp_object = lineart_pass.gp_object
+        thick_mod = gp_object.grease_pencil_modifiers.get(lineart_pass.thick_modifier)
+        crv_mod = gp_object.grease_pencil_modifiers.get(lineart_pass.crv_modifier)
+
+        anim_data = gp_object.animation_data
+
+        for driver in anim_data.drivers:
+
+            if thick_mod.name in driver.data_path or crv_mod.name in driver.data_path:
+
+                for var in driver.driver.variables:
+
+                    if var.type == 'LOC_DIFF':
+                        target = var.targets[1]
+                        target.id = wm.character_rig
+                        target.bone_target = wm.character_rig_bone
+
+    
 def register():
     bpy.utils.register_class(FDG_OT_GenerateLineArtPass_OP)
     bpy.utils.register_class(FDG_OT_RemoveLineArtPass_OP)
@@ -744,8 +810,10 @@ def register():
     bpy.utils.register_class(FDG_OT_GenerateViewLayers_OP)
     bpy.utils.register_class(FDG_OT_UpdateCamEmpties_OP)
     bpy.utils.register_class(FDG_OT_FixDriverTargets_OP)
+    bpy.utils.register_class(FDG_OT_UpdateCharacterRig_OP)
 
 def unregister():
+    bpy.utils.unregister_class(FDG_OT_UpdateCharacterRig_OP)
     bpy.utils.unregister_class(FDG_OT_FixDriverTargets_OP)
     bpy.utils.unregister_class(FDG_OT_UpdateCamEmpties_OP)
     bpy.utils.unregister_class(FDG_OT_GenerateViewLayers_OP)

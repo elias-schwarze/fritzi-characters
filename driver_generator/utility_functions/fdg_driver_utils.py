@@ -63,6 +63,8 @@ def parent_objects(parent, child, parent_bone_name=''):
 
     bpy.ops.object.select_all(action='DESELECT')
 
+def parent_objects_noops(parent, child):
+    child.parent = parent
 
 def append_function_unique(function_list, function):
     """Appends a unique copy of a function to a handler"""
@@ -119,6 +121,10 @@ def remove_property(object, prop_name):
         del object[prop_name]
 
 def link_camera(camera):
+    
+    if not bpy.context.scene.gp_defaults:
+        return
+    
     if camera is None:
         return
 
@@ -132,11 +138,11 @@ def link_camera(camera):
         cam_empty = bpy.data.objects.new(fdg_names.empty_cam, None)
         collection.objects.link(cam_empty)
 
-        loc, rot, scale = camera.matrix_world.decompose()
-        cam_empty.location = loc
-        cam_empty.rotation_euler = rot.to_euler()
         
-        parent_objects(camera, cam_empty)
+        cam_empty.location = (0, 0, 0)
+        cam_empty.rotation_euler = (0, 0, 0)
+
+        parent_objects_noops(camera, cam_empty)
         cam_empty.hide_viewport = True
         cam_empty.hide_render = True
     else:
@@ -145,28 +151,26 @@ def link_camera(camera):
             return cam_empty
 
         cam_empty.hide_viewport = False
-        cam_empty.parent = None
-        loc, rot, scale = camera.matrix_world.decompose()
-        cam_empty.location = loc
-        cam_empty.rotation_euler = rot.to_euler()
+        #cam_empty.parent = None
+        
+        cam_empty.location = (0, 0, 0)
+        cam_empty.rotation_euler = (0, 0, 0)
         
 
-        parent_objects(camera, cam_empty)
+        parent_objects_noops(camera, cam_empty)
         cam_empty.hide_viewport = True
         cam_empty.hide_render = True
 
     return cam_empty
 
-current_handler_version = 1
+
 
 def add_auto_link_handler():
-    bpy.context.scene.auto_link_toggle = True
-    bpy.context.scene.auto_link_version = current_handler_version
+
     append_function_unique(bpy.app.handlers.frame_change_pre, frame_change_handler_link_camera)
 
 def remove_auto_link_handler():
-    bpy.context.scene.auto_link_toggle = False
-    bpy.context.scene.auto_link_version = -1
+
     remove_function(bpy.app.handlers.frame_change_pre, frame_change_handler_link_camera)
     
     fn_name = "frame_change_handler"
@@ -183,3 +187,5 @@ def frame_change_handler_link_camera(dummy):
     link_camera(camera)
 
 
+def is_handler_in_file():
+    return frame_change_handler_link_camera in bpy.app.handlers.frame_change_pre

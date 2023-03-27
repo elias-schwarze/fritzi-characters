@@ -4,6 +4,7 @@ from bpy.types import PropertyGroup, UIList
 from bpy.props import PointerProperty, IntProperty, StringProperty, FloatProperty, CollectionProperty, BoolProperty, EnumProperty
 
 from ...fchar_settings import Settings
+from..utility_functions.fdg_driver_utils import *
 
 def load_defaults():
     """Loads the default settings for the L0, L1 and L2 thickness Drivers from the Settings class and stores theme in
@@ -406,6 +407,20 @@ class FDG_PT_DriverGenOutlinesDebug_pnl(bpy.types.Panel):
         layout.operator("fdg.fix_driver_targets")
 
         layout.separator()
+
+        layout.prop(wm, "Pass_Name")
+
+        layout.prop_search(wm, "character_rig", bpy.data, "objects", text="Character Rig")
+        rig = wm.character_rig
+        if rig:
+            if rig.type == 'ARMATURE':
+                layout.prop_search(wm, "character_rig_bone", rig.data, "bones")
+                if 'c_head.x' in rig.data.bones:
+                    wm.character_rig_bone = 'c_head.x'
+
+        layout.operator("fdg.update_character_rig")
+        
+        layout.separator()
         
         layout.prop_search(settings, "gp_object", bpy.data, "objects", text="Grease Pencil")
         layout.prop_search(settings, "outline_collection", bpy.data, "collections")
@@ -434,6 +449,11 @@ class FDG_PT_DriverGenOutlinesDebug_pnl(bpy.types.Panel):
         layout.prop_search(settings, "environment_view_layer", scene, "view_layers")
         layout.prop_search(settings, "character_view_layer", scene, "view_layers")
         layout.prop_search(settings, "extra_view_layer", scene, "view_layers")
+
+        if is_handler_in_file():
+            layout.label(text="Handler in File")
+        else:
+            layout.label(text="Handler NOT in File")
 
 
 

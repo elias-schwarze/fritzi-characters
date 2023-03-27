@@ -10,8 +10,7 @@ class FDG_PT_CameraUtilities_pnl(bpy.types.Panel):
     bl_options = {"DEFAULT_CLOSED"}
     bl_parent_id = "FDG_PT_DriverGenOutlines_pnl"
 
-    bpy.types.Scene.auto_link_toggle = BoolProperty(default=False)
-    bpy.types.Scene.auto_link_version = IntProperty(default=-1)
+
 
     def draw(self, context):
         wm = context.window_manager
@@ -26,19 +25,19 @@ class FDG_PT_CameraUtilities_pnl(bpy.types.Panel):
 
         layout.separator(factor=1.5)
 
-        box = layout.box()
+#        box = layout.box()
 
-        box.label(text="Auto link active camera:")
-
-        row = box.row()
-
-        if bpy.context.scene.auto_link_toggle:
-            row.operator("object.activate_auto_link_camera", depress=True)
-            row.operator("object.deactivate_auto_link_camera", depress=False)
-
-        else:
-            row.operator("object.activate_auto_link_camera", depress=False)
-            row.operator("object.deactivate_auto_link_camera", depress=True)
+#        box.label(text="Auto link active camera:")
+#
+#        row = box.row()
+#
+#        if bpy.context.scene.auto_link_toggle:
+#            row.operator("object.activate_auto_link_camera", depress=True)
+#            row.operator("object.deactivate_auto_link_camera", depress=False)
+#
+#        else:
+#            row.operator("object.activate_auto_link_camera", depress=False)
+#            row.operator("object.deactivate_auto_link_camera", depress=True)
 
 
 def register():
