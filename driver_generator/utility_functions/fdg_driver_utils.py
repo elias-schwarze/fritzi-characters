@@ -121,8 +121,7 @@ def remove_property(object, prop_name):
         del object[prop_name]
 
 def link_camera(camera):
-    
-    if not bpy.context.scene.gp_defaults:
+    if not bpy.context.scene.gp_defaults.gp_object:
         return
     
     if camera is None:
