@@ -188,3 +188,27 @@ def frame_change_handler_link_camera(dummy):
 
 def is_handler_in_file():
     return frame_change_handler_link_camera in bpy.app.handlers.frame_change_pre
+
+@persistent
+def load_post_gp_overscan(dummy):
+
+    gp_settings = bpy.context.scene.gp_defaults    
+    gp_ob = gp_settings.gp_object
+
+    
+    if not gp_ob:
+        return
+
+    for mod in gp_ob.grease_pencil_modifiers:
+        if mod.type == 'GP_LINEART':
+            mod.overscan = 0.05
+            mod.use_image_boundary_trimming = True
+            print("Changed modifier " + mod.name)
+    
+
+
+def add_load_handler():
+    append_function_unique(bpy.app.handlers.load_post, load_post_gp_overscan)
+
+def remove_load_handler():
+    remove_function(bpy.app.handlers.load_post, load_post_gp_overscan)

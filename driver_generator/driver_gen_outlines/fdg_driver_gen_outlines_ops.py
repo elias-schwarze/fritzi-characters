@@ -281,6 +281,8 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
         lineart.use_intersection_match = True
         lineart.use_material = True
         lineart.use_edge_overlap = True
+        lineart.overscan = 0.05
+        lineart.use_image_boundary_trimming = True
         if use_cache:
             lineart.use_cache = use_cache
         return lineart
@@ -542,6 +544,8 @@ class FDG_OT_GenerateCollections_OP(Operator):
         lineart_L0.use_geometry_space_chain = True
         lineart_L0.use_material = True
         lineart_L0.use_edge_overlap = True
+        lineart_L0.overscan = 0.05
+        lineart_L0.use_image_boundary_trimming = True
         # lineart_L0.use_intersection_match = True 
 
         lineart_L1 = gp_ob.grease_pencil_modifiers.new("pass_2_ENVIRONMENTS_L1", 'GP_LINEART')
@@ -556,6 +560,8 @@ class FDG_OT_GenerateCollections_OP(Operator):
         lineart_L1.use_cache = True
         lineart_L1.use_material = True
         lineart_L1.use_edge_overlap = True
+        lineart_L1.overscan = 0.05
+        lineart_L1.use_image_boundary_trimming = True
 
         lineart_L2 = gp_ob.grease_pencil_modifiers.new("pass_3_ENVIRONMENTS_L2", 'GP_LINEART')
         lineart_L2.source_type = 'COLLECTION'
@@ -569,6 +575,8 @@ class FDG_OT_GenerateCollections_OP(Operator):
         lineart_L2.use_cache = True
         lineart_L2.use_material = True   
         lineart_L2.use_edge_overlap = True
+        lineart_L2.overscan = 0.05
+        lineart_L2.use_image_boundary_trimming = True
 
         curve_modifier_L0 = gp_ob.grease_pencil_modifiers.new("pass_1_ENVIRONMENTS_CURVE_L0", 'GP_THICK')
         

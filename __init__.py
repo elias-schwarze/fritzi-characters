@@ -26,7 +26,7 @@ from .animation_mover import anm_init
 from .rig_tools import frt_init
 from .property_bake import FPB_init
 from .tools import fct_init
-from .driver_generator.utility_functions.fdg_driver_utils import add_auto_link_handler
+from .driver_generator.utility_functions.fdg_driver_utils import add_auto_link_handler, add_load_handler, remove_load_handler
 
 
 bl_info = {
@@ -64,11 +64,13 @@ def register():
     FPB_init.register()
     fct_init.register()
     add_auto_link_handler()
+    add_load_handler()
 
 
 
 
 def unregister():
+    remove_load_handler()
     fct_init.unregister()
     FPB_init.unregister()
     frt_init.unregister()
