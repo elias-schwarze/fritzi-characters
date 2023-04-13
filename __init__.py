@@ -27,7 +27,7 @@ from .rig_tools import frt_init
 from .property_bake import FPB_init
 from .tools import fct_init
 from .driver_generator.utility_functions.fdg_driver_utils import add_auto_link_handler, add_load_handler, remove_load_handler
-
+from . import fchar_alerts_ops
 
 bl_info = {
     "name": "fritziCharacters",
@@ -63,6 +63,7 @@ def register():
     frt_init.register()
     FPB_init.register()
     fct_init.register()
+    fchar_alerts_ops.register()
     add_auto_link_handler()
     add_load_handler()
 
@@ -71,6 +72,7 @@ def register():
 
 def unregister():
     remove_load_handler()
+    fchar_alerts_ops.unregister()
     fct_init.unregister()
     FPB_init.unregister()
     frt_init.unregister()
