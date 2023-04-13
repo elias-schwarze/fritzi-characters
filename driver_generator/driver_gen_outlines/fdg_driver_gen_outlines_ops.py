@@ -93,6 +93,12 @@ def get_first_out_of_place(line_art_object, first_thickness_index):
             
 
 class FDG_OT_GenerateLineArtPass_OP(Operator):
+    """This Operator class creates one Fritzi Line Art Pass for one Character.
+    The Pass includes 3 subpasses with differing line thicknesses (eg. for eyes and mouths).
+    Each subpass includes a lineart modifier and 2 thickness modifiers.
+    Furthermore, for each subpass one lineart layer is created.
+    All the created passes are stored in gp_settings - a CollectionProperty of the fritziGPPass type"""
+    
     bl_idname = "fdg.gen_lineart_pass"
     bl_label = "Generate Lineart Pass"
     bl_description = "Generate a Lineart Pass with a Lineart Modifier and 2 thickness modifiers with Drivers for the thickness of the outline tied to the distance between the camera and the character."
@@ -101,6 +107,9 @@ class FDG_OT_GenerateLineArtPass_OP(Operator):
     @classmethod
     def poll(cls, context):
         wm = context.window_manager
+        
+        # Operator should only be executable if the user has given a name and a character rig and camera
+
         if not (wm.Pass_Name and wm.character_rig and wm.camera):
             return False
         
