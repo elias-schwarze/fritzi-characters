@@ -73,6 +73,9 @@ class ANM_PT_KeyframeMover_pnl(bpy.types.Panel):
 
         layout.operator("object.move_animation")
 
+        layout.separator()
+        layout.operator("animation.move_test")
+
 class ANM_PT_MoveOptions_pnl(bpy.types.Panel):
     bl_label = "Options"
     bl_category = "FCHAR"

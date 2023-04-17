@@ -255,8 +255,33 @@ class ANM_SyncLengthOff_Op(bpy.types.Operator):
     def execute(self, context):
         set_sync_length_global(False)
         return {'FINISHED'}
+    
+class ANM_MoveTest_OP(bpy.types.Operator):
+    bl_idname = "animation.move_test"
+    bl_label = "Move Test"
+    bl_description = "Test for new moving method"
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        wm = bpy.context.window_manager
+        self.move_type = wm.move_type
+        self.move_direction = wm.move_direction
+        self.frame_in = wm.frame_in
+        self.frame_out = wm.frame_out
+        self.frame_amount = wm.frame_amount
+
+        anim_mover = Anim_Mover.Anim_Mover(wm, context)
+
+        for ob in bpy.data.objects:
+            anim_mover.add_intermediate_keys_on_object(ob)
+            anim_mover.delete_keys_in_move_range_on_object(ob)
+            anim_mover.move_keys_on_object(ob)
+
+        return {'FINISHED'}
+
 
 def register():
+    bpy.utils.register_class(ANM_MoveTest_OP)
     bpy.utils.register_class(ANM_OT_AnimMover_OP)
     bpy.utils.register_class(ANM_OT_AnimMoverBefore_OP)
     bpy.utils.register_class(ANM_OT_AnimMoverAfter_OP)
@@ -299,3 +324,4 @@ def unregister():
     bpy.utils.unregister_class(ANM_OT_AnimMoverAfter_OP)
     bpy.utils.unregister_class(ANM_OT_AnimMoverBefore_OP)
     bpy.utils.unregister_class(ANM_OT_AnimMover_OP)
+    bpy.utils.unregister_class(ANM_MoveTest_OP)

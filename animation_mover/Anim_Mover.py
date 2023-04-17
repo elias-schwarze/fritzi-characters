@@ -179,6 +179,43 @@ class Anim_Mover():
                         # print(key.co)
                         #key.co[0] = key.co[0] + 10
 
+    def add_intermediate_keys_on_object(self, ob):
+        if (ob.animation_data and ob.animation_data.action and ob.animation_data.action.fcurves):
+            for fCurve in ob.animation_data.action.fcurves:
+
+                if self.move_type == 'AFTER' and self.move_direction == 'BACKWARD':
+                    frame = self.frame_in
+                    value = fCurve.evaluate(frame)
+                    key_right = fCurve.keyframe_points.insert(frame, value)
+                    key_right.handle_left_type = 'FREE'
+                    key_right.handle_right_type = 'FREE'
+                    
+
+
+                    frame = self.frame_in - self.frame_amount - 1
+                    value = fCurve.evaluate(frame)
+                    key_left = fCurve.keyframe_points.insert(frame, value)
+                    key_left.handle_right_type = 'FREE'
+                    key_left.handle_left_type = 'FREE'
+                    
+
+    def delete_keys_in_move_range_on_object(self, ob):
+        if (ob.animation_data and ob.animation_data.action and ob.animation_data.action.fcurves):
+            for fCurve in ob.animation_data.action.fcurves:
+                for key in fCurve.keyframe_points:
+                    if self.is_key_in_move_range(key):
+                        fCurve.keyframe_points.remove(key)
+
+
+    def is_key_in_move_range(self, key):
+
+        if self.move_type == 'AFTER' and self.move_direction == 'BACKWARD':
+            if key.co[0] < self.frame_in and key.co[0] >= self.frame_in - self.frame_amount:
+                return True
+        else:
+            return False
+
+
     def add_NLA_strip_list_item(self, ob, track, strip):
         
         NLA_strip_list = bpy.context.window_manager.NLA_strip_list
