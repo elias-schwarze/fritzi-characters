@@ -258,12 +258,17 @@ class ANM_SyncLengthOff_Op(bpy.types.Operator):
     
 class ANM_MoveTest_OP(bpy.types.Operator):
     bl_idname = "animation.move_test"
-    bl_label = "Move Test"
-    bl_description = "Test for new moving method"
+    bl_label = "Move with splitting"
+    bl_description = "New moving method that splits NLA strips in the move range and handles keys and markers in the move range. Only works for the 'After' and 'Backwards' combination of options."
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
         wm = bpy.context.window_manager
+        if wm.move_type != 'AFTER' or wm.move_direction != 'BACKWARD':
+
+            return {'CANCELLED'}
+        
+        
         self.move_type = wm.move_type
         self.move_direction = wm.move_direction
         self.frame_in = wm.frame_in
@@ -276,6 +281,12 @@ class ANM_MoveTest_OP(bpy.types.Operator):
             anim_mover.add_intermediate_keys_on_object(ob)
             anim_mover.delete_keys_in_move_range_on_object(ob)
             anim_mover.move_keys_on_object(ob)
+            anim_mover.split_move_nla_strips_on_object(ob)
+
+        anim_mover.remove_inbetween_markers()
+        for marker in context.scene.timeline_markers:
+            if marker.frame >= self.frame_in:
+                anim_mover.move_marker(marker)
 
         return {'FINISHED'}
 

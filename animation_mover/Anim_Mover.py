@@ -214,6 +214,108 @@ class Anim_Mover():
                 return True
         else:
             return False
+        
+    def split_move_nla_strips_on_object(self, ob):
+        if (ob.animation_data and ob.animation_data.nla_tracks):
+            tracks = ob.animation_data.nla_tracks
+            strips_to_splitmove = []
+            strips_to_move = []
+            for track in ob.animation_data.nla_tracks:
+                strips_to_remove = []
+                strips_to_clip_start = []
+                strips_to_clip_end = []
+                
+                move_start_frame = self.frame_in
+                move_dest_frame = self.frame_in - self.frame_amount
+                for strip in sorted(track.strips, key=start, reverse=True):
+                    if self.move_type == 'AFTER' and self.move_direction == 'BACKWARD':
+                        move_start_frame = self.frame_in
+                        move_dest_frame = self.frame_in - self.frame_amount
+
+
+                        #Strips that are completely in the move range
+                        if strip.frame_start < move_start_frame and strip.frame_start >= move_dest_frame and strip.frame_end <= move_start_frame and strip.frame_end > move_dest_frame:
+                            strips_to_remove.append(strip)
+                            
+
+                        #Strips that begin before the move range and end in the move range
+                        elif strip.frame_start < move_dest_frame and strip.frame_end > move_dest_frame and strip.frame_end <= move_start_frame:
+                            strips_to_clip_end.append(strip)
+                            
+
+                        #Strips that begin in the move range and end after the move range
+                        elif strip.frame_start >= move_dest_frame and strip.frame_start < move_start_frame and strip.frame_end > move_start_frame:
+                            strips_to_clip_start.append(strip)
+                            
+
+                        #Strips that begin before the move range and end after the move range
+                        elif strip.frame_start < move_dest_frame and strip.frame_end > move_start_frame:
+                            strips_to_splitmove.append((strip, track))
+
+                        #Strips that are fully outside the move range
+                        elif strip.frame_start >= move_start_frame:
+                            scale = strip.scale
+            
+                            strip.frame_end = strip.frame_end + 100000
+                            strip.frame_start = strip.frame_start + 100000
+                            strip.scale = scale
+                            pass
+                
+                for strip in strips_to_remove:
+                    track.strips.remove(strip)
+
+                for strip in strips_to_clip_end:
+                    strip.frame_end = move_dest_frame
+
+                for strip in strips_to_clip_start:
+                    start_overlap = move_start_frame - strip.frame_start
+                    strip.frame_start = move_dest_frame
+                    strip.action_frame_start = strip.action_frame_start + start_overlap
+            
+            
+
+            for item in strips_to_splitmove:
+                strip = item[0]
+                track = item[1]
+                start_overlap = move_start_frame - strip.frame_start
+                end_overlap = strip.frame_end - move_dest_frame
+                #new_track = tracks.new()
+                #strip.frame_end = move_dest_frame
+                scale = strip.scale
+                strip.action_frame_end = strip.action_frame_end - end_overlap
+                #strip.scale = scale
+                new_strip = track.strips.new(strip.name + "copy", (int)(move_dest_frame), strip.action)
+                #new_strip.frame_start = move_dest_frame
+                #new_strip.frame_end = move_start_frame
+                new_strip.action_frame_start = strip.action_frame_start + start_overlap
+                new_strip.blend_type = strip.blend_type
+                new_strip.extrapolation = strip.extrapolation
+                new_strip.influence = strip.influence
+                new_strip.mute = strip.mute
+
+                
+                
+                print(new_strip.frame_start)
+                print(new_strip.action_frame_start)
+
+            for track in tracks:
+                for strip in sorted(track.strips, key=start):
+                    if strip.frame_start >= move_start_frame:
+                        scale = strip.scale
+        
+            
+                        
+                        strip.frame_start = strip.frame_start - self.frame_amount - 100000
+                        strip.frame_end = strip.frame_end - self.frame_amount - 100000
+
+                        strip.scale = scale
+
+             
+        
+                        
+
+
+
 
 
     def add_NLA_strip_list_item(self, ob, track, strip):
@@ -320,6 +422,12 @@ class Anim_Mover():
             marker.frame = marker.frame + self.frame_amount
         elif self.move_direction == 'BACKWARD':
             marker.frame = marker.frame - self.frame_amount
+
+    def remove_inbetween_markers(self):
+        for marker in self.context.scene.timeline_markers:
+            if self.move_type == 'AFTER' and self.move_direction == 'BACKWARD':
+                if marker.frame <= self.frame_in and marker.frame > self.frame_in - self.frame_amount + 1:
+                    self.context.scene.timeline_markers.remove(marker)
 
     def move_strip(self, strip):
         scale = strip.scale
