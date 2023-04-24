@@ -313,8 +313,56 @@ class Anim_Mover():
              
         
                         
+    def split_strips_on_object(self, ob, frame):
+        if (ob.animation_data and ob.animation_data.nla_tracks):
+            tracks = ob.animation_data.nla_tracks
+            strips_to_split = []
+
+            for track in tracks:
+                for strip in track.strips:
+
+                    if strip.frame_start < frame and strip.frame_end > frame:
+                        strip.select = True
+                    else: 
+                        strip.select = False
+            
+            bpy.context.scene.frame_set(frame)
+            win = bpy.context.window
+            scr = win.screen
+            area = [area for area in scr.areas if area.type == 'NLA_EDITOR'][0]
+            region = area.regions[0]
+            override = {
+                'window': win,
+                'screen': scr,
+                'area'  : area,
+                'region': region,
+                'scene' : bpy.context.scene
+            }
+            bpy.ops.nla.split(override)
+
+    def delete_strips_in_move_range(self, ob):
+        if (ob.animation_data and ob.animation_data.nla_tracks):
+            tracks = ob.animation_data.nla_tracks
+            move_start_frame = self.frame_in
+            move_dest_frame = self.frame_in - self.frame_amount
+
+            for track in tracks:
+                strips_to_remove = []
+                
+                
+                for strip in track.strips:
+                    if self.move_type == 'AFTER' and self.move_direction == 'BACKWARD':
+                        
+                        move_start_frame = self.frame_in
+                        move_dest_frame = self.frame_in - self.frame_amount
 
 
+                        #Strips that are completely in the move range
+                        if strip.frame_start < move_start_frame and strip.frame_start >= move_dest_frame and strip.frame_end <= move_start_frame and strip.frame_end > move_dest_frame:
+                            strips_to_remove.append(strip)
+            
+                for strip in strips_to_remove:
+                        track.strips.remove(strip)
 
 
 
@@ -342,7 +390,7 @@ class Anim_Mover():
                                 self.move_strip(strip)
 
                         elif self.move_type == 'AFTER':
-                            if strip.frame_start <= self.frame_in and strip.frame_end >= self.frame_in:
+                            if strip.frame_start < self.frame_in and strip.frame_end >= self.frame_in:
                                 self.add_NLA_strip_list_item(ob, track, strip)
                                
                                 pass
@@ -426,7 +474,7 @@ class Anim_Mover():
     def remove_inbetween_markers(self):
         for marker in self.context.scene.timeline_markers:
             if self.move_type == 'AFTER' and self.move_direction == 'BACKWARD':
-                if marker.frame <= self.frame_in and marker.frame > self.frame_in - self.frame_amount + 1:
+                if marker.frame < self.frame_in and marker.frame > self.frame_in - self.frame_amount + 1:
                     self.context.scene.timeline_markers.remove(marker)
 
     def move_strip(self, strip):

@@ -276,18 +276,26 @@ class ANM_MoveTest_OP(bpy.types.Operator):
         self.frame_amount = wm.frame_amount
 
         anim_mover = Anim_Mover.Anim_Mover(wm, context)
-
+        scn = bpy.context.window.screen
+        area = scn.areas[0]
+        type = area.type
+        area.type = 'NLA_EDITOR'
         for ob in bpy.data.objects:
             anim_mover.add_intermediate_keys_on_object(ob)
             anim_mover.delete_keys_in_move_range_on_object(ob)
             anim_mover.move_keys_on_object(ob)
-            anim_mover.split_move_nla_strips_on_object(ob)
+            #anim_mover.split_move_nla_strips_on_object(ob)
+            anim_mover.split_strips_on_object(ob, self.frame_in)
+            anim_mover.split_strips_on_object(ob, self.frame_in - self.frame_amount)
+            anim_mover.delete_strips_in_move_range(ob)
+            anim_mover.move_NLA_strips_on_object(ob)
 
         anim_mover.remove_inbetween_markers()
         for marker in context.scene.timeline_markers:
             if marker.frame >= self.frame_in:
                 anim_mover.move_marker(marker)
 
+        area.type = type
         return {'FINISHED'}
 
 
