@@ -476,6 +476,11 @@ class FDG_OT_GenerateCollections_OP(Operator):
         objects_collection = create_collection_unique("OUTLINE_groups", bpy.context.scene.collection)
         objects_collection.lineart_usage = 'INCLUDE'
         objects_collection.hide_viewport = True
+        
+        extraexcluded_collection = create_collection_unique("OBJECTS_ExcludedOther", objects_collection)
+        extraexcluded_collection.lineart_usage = 'EXCLUDE'
+        extraexcluded_collection.hide_render = True
+
         environment_collection = create_collection_unique("ENVIRONMENTS", objects_collection)
         environment_collection.lineart_usage = 'INCLUDE'
         environment_collection.hide_render = True
@@ -630,6 +635,7 @@ class FDG_OT_GenerateCollections_OP(Operator):
         scene.gp_defaults.gp_object = gp_ob
         scene.gp_defaults.outline_collection = outline_collection
         scene.gp_defaults.objects_collection = objects_collection
+        scene.gp_defaults.extraexcluded_collection = extraexcluded_collection
         scene.gp_defaults.environment_collection = environment_collection
         scene.gp_defaults.environment_L0_collection = environment_L0_collection
         scene.gp_defaults.environment_L1_collection = environment_L1_collection
