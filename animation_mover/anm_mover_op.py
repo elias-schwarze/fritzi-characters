@@ -297,9 +297,32 @@ class ANM_MoveTest_OP(bpy.types.Operator):
 
         area.type = type
         return {'FINISHED'}
+    
+class ANM_SplitNlas_OP(bpy.types.Operator):
+    bl_idname = "animation.split_nlas"
+    bl_label = "Split all NLAs"
+    bl_description = "Splits all NLA Strips on all Objects in the scene at the gievn frame."
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        wm = context.window_manager
+        self.frame = wm.frame_in
+
+        anim_mover = Anim_Mover.Anim_Mover(wm, context)
+        scn = bpy.context.window.screen
+        area = scn.areas[0]
+        type = area.type
+        area.type = 'NLA_EDITOR'
+
+        for ob in bpy.data.objects:
+            anim_mover.split_strips_on_object(ob, self.frame)
+
+        area.type = type
+        return {'FINISHED'}
 
 
 def register():
+    bpy.utils.register_class(ANM_SplitNlas_OP)
     bpy.utils.register_class(ANM_MoveTest_OP)
     bpy.utils.register_class(ANM_OT_AnimMover_OP)
     bpy.utils.register_class(ANM_OT_AnimMoverBefore_OP)
@@ -344,3 +367,4 @@ def unregister():
     bpy.utils.unregister_class(ANM_OT_AnimMoverBefore_OP)
     bpy.utils.unregister_class(ANM_OT_AnimMover_OP)
     bpy.utils.unregister_class(ANM_MoveTest_OP)
+    bpy.utils.unregister_class(ANM_SplitNlas_OP)

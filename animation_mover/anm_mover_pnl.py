@@ -75,6 +75,8 @@ class ANM_PT_KeyframeMover_pnl(bpy.types.Panel):
 
         layout.separator()
         layout.operator("animation.move_test")
+        layout.separator()
+        layout.operator("animation.split_nlas")
 
 class ANM_PT_MoveOptions_pnl(bpy.types.Panel):
     bl_label = "Options"

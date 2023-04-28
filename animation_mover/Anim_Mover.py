@@ -315,6 +315,18 @@ class Anim_Mover():
                         
     def split_strips_on_object(self, ob, frame):
         if (ob.animation_data and ob.animation_data.nla_tracks):
+            win = bpy.context.window
+            scr = win.screen
+            area = [area for area in scr.areas if area.type == 'NLA_EDITOR'][0]
+            region = area.regions[0]
+            override = {
+                'window': win,
+                'screen': scr,
+                'area'  : area,
+                'region': region,
+                'scene' : bpy.context.scene
+            }
+            bpy.ops.nla.select_all(override, action='DESELECT')
             tracks = ob.animation_data.nla_tracks
             strips_to_split = []
 
@@ -322,6 +334,7 @@ class Anim_Mover():
                 for strip in track.strips:
 
                     if strip.frame_start < frame and strip.frame_end > frame:
+                        strips_to_split.append(strip)
                         strip.select = True
                     else: 
                         strip.select = False
@@ -338,7 +351,11 @@ class Anim_Mover():
                 'region': region,
                 'scene' : bpy.context.scene
             }
-            bpy.ops.nla.split(override)
+            if strips_to_split:
+                bpy.ops.nla.split(override)
+            for strip in strips_to_split:
+                strip.select = False
+            bpy.ops.nla.select_all(override, action='DESELECT')
 
     def delete_strips_in_move_range(self, ob):
         if (ob.animation_data and ob.animation_data.nla_tracks):
