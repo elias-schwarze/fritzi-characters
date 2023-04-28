@@ -255,8 +255,75 @@ class ANM_SyncLengthOff_Op(bpy.types.Operator):
     def execute(self, context):
         set_sync_length_global(False)
         return {'FINISHED'}
+    
+class ANM_MoveTest_OP(bpy.types.Operator):
+    bl_idname = "animation.move_test"
+    bl_label = "Move with splitting"
+    bl_description = "New moving method that splits NLA strips in the move range and handles keys and markers in the move range. Only works for the 'After' and 'Backwards' combination of options."
+    bl_options = {"REGISTER", "UNDO"}
+
+    def execute(self, context):
+        wm = bpy.context.window_manager
+        if wm.move_type != 'AFTER' or wm.move_direction != 'BACKWARD':
+
+            return {'CANCELLED'}
+        
+        
+        self.move_type = wm.move_type
+        self.move_direction = wm.move_direction
+        self.frame_in = wm.frame_in
+        self.frame_out = wm.frame_out
+        self.frame_amount = wm.frame_amount
+
+        anim_mover = Anim_Mover.Anim_Mover(wm, context)
+        scn = bpy.context.window.screen
+        area = scn.areas[0]
+        type = area.type
+        area.type = 'NLA_EDITOR'
+        for ob in bpy.data.objects:
+            anim_mover.add_intermediate_keys_on_object(ob)
+            anim_mover.delete_keys_in_move_range_on_object(ob)
+            anim_mover.move_keys_on_object(ob)
+            #anim_mover.split_move_nla_strips_on_object(ob)
+            anim_mover.split_strips_on_object(ob, self.frame_in)
+            anim_mover.split_strips_on_object(ob, self.frame_in - self.frame_amount)
+            anim_mover.delete_strips_in_move_range(ob)
+            anim_mover.move_NLA_strips_on_object(ob)
+
+        anim_mover.remove_inbetween_markers()
+        for marker in context.scene.timeline_markers:
+            if marker.frame >= self.frame_in:
+                anim_mover.move_marker(marker)
+
+        area.type = type
+        return {'FINISHED'}
+    
+class ANM_SplitNlas_OP(bpy.types.Operator):
+    bl_idname = "animation.split_nlas"
+    bl_label = "Split all NLAs"
+    bl_description = "Splits all NLA Strips on all Objects in the scene at the gievn frame."
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        wm = context.window_manager
+        self.frame = wm.frame_in
+
+        anim_mover = Anim_Mover.Anim_Mover(wm, context)
+        scn = bpy.context.window.screen
+        area = scn.areas[0]
+        type = area.type
+        area.type = 'NLA_EDITOR'
+
+        for ob in bpy.data.objects:
+            anim_mover.split_strips_on_object(ob, self.frame)
+
+        area.type = type
+        return {'FINISHED'}
+
 
 def register():
+    bpy.utils.register_class(ANM_SplitNlas_OP)
+    bpy.utils.register_class(ANM_MoveTest_OP)
     bpy.utils.register_class(ANM_OT_AnimMover_OP)
     bpy.utils.register_class(ANM_OT_AnimMoverBefore_OP)
     bpy.utils.register_class(ANM_OT_AnimMoverAfter_OP)
@@ -299,3 +366,5 @@ def unregister():
     bpy.utils.unregister_class(ANM_OT_AnimMoverAfter_OP)
     bpy.utils.unregister_class(ANM_OT_AnimMoverBefore_OP)
     bpy.utils.unregister_class(ANM_OT_AnimMover_OP)
+    bpy.utils.unregister_class(ANM_MoveTest_OP)
+    bpy.utils.unregister_class(ANM_SplitNlas_OP)
