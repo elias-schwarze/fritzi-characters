@@ -491,7 +491,7 @@ class Anim_Mover():
     def remove_inbetween_markers(self):
         for marker in self.context.scene.timeline_markers:
             if self.move_type == 'AFTER' and self.move_direction == 'BACKWARD':
-                if marker.frame < self.frame_in and marker.frame > self.frame_in - self.frame_amount + 1:
+                if marker.frame < self.frame_in and marker.frame > self.frame_in - self.frame_amount:
                     self.context.scene.timeline_markers.remove(marker)
 
     def move_strip(self, strip):
