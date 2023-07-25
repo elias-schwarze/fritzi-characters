@@ -285,14 +285,16 @@ class ANM_MoveTest_OP(bpy.types.Operator):
             anim_mover.delete_keys_in_move_range_on_object(ob)
             anim_mover.move_keys_on_object(ob)
             #anim_mover.split_move_nla_strips_on_object(ob)
+
+            # Have to split and move the strips one frame earlier, otherwise the animation is off by one
             anim_mover.split_strips_on_object(ob, self.frame_in - 1)
             anim_mover.split_strips_on_object(ob, self.frame_in - self.frame_amount - 1)
-            anim_mover.frame_in = anim_mover.frame_in - 1
+            anim_mover.frame_in = anim_mover.frame_in - 1 # Have to delete and move one frame earlier as well
             
             anim_mover.delete_strips_in_move_range(ob)
             anim_mover.move_NLA_strips_on_object(ob)
 
-            anim_mover.frame_in = anim_mover.frame_in + 1
+            anim_mover.frame_in = anim_mover.frame_in + 1 # Have to reset the move range for the other splitMove functions
             
 
         anim_mover.remove_inbetween_markers()
